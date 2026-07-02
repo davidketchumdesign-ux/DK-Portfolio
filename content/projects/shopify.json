@@ -1,0 +1,105 @@
+{
+  "slug": "shopify",
+  "title": "Shopify Design System & IA Redesign",
+  "industry": "E-Commerce",
+  "category": "consultant",
+  "tags": ["Design System", "Website Redesign", "Atomic Design"],
+  "summary": "Mobile-first redesign with a custom atomic design system, new IA, and a bespoke product configurator.",
+  "coverImage": "/images/projects/shopify-cover.jpg",
+  "hero": {
+    "subtitle": "Rebuilding the IA and design system behind a premium e-commerce experience.",
+    "description": "A mobile-first Shopify redesign built on a new atomic design system — reworking information architecture, navigation, and a custom product configurator for a premium sporting goods retailer."
+  },
+  "meta": {
+    "role": "Lead UX Designer",
+    "timeline": "[X weeks/months]",
+    "platform": "Shopify",
+    "tools": "Figma"
+  },
+  "phases": [
+    {
+      "number": 1,
+      "title": "Empathize",
+      "description": "The engagement opened with a discovery phase focused on understanding the client's current digital landscape and user base before proposing any solutions. Rather than jumping to redesign, the goal was to build a clear, evidence-based picture of what was and wasn't working.\n\nWorking with the broader team, I helped lead a current-state website audit, an accessibility evaluation, a competitive analysis, and a heuristics audit — surfacing friction points across navigation, mobile usability, and content structure.",
+      "chips": ["Current State Audit", "Accessibility Evaluation", "Competitive Analysis", "Heuristics Audit"]
+    },
+    {
+      "number": 2,
+      "title": "Define",
+      "description": "Research findings were synthesized into proto-personas representing the site's core user types, used to guide every design decision that followed. The audits made clear that the existing information architecture — especially primary navigation — was a major source of friction, particularly on mobile.",
+      "hmw": "How might we restructure the site's navigation and product discovery flow so mobile shoppers can find and configure products as easily as desktop users?"
+    },
+    {
+      "number": 3,
+      "title": "Ideate",
+      "description": "With the problem clearly defined, I led the creation of an atomic design system tailored specifically for Shopify's technical constraints — building reusable components from the smallest UI elements up through full page templates, so the system could scale across the entire site.\n\nIn parallel, I redesigned the site's information architecture, with primary navigation as the centerpiece — restructuring how product categories, collections, and configurator entry points were organized and surfaced.",
+      "gallery": [
+        {
+          "label": "Atomic Components",
+          "gradient": "135deg, #3352E1, #8AA3FF"
+        },
+        {
+          "label": "IA / Sitemap",
+          "gradient": "135deg, #6E8CFF, #C2CEFF"
+        },
+        {
+          "label": "Navigation Concepts",
+          "gradient": "135deg, #2FBE83, #9EE8C5"
+        }
+      ]
+    },
+    {
+      "number": 4,
+      "title": "Prototype",
+      "description": "I brought the design system and new IA to life across the site's core templates — Home, Category (L1), Subcategory (L2), and Product (L3) pages — along with a custom product configurator built to handle the complexity of the client's product line, and revamped product listing and detail pages.\n\nEvery screen was built mobile-first and validated against Shopify's technical constraints from the start, so nothing designed would need to be re-engineered during handoff.",
+      "gallery": [
+        {
+          "label": "Home & L1 Pages",
+          "gradient": "135deg, #3352E1, #6E8CFF",
+          "twoCol": true
+        },
+        {
+          "label": "Product Configurator",
+          "gradient": "135deg, #FF6B35, #FFB89C",
+          "twoCol": true
+        },
+        {
+          "label": "L2 & L3 Pages",
+          "gradient": "135deg, #2FBE83, #9EE8C5",
+          "twoCol": true
+        },
+        {
+          "label": "PLP & PDP",
+          "gradient": "135deg, #14181C, #63666B",
+          "twoCol": true
+        }
+      ]
+    },
+    {
+      "number": 5,
+      "title": "Test & Iterate",
+      "description": "Designs were reviewed and refined with stakeholders and a third-party brand agency to ensure the new IA and component system stayed aligned with a refreshed visual identity. I also worked directly with the client's internal design team, walking them through Figma best practices and how to apply the new system going forward — so the design system would keep working long after handoff.",
+      "chips": ["Stakeholder Review", "Brand Agency Collaboration", "Internal Team Enablement"]
+    }
+  ],
+  "outcomes": [
+    {
+      "number": "4",
+      "label": "Page Templates Redesigned"
+    },
+    {
+      "number": "1",
+      "label": "Atomic Design System"
+    },
+    {
+      "number": "1",
+      "label": "Custom Configurator"
+    },
+    {
+      "number": "100%",
+      "label": "Mobile-First Build"
+    }
+  ],
+  "nextSlug": "restaurant-service-design",
+  "nextTitle": "Customer-Led Service Design"
+}

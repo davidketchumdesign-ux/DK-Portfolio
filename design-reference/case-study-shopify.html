@@ -1,0 +1,897 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shopify Design System &amp; IA Redesign — David Ketchum</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --radius: 14px;
+    --ease: cubic-bezier(0.16, 1, 0.3, 1);
+    --container: min(1400px, 94vw);
+    --gutter: clamp(24px, 5vw, 64px);
+  }
+
+  [data-theme="light"] {
+    --bg: #FAFAF7;
+    --bg-elevated: #FFFFFF;
+    --text: #14181C;
+    --text-muted: #63666B;
+    --border: #E7E5DF;
+    --accent: #3352E1;
+    --accent-text: #FFFFFF;
+    --card-shadow: 0 1px 2px rgba(20,24,28,0.04);
+    --card-shadow-hover: 0 20px 40px -12px rgba(20,24,28,0.14);
+  }
+
+  [data-theme="dark"] {
+    --bg: #0A0A0B;
+    --bg-elevated: #151517;
+    --text: #F2F2F0;
+    --text-muted: #92928F;
+    --border: #26262A;
+    --accent: #6E8CFF;
+    --accent-text: #0A0A0B;
+    --card-shadow: 0 1px 2px rgba(0,0,0,0.3);
+    --card-shadow-hover: 0 24px 48px -12px rgba(0,0,0,0.6);
+  }
+
+  [data-theme="mint"] {
+    --bg: #E9F7EF;
+    --bg-elevated: #FFFFFF;
+    --text: #0F2A20;
+    --text-muted: #4C7566;
+    --border: #C8E9D6;
+    --accent: #FF6B35;
+    --accent-text: #FFFFFF;
+    --card-shadow: 0 1px 2px rgba(15,42,32,0.06);
+    --card-shadow-hover: 0 20px 44px -12px rgba(255,107,53,0.28);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    transition: background 0.4s var(--ease), color 0.4s var(--ease);
+    overflow-x: hidden;
+  }
+
+  .mono { font-family: 'JetBrains Mono', monospace; letter-spacing: -0.01em; }
+
+  /* ---------- NAV (same as homepage) ---------- */
+  .nav-wrap {
+    position: fixed;
+    top: 20px;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: center;
+    pointer-events: none;
+  }
+
+  .nav-inner {
+    width: 100%;
+    max-width: 1160px;
+    padding: 0 24px;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .nav-spacer { grid-column: 1; }
+
+  .float-pill {
+    display: flex;
+    align-items: center;
+    background: color-mix(in srgb, var(--bg-elevated) 88%, transparent);
+    backdrop-filter: blur(14px);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    box-shadow: var(--card-shadow);
+    pointer-events: auto;
+    transition: background 0.4s var(--ease), border-color 0.4s var(--ease);
+  }
+
+  .nav-links { justify-self: center; grid-column: 2; gap: 2px; padding: 6px 10px; }
+
+  .nav-links .nav-name {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: 13.5px;
+    letter-spacing: -0.02em;
+    color: var(--text);
+    padding: 8px 12px;
+    white-space: nowrap;
+  }
+
+  .nav-links .nav-sep { color: var(--border); font-size: 13px; user-select: none; }
+
+  .nav-links a {
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 13.5px;
+    font-weight: 500;
+    padding: 8px 14px;
+    border-radius: 999px;
+    white-space: nowrap;
+    transition: color 0.2s var(--ease), background 0.2s var(--ease);
+  }
+
+  .nav-links a:hover { color: var(--text); background: color-mix(in srgb, var(--text) 6%, transparent); }
+
+  .mode-pill { justify-self: end; grid-column: 3; padding: 8px; }
+
+  .menu-btn {
+    display: none;
+    justify-self: end;
+    grid-column: 2;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    border: 1px solid var(--border);
+    background: color-mix(in srgb, var(--bg-elevated) 88%, transparent);
+    backdrop-filter: blur(14px);
+    border-radius: 50%;
+    color: var(--text);
+    cursor: pointer;
+    pointer-events: auto;
+  }
+
+  .menu-btn svg { width: 18px; height: 18px; }
+
+  .mobile-menu {
+    position: fixed;
+    top: 72px;
+    left: 16px;
+    right: 16px;
+    z-index: 99;
+    background: var(--bg-elevated);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--card-shadow-hover);
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    opacity: 0;
+    transform: translateY(-8px);
+    pointer-events: none;
+    transition: opacity 0.25s var(--ease), transform 0.25s var(--ease);
+  }
+
+  .mobile-menu.open { opacity: 1; transform: translateY(0); pointer-events: auto; }
+
+  .mobile-menu-name {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    letter-spacing: -0.02em;
+    color: var(--text-muted);
+    padding: 12px 16px 6px;
+  }
+
+  .mobile-menu a {
+    color: var(--text);
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 500;
+    padding: 14px 16px;
+    border-radius: 10px;
+    transition: background 0.2s var(--ease);
+  }
+
+  .mobile-menu a:hover { background: color-mix(in srgb, var(--text) 6%, transparent); }
+
+  .mobile-menu-divider { height: 1px; background: var(--border); margin: 8px 4px; }
+
+  .mobile-menu-toggle-row { display: flex; align-items: center; justify-content: space-between; padding: 6px 16px 10px; }
+
+  .mobile-menu-toggle-row span {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--text-muted);
+  }
+
+  .theme-toggle {
+    display: flex;
+    align-items: center;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    padding: 3px;
+    gap: 2px;
+    position: relative;
+  }
+
+  .theme-toggle button {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border: none;
+    background: transparent;
+    color: var(--text-muted);
+    cursor: pointer;
+    border-radius: 50%;
+    transition: color 0.3s var(--ease);
+  }
+
+  .theme-toggle button svg { width: 16px; height: 16px; }
+  .theme-toggle button.active { color: var(--accent-text); }
+
+  .toggle-pill {
+    position: absolute;
+    top: 3px;
+    bottom: 3px;
+    left: 3px;
+    width: 32px;
+    background: var(--accent);
+    border-radius: 50%;
+    transition: transform 0.4s var(--ease), background 0.4s var(--ease);
+    z-index: 1;
+  }
+
+  /* ---------- BACK LINK ---------- */
+  .back-link {
+    max-width: var(--container);
+    margin: 0 auto;
+    padding: 140px var(--gutter) 0;
+  }
+
+  .back-link a {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 13.5px;
+    font-weight: 500;
+    transition: color 0.2s var(--ease), gap 0.2s var(--ease);
+  }
+
+  .back-link a:hover { color: var(--text); gap: 12px; }
+  .back-link svg { width: 14px; height: 14px; }
+
+  /* ---------- CASE STUDY HERO ---------- */
+  .cs-hero {
+    max-width: var(--container);
+    margin: 0 auto;
+    padding: 28px var(--gutter) 56px;
+  }
+
+  .eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .eyebrow::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    display: inline-block;
+  }
+
+  .cs-hero h1 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: clamp(2.4rem, 5.5vw, 4.6rem);
+    line-height: 1.03;
+    letter-spacing: -0.03em;
+    max-width: 900px;
+    margin-bottom: 28px;
+  }
+
+  .cs-hero-sub {
+    font-size: clamp(1.05rem, 1.6vw, 1.25rem);
+    color: var(--text-muted);
+    max-width: 640px;
+    line-height: 1.6;
+  }
+
+  /* Meta row */
+  .cs-meta {
+    max-width: var(--container);
+    margin: 0 auto;
+    padding: 0 var(--gutter) 56px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding-top: 32px;
+    padding-bottom: 32px;
+  }
+
+  .cs-meta-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin-bottom: 8px;
+  }
+
+  .cs-meta-value {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+    font-size: 16px;
+    letter-spacing: -0.01em;
+  }
+
+  /* Cover image placeholder */
+  .cs-cover {
+    max-width: var(--container);
+    margin: 56px auto 0;
+    padding: 0 var(--gutter);
+  }
+
+  .cs-cover-inner {
+    height: 460px;
+    border-radius: var(--radius);
+    background: linear-gradient(135deg, #6E8CFF, #C2CEFF);
+  }
+
+  /* ---------- PHASE SECTIONS ---------- */
+  .phase {
+    max-width: var(--container);
+    margin: 0 auto;
+    padding: 110px var(--gutter) 0;
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 64px;
+  }
+
+  .phase:last-of-type { padding-bottom: 110px; }
+
+  .phase-label {
+    position: sticky;
+    top: 140px;
+    align-self: start;
+  }
+
+  .phase-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: var(--accent);
+    letter-spacing: 0.04em;
+    margin-bottom: 10px;
+  }
+
+  .phase-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: clamp(1.5rem, 2.4vw, 2rem);
+    letter-spacing: -0.02em;
+  }
+
+  .phase-content p {
+    font-size: 16.5px;
+    color: var(--text-muted);
+    line-height: 1.7;
+    max-width: 680px;
+  }
+
+  .phase-content p + p { margin-top: 18px; }
+
+  .chip-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 28px;
+  }
+
+  .chip {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--text);
+    background: var(--bg-elevated);
+    border: 1px solid var(--border);
+    padding: 8px 14px;
+    border-radius: 999px;
+  }
+
+  /* HMW callout */
+  .hmw-box {
+    margin-top: 36px;
+    padding: 32px 36px;
+    background: var(--bg-elevated);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--accent);
+    border-radius: var(--radius);
+  }
+
+  .hmw-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin-bottom: 12px;
+  }
+
+  .hmw-box p {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+    font-size: clamp(1.15rem, 1.8vw, 1.5rem);
+    color: var(--text) !important;
+    line-height: 1.4;
+    max-width: 100% !important;
+  }
+
+  /* Image galleries within phases */
+  .phase-gallery {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-top: 36px;
+  }
+
+  .phase-gallery.two-col { grid-template-columns: repeat(2, 1fr); }
+
+  .gallery-tile {
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+  }
+
+  .gallery-tile-inner {
+    height: 200px;
+  }
+
+  .gallery-tile-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--text-muted);
+    padding: 12px 4px 0;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+
+  /* Outcomes */
+  .outcomes {
+    max-width: var(--container);
+    margin: 0 auto;
+    padding: 100px var(--gutter) 120px;
+    border-top: 1px solid var(--border);
+  }
+
+  .outcomes h2 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: clamp(1.8rem, 3.2vw, 2.6rem);
+    letter-spacing: -0.02em;
+    max-width: 640px;
+    margin-bottom: 56px;
+  }
+
+  .outcomes-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+  }
+
+  .outcome-num {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: clamp(2rem, 3.4vw, 3rem);
+    letter-spacing: -0.02em;
+    color: var(--accent);
+  }
+
+  .outcome-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin-top: 10px;
+  }
+
+  /* Next project */
+  .next-project {
+    border-top: 1px solid var(--border);
+    max-width: var(--container);
+    margin: 0 auto;
+    padding: 64px var(--gutter) 0;
+  }
+
+  .next-project-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin-bottom: 16px;
+  }
+
+  .next-project a {
+    display: block;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: clamp(1.8rem, 4vw, 3rem);
+    letter-spacing: -0.02em;
+    color: var(--text);
+    text-decoration: none;
+    transition: color 0.25s var(--ease);
+  }
+
+  .next-project a:hover { color: var(--accent); }
+
+  /* ---------- FOOTER (same as homepage) ---------- */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 64px var(--gutter);
+    max-width: var(--container);
+    margin: 64px auto 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    flex-wrap: wrap;
+    gap: 32px;
+  }
+
+  footer h2 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: clamp(1.6rem, 4vw, 2.4rem);
+    letter-spacing: -0.02em;
+    max-width: 420px;
+  }
+
+  .footer-links { display: flex; flex-direction: column; gap: 10px; align-items: flex-end; }
+
+  .footer-links a {
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 14px;
+    transition: color 0.2s var(--ease);
+  }
+
+  .footer-links a:hover { color: var(--text); }
+
+  /* Scroll reveal (shared pattern) */
+  .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.7s var(--ease), transform 0.7s var(--ease);
+  }
+
+  .reveal.revealed { opacity: 1; transform: translateY(0); }
+
+  /* ---------- RESPONSIVE ---------- */
+  @media (max-width: 900px) {
+    .phase { grid-template-columns: 1fr; gap: 24px; padding-top: 72px; }
+    .phase-label { position: static; }
+    .cs-meta { grid-template-columns: repeat(2, 1fr); gap: 28px 20px; }
+    .outcomes-grid { grid-template-columns: repeat(2, 1fr); gap: 28px 20px; }
+    .phase-gallery { grid-template-columns: 1fr; }
+    .phase-gallery.two-col { grid-template-columns: 1fr; }
+    .cs-cover-inner { height: 240px; }
+  }
+
+  @media (max-width: 860px) {
+    .nav-wrap { top: 14px; }
+    .nav-inner { padding: 0 16px; grid-template-columns: 1fr auto; }
+    .nav-links { display: none; }
+    .mode-pill { display: none; }
+    .menu-btn { display: flex; grid-column: 2; }
+    .back-link { padding: 96px 22px 0; }
+    .cs-hero { padding: 24px 22px 40px; }
+    .cs-meta { padding: 0 22px 40px; }
+    .cs-cover { padding: 0 22px; }
+    .phase { padding-left: 22px; padding-right: 22px; }
+    .outcomes { padding: 72px 22px 90px; }
+    .next-project { padding: 48px 22px 0; }
+    footer { padding: 48px 22px; flex-direction: column; align-items: flex-start; }
+    .footer-links { align-items: flex-start; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; animation: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<div class="nav-wrap">
+  <div class="nav-inner">
+    <div class="nav-spacer"></div>
+
+    <nav class="float-pill nav-links">
+      <span class="nav-name">David Ketchum</span>
+      <span class="nav-sep">|</span>
+      <a href="homepage-prototype.html#work">Work</a>
+      <span class="nav-sep">|</span>
+      <a href="homepage-prototype.html#about">About</a>
+      <span class="nav-sep">|</span>
+      <a href="homepage-prototype.html#contact">Contact</a>
+    </nav>
+
+    <button class="menu-btn" id="menuBtn" aria-label="Open menu">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+
+    <div class="float-pill mode-pill">
+      <div class="theme-toggle" id="themeToggle">
+        <div class="toggle-pill"></div>
+        <button data-theme-btn="light" class="active" aria-label="Light mode">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+        </button>
+        <button data-theme-btn="dark" aria-label="Dark mode">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        </button>
+        <button data-theme-btn="mint" aria-label="Mint mode">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l1.6 5.2L19 9l-5.4 1.8L12 16l-1.6-5.2L5 9l5.4-1.8z"/><path d="M19 15l.7 2.3L22 18l-2.3.7L19 21l-.7-2.3L16 18l2.3-.7z"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="mobile-menu" id="mobileMenu">
+  <div class="mobile-menu-name">David Ketchum</div>
+  <a href="homepage-prototype.html#work">Work</a>
+  <a href="homepage-prototype.html#about">About</a>
+  <a href="homepage-prototype.html#contact">Contact</a>
+  <div class="mobile-menu-divider"></div>
+  <div class="mobile-menu-toggle-row">
+    <span>Appearance</span>
+    <div class="theme-toggle" id="themeToggleMobile">
+      <div class="toggle-pill"></div>
+      <button data-theme-btn="light" class="active" aria-label="Light mode">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+      </button>
+      <button data-theme-btn="dark" aria-label="Dark mode">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+      <button data-theme-btn="mint" aria-label="Mint mode">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l1.6 5.2L19 9l-5.4 1.8L12 16l-1.6-5.2L5 9l5.4-1.8z"/><path d="M19 15l.7 2.3L22 18l-2.3.7L19 21l-.7-2.3L16 18l2.3-.7z"/></svg>
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="back-link">
+  <a href="homepage-prototype.html#work">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+    Back to Work
+  </a>
+</div>
+
+<section class="cs-hero">
+  <div class="eyebrow">E-Commerce · Case Study</div>
+  <h1>Rebuilding the IA and design system behind a premium e-commerce experience.</h1>
+  <p class="cs-hero-sub">A mobile-first Shopify redesign built on a new atomic design system — reworking information architecture, navigation, and a custom product configurator for a premium sporting goods retailer.</p>
+</section>
+
+<section class="cs-meta">
+  <div>
+    <div class="cs-meta-label">Role</div>
+    <div class="cs-meta-value">Lead UX Designer</div>
+  </div>
+  <div>
+    <div class="cs-meta-label">Timeline</div>
+    <div class="cs-meta-value">[X weeks/months]</div>
+  </div>
+  <div>
+    <div class="cs-meta-label">Platform</div>
+    <div class="cs-meta-value">Shopify</div>
+  </div>
+  <div>
+    <div class="cs-meta-label">Tools</div>
+    <div class="cs-meta-value">Figma</div>
+  </div>
+</section>
+
+<div class="cs-cover reveal">
+  <div class="cs-cover-inner"></div>
+</div>
+
+<!-- 01 EMPATHIZE -->
+<section class="phase">
+  <div class="phase-label reveal">
+    <div class="phase-num">01 / 05</div>
+    <div class="phase-title">Empathize</div>
+  </div>
+  <div class="phase-content reveal">
+    <p>The engagement opened with a discovery phase focused on understanding the client's current digital landscape and user base before proposing any solutions. Rather than jumping to redesign, the goal was to build a clear, evidence-based picture of what was and wasn't working.</p>
+    <p>Working with the broader team, I helped lead a current-state website audit, an accessibility evaluation, a competitive analysis, and a heuristics audit — surfacing friction points across navigation, mobile usability, and content structure.</p>
+    <div class="chip-row">
+      <span class="chip">Current State Audit</span>
+      <span class="chip">Accessibility Evaluation</span>
+      <span class="chip">Competitive Analysis</span>
+      <span class="chip">Heuristics Audit</span>
+    </div>
+  </div>
+</section>
+
+<!-- 02 DEFINE -->
+<section class="phase">
+  <div class="phase-label reveal">
+    <div class="phase-num">02 / 05</div>
+    <div class="phase-title">Define</div>
+  </div>
+  <div class="phase-content reveal">
+    <p>Research findings were synthesized into proto-personas representing the site's core user types, used to guide every design decision that followed. The audits made clear that the existing information architecture — especially primary navigation — was a major source of friction, particularly on mobile.</p>
+    <div class="hmw-box">
+      <div class="hmw-label">How Might We</div>
+      <p>How might we restructure the site's navigation and product discovery flow so mobile shoppers can find and configure products as easily as desktop users?</p>
+    </div>
+  </div>
+</section>
+
+<!-- 03 IDEATE -->
+<section class="phase">
+  <div class="phase-label reveal">
+    <div class="phase-num">03 / 05</div>
+    <div class="phase-title">Ideate</div>
+  </div>
+  <div class="phase-content reveal">
+    <p>With the problem clearly defined, I led the creation of an atomic design system tailored specifically for Shopify's technical constraints — building reusable components from the smallest UI elements up through full page templates, so the system could scale across the entire site.</p>
+    <p>In parallel, I redesigned the site's information architecture, with primary navigation as the centerpiece — restructuring how product categories, collections, and configurator entry points were organized and surfaced.</p>
+    <div class="phase-gallery">
+      <div class="gallery-tile">
+        <div class="gallery-tile-inner" style="background:linear-gradient(135deg,#3352E1,#8AA3FF)"></div>
+        <div class="gallery-tile-label">Atomic Components</div>
+      </div>
+      <div class="gallery-tile">
+        <div class="gallery-tile-inner" style="background:linear-gradient(135deg,#6E8CFF,#C2CEFF)"></div>
+        <div class="gallery-tile-label">IA / Sitemap</div>
+      </div>
+      <div class="gallery-tile">
+        <div class="gallery-tile-inner" style="background:linear-gradient(135deg,#2FBE83,#9EE8C5)"></div>
+        <div class="gallery-tile-label">Navigation Concepts</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 04 PROTOTYPE -->
+<section class="phase">
+  <div class="phase-label reveal">
+    <div class="phase-num">04 / 05</div>
+    <div class="phase-title">Prototype</div>
+  </div>
+  <div class="phase-content reveal">
+    <p>I brought the design system and new IA to life across the site's core templates — Home, Category (L1), Subcategory (L2), and Product (L3) pages — along with a custom product configurator built to handle the complexity of the client's product line, and revamped product listing and detail pages.</p>
+    <p>Every screen was built mobile-first and validated against Shopify's technical constraints from the start, so nothing designed would need to be re-engineered during handoff.</p>
+    <div class="phase-gallery two-col">
+      <div class="gallery-tile">
+        <div class="gallery-tile-inner" style="background:linear-gradient(135deg,#3352E1,#6E8CFF)"></div>
+        <div class="gallery-tile-label">Home &amp; L1 Pages</div>
+      </div>
+      <div class="gallery-tile">
+        <div class="gallery-tile-inner" style="background:linear-gradient(135deg,#FF6B35,#FFB89C)"></div>
+        <div class="gallery-tile-label">Product Configurator</div>
+      </div>
+      <div class="gallery-tile">
+        <div class="gallery-tile-inner" style="background:linear-gradient(135deg,#2FBE83,#9EE8C5)"></div>
+        <div class="gallery-tile-label">L2 &amp; L3 Pages</div>
+      </div>
+      <div class="gallery-tile">
+        <div class="gallery-tile-inner" style="background:linear-gradient(135deg,#14181C,#63666B)"></div>
+        <div class="gallery-tile-label">PLP &amp; PDP</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 05 TEST -->
+<section class="phase">
+  <div class="phase-label reveal">
+    <div class="phase-num">05 / 05</div>
+    <div class="phase-title">Test &amp; Iterate</div>
+  </div>
+  <div class="phase-content reveal">
+    <p>Designs were reviewed and refined with stakeholders and a third-party brand agency to ensure the new IA and component system stayed aligned with a refreshed visual identity. I also worked directly with the client's internal design team, walking them through Figma best practices and how to apply the new system going forward — so the design system would keep working long after handoff.</p>
+    <div class="chip-row">
+      <span class="chip">Stakeholder Review</span>
+      <span class="chip">Brand Agency Collaboration</span>
+      <span class="chip">Internal Team Enablement</span>
+    </div>
+  </div>
+</section>
+
+<section class="outcomes">
+  <h2>What shipped</h2>
+  <div class="outcomes-grid">
+    <div class="reveal">
+      <div class="outcome-num mono">4</div>
+      <div class="outcome-label">Page Templates Redesigned</div>
+    </div>
+    <div class="reveal">
+      <div class="outcome-num mono">1</div>
+      <div class="outcome-label">Atomic Design System</div>
+    </div>
+    <div class="reveal">
+      <div class="outcome-num mono">1</div>
+      <div class="outcome-label">Custom Configurator</div>
+    </div>
+    <div class="reveal">
+      <div class="outcome-num mono">100%</div>
+      <div class="outcome-label">Mobile-First Build</div>
+    </div>
+  </div>
+</section>
+
+<div class="next-project">
+  <div class="next-project-label">Next Project</div>
+  <a href="homepage-prototype.html#work">Customer-Led Service Design →</a>
+</div>
+
+<footer id="contact">
+  <h2>Let's build something worth remembering.</h2>
+  <div class="footer-links">
+    <a href="mailto:hello@davidketchumwork.com">hello@davidketchumwork.com</a>
+    <a href="#">LinkedIn</a>
+    <a href="#">Instagram</a>
+  </div>
+</footer>
+
+<script>
+  const root = document.documentElement;
+  const toggleGroups = document.querySelectorAll('.theme-toggle');
+  const positions = { light: 0, dark: 34, mint: 68 };
+
+  function setTheme(theme) {
+    root.setAttribute('data-theme', theme);
+    toggleGroups.forEach(group => {
+      const groupPill = group.querySelector('.toggle-pill');
+      groupPill.style.transform = `translateX(${positions[theme]}px)`;
+      group.querySelectorAll('[data-theme-btn]').forEach(b => {
+        b.classList.toggle('active', b.dataset.themeBtn === theme);
+      });
+    });
+    try { localStorage.setItem('portfolio-theme', theme); } catch(e) {}
+  }
+
+  document.querySelectorAll('[data-theme-btn]').forEach(btn => {
+    btn.addEventListener('click', () => setTheme(btn.dataset.themeBtn));
+  });
+
+  let savedTheme = 'light';
+  try { savedTheme = localStorage.getItem('portfolio-theme') || 'light'; } catch(e) {}
+  setTheme(savedTheme);
+
+  const menuBtn = document.getElementById('menuBtn');
+  const mobileMenu = document.getElementById('mobileMenu');
+  menuBtn.addEventListener('click', () => mobileMenu.classList.toggle('open'));
+  mobileMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => mobileMenu.classList.remove('open')));
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('revealed');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12 });
+
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
