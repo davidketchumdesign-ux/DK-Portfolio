@@ -41,7 +41,7 @@ export function Nav() {
             </svg>
           </button>
 
-          <div className="float-pill mode-pill">
+          <div className="mode-pill">
             <ThemeToggle />
           </div>
         </div>
@@ -83,7 +83,7 @@ export function Nav() {
           padding: 0 24px;
           display: grid;
           grid-template-columns: 1fr auto 1fr;
-          align-items: center;
+          align-items: stretch;
           gap: 12px;
         }
 
@@ -145,7 +145,6 @@ export function Nav() {
         .mode-pill {
           justify-self: end;
           grid-column: 3;
-          padding: 8px;
         }
 
         .menu-btn {

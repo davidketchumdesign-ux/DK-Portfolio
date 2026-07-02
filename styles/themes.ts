@@ -38,6 +38,6 @@ export const themeColors: Record<Theme, Record<string, string>> = {
 
 export const togglePositions = {
   light: 0,
-  dark: 38,
-  mint: 76,
+  dark: 39,
+  mint: 78,
 };

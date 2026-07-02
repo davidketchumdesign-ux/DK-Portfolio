@@ -1,28 +1,19 @@
 'use client';
 
+import LightModeOutlinedIcon from '@mui/icons-material/LightModeOutlined';
+import DarkModeOutlinedIcon from '@mui/icons-material/DarkModeOutlined';
+import AutoAwesomeOutlinedIcon from '@mui/icons-material/AutoAwesomeOutlined';
 import { useTheme } from '@/contexts/ThemeContext';
 import { togglePositions, type Theme } from '@/styles/themes';
 
 const themes: Theme[] = ['light', 'dark', 'mint'];
 
+const iconStyle = { width: 18, height: 18 };
+
 const themeIcons = {
-  light: (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <circle cx="12" cy="12" r="4" />
-      <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" />
-    </svg>
-  ),
-  dark: (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
-    </svg>
-  ),
-  mint: (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M12 2l1.6 5.2L19 9l-5.4 1.8L12 16l-1.6-5.2L5 9l5.4-1.8z" />
-      <path d="M19 15l.7 2.3L22 18l-2.3.7L19 21l-.7-2.3L16 18l2.3-.7z" />
-    </svg>
-  ),
+  light: <LightModeOutlinedIcon style={iconStyle} />,
+  dark: <DarkModeOutlinedIcon style={iconStyle} />,
+  mint: <AutoAwesomeOutlinedIcon style={iconStyle} />,
 };
 
 interface ThemeToggleProps {
@@ -55,12 +46,18 @@ export function ThemeToggle({ mobile = false }: ThemeToggleProps) {
         .theme-toggle {
           display: flex;
           align-items: center;
-          background: var(--bg);
+          height: 100%;
+          box-sizing: border-box;
+          background: color-mix(in srgb, var(--bg-elevated) 88%, transparent);
+          backdrop-filter: blur(14px);
           border: 1px solid var(--border);
           border-radius: 999px;
-          padding: 4px;
+          box-shadow: var(--card-shadow);
+          padding: 6px;
           gap: 6px;
           position: relative;
+          pointer-events: auto;
+          transition: background 0.4s var(--ease), border-color 0.4s var(--ease);
         }
 
         .theme-toggle button {
@@ -69,8 +66,8 @@ export function ThemeToggle({ mobile = false }: ThemeToggleProps) {
           display: flex;
           align-items: center;
           justify-content: center;
-          width: 32px;
-          height: 32px;
+          width: 33px;
+          height: 33px;
           border: none;
           background: transparent;
           color: var(--text-muted);
@@ -80,8 +77,8 @@ export function ThemeToggle({ mobile = false }: ThemeToggleProps) {
         }
 
         .theme-toggle button svg {
-          width: 20px;
-          height: 20px;
+          width: 18px;
+          height: 18px;
         }
 
         .theme-toggle button.active {
@@ -90,10 +87,10 @@ export function ThemeToggle({ mobile = false }: ThemeToggleProps) {
 
         .toggle-pill {
           position: absolute;
-          top: 4px;
-          bottom: 4px;
-          left: 4px;
-          width: 32px;
+          top: 6px;
+          bottom: 6px;
+          left: 6px;
+          width: 33px;
           background: var(--accent);
           border-radius: 50%;
           transition: transform 0.4s var(--ease);
