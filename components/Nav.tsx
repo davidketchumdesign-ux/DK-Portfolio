@@ -126,7 +126,7 @@ export function Nav() {
           user-select: none;
         }
 
-        .nav-link {
+        :global(.nav-link) {
           color: var(--text-muted);
           text-decoration: none;
           font-size: 13.5px;
@@ -137,7 +137,7 @@ export function Nav() {
           transition: color 0.2s var(--ease), background 0.2s var(--ease);
         }
 
-        .nav-link:hover {
+        :global(.nav-link:hover) {
           color: var(--text);
           background: color-mix(in srgb, var(--text) 6%, transparent);
         }
@@ -206,7 +206,7 @@ export function Nav() {
           padding: 12px 16px 6px;
         }
 
-        .mobile-menu-link {
+        :global(.mobile-menu-link) {
           color: var(--text);
           text-decoration: none;
           font-size: 15px;
@@ -217,7 +217,7 @@ export function Nav() {
           display: block;
         }
 
-        .mobile-menu-link:hover {
+        :global(.mobile-menu-link:hover) {
           background: color-mix(in srgb, var(--text) 6%, transparent);
         }
 

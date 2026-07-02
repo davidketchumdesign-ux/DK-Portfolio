@@ -12,7 +12,7 @@ export function BackLink() {
           padding: 140px var(--gutter) 0;
         }
 
-        .back-link-inner {
+        :global(.back-link-inner) {
           display: inline-flex;
           align-items: center;
           gap: 8px;
@@ -23,7 +23,7 @@ export function BackLink() {
           transition: color 0.2s var(--ease), gap 0.2s var(--ease);
         }
 
-        .back-link-inner:hover {
+        :global(.back-link-inner:hover) {
           color: var(--text);
           gap: 12px;
         }

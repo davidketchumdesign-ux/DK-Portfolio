@@ -79,7 +79,7 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
           transition: border-color 0.4s var(--ease);
         }
 
-        .card-link {
+        :global(.card-link) {
           text-decoration: none;
           color: inherit;
           display: flex;

@@ -27,7 +27,7 @@ export function NextProject({ nextSlug, nextTitle }: NextProjectProps) {
           margin-bottom: 16px;
         }
 
-        .next-project-link {
+        :global(.next-project-link) {
           display: block;
           font-family: 'Space Grotesk', sans-serif;
           font-weight: 700;
@@ -38,7 +38,7 @@ export function NextProject({ nextSlug, nextTitle }: NextProjectProps) {
           transition: color 0.25s var(--ease);
         }
 
-        .next-project-link:hover {
+        :global(.next-project-link:hover) {
           color: var(--accent);
         }
 
