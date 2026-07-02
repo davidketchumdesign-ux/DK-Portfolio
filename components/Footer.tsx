@@ -54,7 +54,7 @@ export function Footer() {
         }
       `}</style>
 
-      <h2>Let's build something worth remembering.</h2>
+      <h2>Let&apos;s build something worth remembering.</h2>
       <div className="footer-links">
         <a href="mailto:hello@davidketchumwork.com">hello@davidketchumwork.com</a>
         <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer">

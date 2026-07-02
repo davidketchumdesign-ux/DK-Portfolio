@@ -1,5 +1,6 @@
 'use client';
 
+import { use } from 'react';
 import { getCaseStudyBySlug } from '@/content/projects';
 import { BackLink } from '@/components/BackLink';
 import { CaseStudyHero } from '@/components/CaseStudyHero';
@@ -9,13 +10,14 @@ import { OutcomesGrid } from '@/components/OutcomesGrid';
 import { NextProject } from '@/components/NextProject';
 
 interface CaseStudyPageProps {
-  params: {
+  params: Promise<{
     slug: string;
-  };
+  }>;
 }
 
 export default function CaseStudyPage({ params }: CaseStudyPageProps) {
-  const caseStudy = getCaseStudyBySlug(params.slug);
+  const { slug } = use(params);
+  const caseStudy = getCaseStudyBySlug(slug);
 
   if (!caseStudy) {
     return <div>Case study not found</div>;
