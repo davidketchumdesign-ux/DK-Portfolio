@@ -58,8 +58,8 @@ export function ThemeToggle({ mobile = false }: ThemeToggleProps) {
           background: var(--bg);
           border: 1px solid var(--border);
           border-radius: 999px;
-          padding: 3px;
-          gap: 2px;
+          padding: 4px;
+          gap: 6px;
           position: relative;
         }
 
@@ -80,8 +80,8 @@ export function ThemeToggle({ mobile = false }: ThemeToggleProps) {
         }
 
         .theme-toggle button svg {
-          width: 16px;
-          height: 16px;
+          width: 20px;
+          height: 20px;
         }
 
         .theme-toggle button.active {
@@ -90,9 +90,9 @@ export function ThemeToggle({ mobile = false }: ThemeToggleProps) {
 
         .toggle-pill {
           position: absolute;
-          top: 3px;
-          bottom: 3px;
-          left: 3px;
+          top: 4px;
+          bottom: 4px;
+          left: 4px;
           width: 32px;
           background: var(--accent);
           border-radius: 50%;
