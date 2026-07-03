@@ -2,12 +2,12 @@
 
 import { use } from 'react';
 import { getCaseStudyBySlug } from '@/content/projects';
-import { BackLink } from '@/components/BackLink';
-import { CaseStudyHero } from '@/components/CaseStudyHero';
-import { CaseMeta } from '@/components/CaseMeta';
-import { PhaseSection } from '@/components/PhaseSection';
-import { OutcomesGrid } from '@/components/OutcomesGrid';
-import { NextProject } from '@/components/NextProject';
+import { BackLink } from '@/components/case-study/BackLink';
+import { CaseStudyHero } from '@/components/case-study/CaseStudyHero';
+import { CaseMeta } from '@/components/case-study/CaseMeta';
+import { PhaseSection } from '@/components/case-study/PhaseSection';
+import { OutcomesGrid } from '@/components/case-study/OutcomesGrid';
+import { NextProject } from '@/components/case-study/NextProject';
 
 interface CaseStudyPageProps {
   params: Promise<{

@@ -60,12 +60,12 @@ export function Hero() {
         }
       `}</style>
 
-      <div className="eyebrow">UX Designer / Strategist</div>
+      <div className="eyebrow">Senior UX Designer / Strategist</div>
       <h1>
         I design systems that make <span>complexity</span> feel obvious.
       </h1>
       <p className="hero-sub">
-        Six years partnering with enterprise teams on design systems, research, and product strategy — plus a handful of my own products built for fun on the side.
+        I am a senior UX designer and strategist at Slalom Consulting. Located in Central, PA.
       </p>
     </section>
   );

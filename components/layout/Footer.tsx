@@ -21,7 +21,7 @@ export function Footer() {
           font-weight: 700;
           font-size: clamp(1.6rem, 4vw, 2.4rem);
           letter-spacing: -0.02em;
-          max-width: 420px;
+          max-width: 640px;
         }
 
         .footer-links {
@@ -54,7 +54,7 @@ export function Footer() {
         }
       `}</style>
 
-      <h2>Let&apos;s build something worth remembering.</h2>
+      <h2>Let&apos;s connect. I promise it&apos;s more fun than a stakeholder meeting.</h2>
       <div className="footer-links">
         <a href="mailto:hello@davidketchumwork.com">hello@davidketchumwork.com</a>
         <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer">

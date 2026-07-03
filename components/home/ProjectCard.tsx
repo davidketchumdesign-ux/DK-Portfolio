@@ -76,7 +76,11 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
           border-radius: var(--radius);
           overflow: hidden;
           box-shadow: var(--card-shadow);
-          transition: border-color 0.4s var(--ease);
+          transition: border-color 0.4s var(--ease), box-shadow 0.4s var(--ease);
+        }
+
+        .card:hover {
+          box-shadow: var(--card-shadow-hover);
         }
 
         :global(.card-link) {

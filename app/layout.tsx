@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { Space_Grotesk, Inter, JetBrains_Mono } from 'next/font/google';
 import { ThemeProvider } from '@/contexts/ThemeContext';
-import { Layout } from '@/components/Layout';
+import { Layout } from '@/components/layout/Layout';
 import '@/styles/globals.css';
 
 const spaceGrotesk = Space_Grotesk({

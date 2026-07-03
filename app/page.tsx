@@ -1,6 +1,6 @@
-import { Hero } from '@/components/Hero';
-import { StatsBar } from '@/components/StatsBar';
-import { ProjectGrid } from '@/components/ProjectGrid';
+import { Hero } from '@/components/home/Hero';
+import { StatsBar } from '@/components/home/StatsBar';
+import { ProjectGrid } from '@/components/home/ProjectGrid';
 import { gridProjects, personalProjects } from '@/content/projects';
 
 export default function Home() {
