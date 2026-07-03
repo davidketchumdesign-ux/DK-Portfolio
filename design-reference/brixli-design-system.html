@@ -1,0 +1,907 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Brixli Design System</title>
+<link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    /* — Core Backgrounds — */
+    --bg-primary:   #1e1e1e;
+    --bg-surface:   #2a2a2a;
+    --bg-elevated:  #333333;
+    --bg-overlay:   #3d3d3d;
+
+    /* — Text — */
+    --text-primary: #fafafa;
+    --text-secondary: #c4c4c4;
+    --text-muted:   #9a9a9a;
+    --text-disabled:#5a5a5a;
+
+    /* — Brand Accents — */
+    --accent-orange: #ec742a;
+    --accent-orange-dim: rgba(236,116,42,0.15);
+    --accent-green:  #aee694;
+    --accent-green-dim: rgba(174,230,148,0.15);
+    --accent-aqua:   #94e6e4;
+    --accent-aqua-dim: rgba(148,230,228,0.15);
+
+    /* — Sport Disciplines — */
+    --sport-swim:   #94e6e4;
+    --sport-bike:   #aee694;
+    --sport-run:    #ec742a;
+    --sport-brick:  linear-gradient(135deg, #ec742a 0%, #94e6e4 100%);
+
+    /* — Utility — */
+    --border:       rgba(255,255,255,0.08);
+    --border-accent:rgba(236,116,42,0.4);
+
+    /* — Font — */
+    --font: 'Comfortaa', sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    font-family: var(--font);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* — Header — */
+  .ds-header {
+    padding: 64px 64px 48px;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .ds-header::before {
+    content: '';
+    position: absolute;
+    top: -80px; right: -80px;
+    width: 400px; height: 400px;
+    background: radial-gradient(circle, rgba(236,116,42,0.12) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .ds-header-eyebrow {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent-orange);
+    margin-bottom: 16px;
+  }
+
+  .ds-header h1 {
+    font-size: 48px;
+    font-weight: 700;
+    line-height: 1.1;
+    margin-bottom: 12px;
+  }
+
+  .ds-header h1 span {
+    background: linear-gradient(135deg, #ec742a, #94e6e4);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .ds-header p {
+    font-size: 15px;
+    color: var(--text-muted);
+    font-weight: 400;
+    max-width: 500px;
+    line-height: 1.7;
+  }
+
+  .ds-version-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    padding: 6px 14px;
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-top: 24px;
+  }
+
+  .ds-version-badge .dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--accent-green);
+  }
+
+  /* — Section Layout — */
+  .ds-section {
+    padding: 64px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .ds-section:last-child { border-bottom: none; }
+
+  .section-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent-orange);
+    margin-bottom: 8px;
+  }
+
+  .section-title {
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+
+  .section-desc {
+    font-size: 14px;
+    color: var(--text-muted);
+    margin-bottom: 48px;
+    line-height: 1.6;
+  }
+
+  /* ————————————————————————————————————————
+     COLOR PALETTE
+  ———————————————————————————————————————— */
+
+  .color-group {
+    margin-bottom: 40px;
+  }
+
+  .color-group-title {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 16px;
+  }
+
+  .color-row {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .color-swatch {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    min-width: 140px;
+  }
+
+  .swatch-block {
+    width: 100%;
+    height: 80px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    cursor: pointer;
+  }
+
+  .swatch-block:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 32px rgba(0,0,0,0.4);
+  }
+
+  .swatch-block .copied-hint {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    color: rgba(255,255,255,0.9);
+    background: rgba(0,0,0,0.35);
+    opacity: 0;
+    transition: opacity 0.2s;
+    font-family: var(--font);
+  }
+
+  .swatch-block:hover .copied-hint { opacity: 1; }
+
+  .swatch-name {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+
+  .swatch-token {
+    font-size: 10px;
+    font-weight: 400;
+    color: var(--text-muted);
+    font-family: 'Courier New', monospace;
+  }
+
+  .swatch-hex {
+    font-size: 11px;
+    color: var(--text-secondary);
+    font-family: 'Courier New', monospace;
+  }
+
+  /* Gradient swatch */
+  .swatch-gradient {
+    background: linear-gradient(135deg, #ec742a 0%, #94e6e4 100%);
+  }
+
+  /* Sport badges inline */
+  .sport-pills {
+    display: flex;
+    gap: 8px;
+    margin-top: 16px;
+    flex-wrap: wrap;
+  }
+
+  .sport-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    border-radius: 100px;
+    font-size: 12px;
+    font-weight: 600;
+    font-family: var(--font);
+  }
+
+  .sport-pill .sport-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+  }
+
+  /* ————————————————————————————————————————
+     TYPOGRAPHY
+  ———————————————————————————————————————— */
+
+  .type-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .type-table thead tr {
+    border-bottom: 1px solid var(--border);
+  }
+
+  .type-table thead th {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    padding: 0 0 14px;
+    text-align: left;
+  }
+
+  .type-table tbody tr {
+    border-bottom: 1px solid var(--border);
+    transition: background 0.15s;
+  }
+
+  .type-table tbody tr:hover {
+    background: var(--bg-surface);
+  }
+
+  .type-table tbody td {
+    padding: 24px 16px 24px 0;
+    vertical-align: middle;
+  }
+
+  .type-table tbody td:first-child {
+    padding-left: 0;
+  }
+
+  .type-style-name {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-muted);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .type-spec {
+    font-size: 11px;
+    color: var(--text-disabled);
+    font-family: 'Courier New', monospace;
+    white-space: nowrap;
+  }
+
+  .type-usage {
+    font-size: 11px;
+    color: var(--text-muted);
+    max-width: 180px;
+    line-height: 1.5;
+  }
+
+  .type-preview-display {
+    font-family: var(--font);
+    font-size: 48px;
+    font-weight: 700;
+    line-height: 1;
+    color: var(--text-primary);
+  }
+
+  .type-preview-h1 {
+    font-family: var(--font);
+    font-size: 32px;
+    font-weight: 700;
+    line-height: 1.1;
+    color: var(--text-primary);
+  }
+
+  .type-preview-h2 {
+    font-family: var(--font);
+    font-size: 24px;
+    font-weight: 600;
+    line-height: 1.2;
+    color: var(--text-primary);
+  }
+
+  .type-preview-h3 {
+    font-family: var(--font);
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 1.3;
+    color: var(--text-primary);
+  }
+
+  .type-preview-body-lg {
+    font-family: var(--font);
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.5;
+    color: var(--text-primary);
+  }
+
+  .type-preview-body {
+    font-family: var(--font);
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.6;
+    color: var(--text-secondary);
+  }
+
+  .type-preview-caption {
+    font-family: var(--font);
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 1.5;
+    color: var(--text-muted);
+  }
+
+  .type-preview-label {
+    font-family: var(--font);
+    font-size: 11px;
+    font-weight: 500;
+    line-height: 1.4;
+    letter-spacing: 0.04em;
+    color: var(--text-muted);
+    text-transform: uppercase;
+  }
+
+  /* — Live type specimen — */
+  .type-specimen-card {
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 40px;
+    margin-top: 48px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .type-specimen-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, #ec742a, #94e6e4);
+  }
+
+  .specimen-eyebrow {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent-orange);
+    margin-bottom: 6px;
+  }
+
+  .specimen-card-inner {
+    display: flex;
+    gap: 48px;
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .specimen-main { flex: 1; min-width: 280px; }
+  .specimen-aside { width: 220px; }
+
+  /* — Font weight showcase — */
+  .weight-row {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 32px 0;
+    border-top: 1px solid var(--border);
+  }
+
+  .weight-item {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+  }
+
+  .weight-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    width: 80px;
+    flex-shrink: 0;
+    font-family: 'Courier New', monospace;
+  }
+
+  .weight-preview {
+    font-family: var(--font);
+    font-size: 22px;
+    color: var(--text-primary);
+  }
+
+  /* — Token reference box — */
+  .token-ref {
+    background: var(--bg-elevated);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+  }
+
+  .token-ref-title {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent-aqua);
+    margin-bottom: 12px;
+  }
+
+  .token-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 11px;
+  }
+
+  .token-item:last-child { border-bottom: none; }
+
+  .token-key {
+    color: var(--text-muted);
+    font-family: 'Courier New', monospace;
+  }
+
+  .token-val {
+    color: var(--text-secondary);
+    font-family: 'Courier New', monospace;
+  }
+
+  /* — Color chip — */
+  .inline-dot {
+    display: inline-block;
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    margin-right: 5px;
+    vertical-align: middle;
+  }
+
+  /* — Spacing — */
+  .mt-8  { margin-top: 8px; }
+  .mt-16 { margin-top: 16px; }
+  .mt-24 { margin-top: 24px; }
+  .mt-32 { margin-top: 32px; }
+
+  /* — Scrollbar — */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg-primary); }
+  ::-webkit-scrollbar-thumb { background: var(--bg-elevated); border-radius: 3px; }
+
+  /* — Animations — */
+  @keyframes fadeSlideUp {
+    from { opacity: 0; transform: translateY(18px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .ds-header, .color-group, .type-table tbody tr, .type-specimen-card {
+    animation: fadeSlideUp 0.5s ease both;
+  }
+
+  .color-group:nth-child(1) { animation-delay: 0.05s; }
+  .color-group:nth-child(2) { animation-delay: 0.10s; }
+  .color-group:nth-child(3) { animation-delay: 0.15s; }
+  .color-group:nth-child(4) { animation-delay: 0.20s; }
+
+  .type-table tbody tr:nth-child(1) { animation-delay: 0.05s; }
+  .type-table tbody tr:nth-child(2) { animation-delay: 0.10s; }
+  .type-table tbody tr:nth-child(3) { animation-delay: 0.15s; }
+  .type-table tbody tr:nth-child(4) { animation-delay: 0.20s; }
+  .type-table tbody tr:nth-child(5) { animation-delay: 0.25s; }
+  .type-table tbody tr:nth-child(6) { animation-delay: 0.30s; }
+  .type-table tbody tr:nth-child(7) { animation-delay: 0.35s; }
+  .type-table tbody tr:nth-child(8) { animation-delay: 0.40s; }
+</style>
+</head>
+<body>
+
+<!-- — HEADER — -->
+<header class="ds-header">
+  <div class="ds-header-eyebrow">Design System · v1.0</div>
+  <h1>Brixli <span>Design Language</span></h1>
+  <p>The single source of truth for color, typography, and components across the Brixli triathlon training platform.</p>
+  <div class="ds-version-badge">
+    <span class="dot"></span>
+    Color Tokens &amp; Typography · Dark Theme · Comfortaa
+  </div>
+</header>
+
+
+<!-- ————————————————————————————————————
+     SECTION 1 — COLOR PALETTE
+———————————————————————————————————— -->
+<section class="ds-section">
+  <div class="section-label">01 — Foundation</div>
+  <div class="section-title">Color Tokens</div>
+  <div class="section-desc">All colors are defined as CSS custom properties (design tokens). Use tokens — never raw hex values — in components.</div>
+
+  <!-- Backgrounds -->
+  <div class="color-group">
+    <div class="color-group-title">Backgrounds</div>
+    <div class="color-row">
+      <div class="color-swatch">
+        <div class="swatch-block" style="background:#1e1e1e;" title="Click to copy" onclick="copyHex('#1e1e1e', this)">
+          <div class="copied-hint">COPY</div>
+        </div>
+        <div class="swatch-name">bg-primary</div>
+        <div class="swatch-token">--bg-primary</div>
+        <div class="swatch-hex">#1e1e1e</div>
+      </div>
+      <div class="color-swatch">
+        <div class="swatch-block" style="background:#2a2a2a; border-color:rgba(255,255,255,0.12);" onclick="copyHex('#2a2a2a', this)">
+          <div class="copied-hint">COPY</div>
+        </div>
+        <div class="swatch-name">bg-surface</div>
+        <div class="swatch-token">--bg-surface</div>
+        <div class="swatch-hex">#2a2a2a</div>
+      </div>
+      <div class="color-swatch">
+        <div class="swatch-block" style="background:#333333; border-color:rgba(255,255,255,0.12);" onclick="copyHex('#333333', this)">
+          <div class="copied-hint">COPY</div>
+        </div>
+        <div class="swatch-name">bg-elevated</div>
+        <div class="swatch-token">--bg-elevated</div>
+        <div class="swatch-hex">#333333</div>
+      </div>
+      <div class="color-swatch">
+        <div class="swatch-block" style="background:#3d3d3d; border-color:rgba(255,255,255,0.12);" onclick="copyHex('#3d3d3d', this)">
+          <div class="copied-hint">COPY</div>
+        </div>
+        <div class="swatch-name">bg-overlay</div>
+        <div class="swatch-token">--bg-overlay</div>
+        <div class="swatch-hex">#3d3d3d</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Text -->
+  <div class="color-group">
+    <div class="color-group-title">Text</div>
+    <div class="color-row">
+      <div class="color-swatch">
+        <div class="swatch-block" style="background:#fafafa;" onclick="copyHex('#fafafa', this)">
+          <div class="copied-hint" style="color:#1e1e1e;">COPY</div>
+        </div>
+        <div class="swatch-name">text-primary</div>
+        <div class="swatch-token">--text-primary</div>
+        <div class="swatch-hex">#fafafa</div>
+      </div>
+      <div class="color-swatch">
+        <div class="swatch-block" style="background:#c4c4c4;" onclick="copyHex('#c4c4c4', this)">
+          <div class="copied-hint" style="color:#1e1e1e;">COPY</div>
+        </div>
+        <div class="swatch-name">text-secondary</div>
+        <div class="swatch-token">--text-secondary</div>
+        <div class="swatch-hex">#c4c4c4</div>
+      </div>
+      <div class="color-swatch">
+        <div class="swatch-block" style="background:#9a9a9a;" onclick="copyHex('#9a9a9a', this)">
+          <div class="copied-hint" style="color:#1e1e1e;">COPY</div>
+        </div>
+        <div class="swatch-name">text-muted</div>
+        <div class="swatch-token">--text-muted</div>
+        <div class="swatch-hex">#9a9a9a</div>
+      </div>
+      <div class="color-swatch">
+        <div class="swatch-block" style="background:#5a5a5a;" onclick="copyHex('#5a5a5a', this)">
+          <div class="copied-hint">COPY</div>
+        </div>
+        <div class="swatch-name">text-disabled</div>
+        <div class="swatch-token">--text-disabled</div>
+        <div class="swatch-hex">#5a5a5a</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Brand Accents -->
+  <div class="color-group">
+    <div class="color-group-title">Brand Accents</div>
+    <div class="color-row">
+      <div class="color-swatch" style="min-width:160px;">
+        <div class="swatch-block" style="background:#ec742a;" onclick="copyHex('#ec742a', this)">
+          <div class="copied-hint">COPY</div>
+        </div>
+        <div class="swatch-name">accent-orange ★</div>
+        <div class="swatch-token">--accent-orange</div>
+        <div class="swatch-hex">#ec742a · Primary CTA</div>
+      </div>
+      <div class="color-swatch">
+        <div class="swatch-block" style="background:rgba(236,116,42,0.15); border-color:rgba(236,116,42,0.3);" onclick="copyHex('rgba(236,116,42,0.15)', this)">
+          <div class="copied-hint">COPY</div>
+        </div>
+        <div class="swatch-name">accent-orange-dim</div>
+        <div class="swatch-token">--accent-orange-dim</div>
+        <div class="swatch-hex">15% opacity</div>
+      </div>
+      <div class="color-swatch">
+        <div class="swatch-block" style="background:#aee694;" onclick="copyHex('#aee694', this)">
+          <div class="copied-hint" style="color:#1e1e1e;">COPY</div>
+        </div>
+        <div class="swatch-name">accent-green</div>
+        <div class="swatch-token">--accent-green</div>
+        <div class="swatch-hex">#aee694</div>
+      </div>
+      <div class="color-swatch">
+        <div class="swatch-block" style="background:#94e6e4;" onclick="copyHex('#94e6e4', this)">
+          <div class="copied-hint" style="color:#1e1e1e;">COPY</div>
+        </div>
+        <div class="swatch-name">accent-aqua</div>
+        <div class="swatch-token">--accent-aqua</div>
+        <div class="swatch-hex">#94e6e4</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sport Disciplines -->
+  <div class="color-group">
+    <div class="color-group-title">Sport Disciplines</div>
+    <div class="color-row">
+      <div class="color-swatch">
+        <div class="swatch-block" style="background:#94e6e4;" onclick="copyHex('#94e6e4', this)">
+          <div class="copied-hint" style="color:#1e1e1e;">COPY</div>
+        </div>
+        <div class="swatch-name">sport-swim</div>
+        <div class="swatch-token">--sport-swim</div>
+        <div class="swatch-hex">#94e6e4 · Aqua</div>
+      </div>
+      <div class="color-swatch">
+        <div class="swatch-block" style="background:#aee694;" onclick="copyHex('#aee694', this)">
+          <div class="copied-hint" style="color:#1e1e1e;">COPY</div>
+        </div>
+        <div class="swatch-name">sport-bike</div>
+        <div class="swatch-token">--sport-bike</div>
+        <div class="swatch-hex">#aee694 · Mint</div>
+      </div>
+      <div class="color-swatch">
+        <div class="swatch-block" style="background:#ec742a;" onclick="copyHex('#ec742a', this)">
+          <div class="copied-hint">COPY</div>
+        </div>
+        <div class="swatch-name">sport-run</div>
+        <div class="swatch-token">--sport-run</div>
+        <div class="swatch-hex">#ec742a · Orange</div>
+      </div>
+      <div class="color-swatch" style="min-width:160px;">
+        <div class="swatch-block swatch-gradient" onclick="copyHex('linear-gradient(135deg,#ec742a,#94e6e4)', this)">
+          <div class="copied-hint">COPY</div>
+        </div>
+        <div class="swatch-name">sport-brick</div>
+        <div class="swatch-token">--sport-brick</div>
+        <div class="swatch-hex">Run → Swim gradient</div>
+      </div>
+    </div>
+
+    <div class="sport-pills mt-24">
+      <span class="sport-pill" style="background:rgba(148,230,228,0.15); color:#94e6e4;">
+        <span class="sport-dot" style="background:#94e6e4;"></span>Swim
+      </span>
+      <span class="sport-pill" style="background:rgba(174,230,148,0.15); color:#aee694;">
+        <span class="sport-dot" style="background:#aee694;"></span>Bike
+      </span>
+      <span class="sport-pill" style="background:rgba(236,116,42,0.15); color:#ec742a;">
+        <span class="sport-dot" style="background:#ec742a;"></span>Run
+      </span>
+      <span class="sport-pill" style="background:linear-gradient(135deg, rgba(236,116,42,0.15), rgba(148,230,228,0.15)); color:#fafafa; border:1px solid rgba(255,255,255,0.08);">
+        <span class="sport-dot" style="background:linear-gradient(135deg,#ec742a,#94e6e4);"></span>Brick
+      </span>
+    </div>
+  </div>
+</section>
+
+
+<!-- ————————————————————————————————————
+     SECTION 2 — TYPOGRAPHY
+———————————————————————————————————— -->
+<section class="ds-section">
+  <div class="section-label">02 — Typography</div>
+  <div class="section-title">Type Scale</div>
+  <div class="section-desc">All type uses <strong style="color:var(--text-primary)">Comfortaa</strong> — rounded, approachable, but strong. The full scale runs from 11px labels up to 48px display headings.</div>
+
+  <table class="type-table">
+    <thead>
+      <tr>
+        <th style="width:110px;">Style</th>
+        <th style="width:200px;">Preview</th>
+        <th style="width:180px;">Spec</th>
+        <th>Usage</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><div class="type-style-name">Display</div></td>
+        <td><div class="type-preview-display">brixli</div></td>
+        <td><div class="type-spec">48px / 700<br>lh 1.0</div></td>
+        <td><div class="type-usage">Hero headers, onboarding, splash screens</div></td>
+      </tr>
+      <tr>
+        <td><div class="type-style-name">H1</div></td>
+        <td><div class="type-preview-h1">Today's Workout</div></td>
+        <td><div class="type-spec">32px / 700<br>lh 1.1</div></td>
+        <td><div class="type-usage">Screen titles, primary section headings</div></td>
+      </tr>
+      <tr>
+        <td><div class="type-style-name">H2</div></td>
+        <td><div class="type-preview-h2">Training Plan</div></td>
+        <td><div class="type-spec">24px / 600<br>lh 1.2</div></td>
+        <td><div class="type-usage">Section headers, card group titles</div></td>
+      </tr>
+      <tr>
+        <td><div class="type-style-name">H3</div></td>
+        <td><div class="type-preview-h3">Week Overview</div></td>
+        <td><div class="type-spec">20px / 600<br>lh 1.3</div></td>
+        <td><div class="type-usage">Card titles, sub-section labels</div></td>
+      </tr>
+      <tr>
+        <td><div class="type-style-name">Body Large</div></td>
+        <td><div class="type-preview-body-lg">3 mile tempo run · Zone 3</div></td>
+        <td><div class="type-spec">16px / 400<br>lh 1.5</div></td>
+        <td><div class="type-usage">Primary content, workout descriptions</div></td>
+      </tr>
+      <tr>
+        <td><div class="type-style-name">Body</div></td>
+        <td><div class="type-preview-body">Auto-sync from Apple Watch &amp; Garmin</div></td>
+        <td><div class="type-spec">14px / 400<br>lh 1.6</div></td>
+        <td><div class="type-usage">Default body copy, list items, feed text</div></td>
+      </tr>
+      <tr>
+        <td><div class="type-style-name">Caption</div></td>
+        <td><div class="type-preview-caption">Last synced 3 minutes ago · 142 bpm avg</div></td>
+        <td><div class="type-spec">12px / 400<br>lh 1.5</div></td>
+        <td><div class="type-usage">Timestamps, metadata, helper text</div></td>
+      </tr>
+      <tr>
+        <td><div class="type-style-name">Label</div></td>
+        <td><div class="type-preview-label">Home &nbsp;·&nbsp; Plan &nbsp;·&nbsp; Groups</div></td>
+        <td><div class="type-spec">11px / 500<br>ls +0.04em</div></td>
+        <td><div class="type-usage">Tab bar labels, tags, overlines</div></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Font weight showcase -->
+  <div class="weight-row mt-32">
+    <div style="font-size:10px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:var(--text-muted);margin-bottom:8px;">Comfortaa — Weight Variants</div>
+    <div class="weight-item">
+      <span class="weight-label">300 Light</span>
+      <span class="weight-preview" style="font-weight:300;">Train. Track. Tri.</span>
+    </div>
+    <div class="weight-item">
+      <span class="weight-label">400 Regular</span>
+      <span class="weight-preview" style="font-weight:400;">Train. Track. Tri.</span>
+    </div>
+    <div class="weight-item">
+      <span class="weight-label">500 Medium</span>
+      <span class="weight-preview" style="font-weight:500;">Train. Track. Tri.</span>
+    </div>
+    <div class="weight-item">
+      <span class="weight-label">600 SemiBold</span>
+      <span class="weight-preview" style="font-weight:600;">Train. Track. Tri.</span>
+    </div>
+    <div class="weight-item">
+      <span class="weight-label">700 Bold</span>
+      <span class="weight-preview" style="font-weight:700;">Train. Track. Tri.</span>
+    </div>
+  </div>
+
+  <!-- Live specimen card -->
+  <div class="type-specimen-card">
+    <div class="specimen-eyebrow">Live Specimen · Home Screen</div>
+    <div class="specimen-card-inner">
+      <div class="specimen-main">
+        <div style="font-family:var(--font);font-size:11px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--accent-orange);margin-bottom:6px;">Wednesday · Today</div>
+        <div style="font-family:var(--font);font-size:28px;font-weight:700;color:var(--text-primary);margin-bottom:4px;">Tempo Run</div>
+        <div style="font-family:var(--font);font-size:15px;font-weight:400;color:var(--text-secondary);margin-bottom:20px;">3 miles · Zone 3 · ~28 min</div>
+
+        <div style="display:flex;gap:24px;margin-bottom:20px;">
+          <div>
+            <div style="font-family:var(--font);font-size:24px;font-weight:700;color:var(--accent-orange);">8:32</div>
+            <div style="font-family:var(--font);font-size:11px;font-weight:500;letter-spacing:0.06em;text-transform:uppercase;color:var(--text-muted);">Pace / mi</div>
+          </div>
+          <div>
+            <div style="font-family:var(--font);font-size:24px;font-weight:700;color:var(--text-primary);">142</div>
+            <div style="font-family:var(--font);font-size:11px;font-weight:500;letter-spacing:0.06em;text-transform:uppercase;color:var(--text-muted);">HR avg</div>
+          </div>
+          <div>
+            <div style="font-family:var(--font);font-size:24px;font-weight:700;color:var(--text-primary);">3.0</div>
+            <div style="font-family:var(--font);font-size:11px;font-weight:500;letter-spacing:0.06em;text-transform:uppercase;color:var(--text-muted);">Miles</div>
+          </div>
+        </div>
+
+        <div style="font-family:var(--font);font-size:12px;color:var(--text-muted);">Synced from Apple Watch · 4 min ago</div>
+      </div>
+
+      <div class="specimen-aside">
+        <div class="token-ref">
+          <div class="token-ref-title">Tokens Used</div>
+          <div class="token-item">
+            <span class="token-key">overline</span>
+            <span class="token-val">Label · orange</span>
+          </div>
+          <div class="token-item">
+            <span class="token-key">title</span>
+            <span class="token-val">H2 · primary</span>
+          </div>
+          <div class="token-item">
+            <span class="token-key">subtitle</span>
+            <span class="token-val">Body Lg · secondary</span>
+          </div>
+          <div class="token-item">
+            <span class="token-key">stat value</span>
+            <span class="token-val">H2 · accent / primary</span>
+          </div>
+          <div class="token-item">
+            <span class="token-key">stat label</span>
+            <span class="token-val">Label · muted</span>
+          </div>
+          <div class="token-item">
+            <span class="token-key">helper</span>
+            <span class="token-val">Caption · muted</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+function copyHex(val, el) {
+  navigator.clipboard.writeText(val).catch(() => {});
+  const hint = el.querySelector('.copied-hint');
+  const orig = hint.textContent;
+  hint.textContent = '✓ COPIED';
+  setTimeout(() => { hint.textContent = orig; }, 1200);
+}
+</script>
+</body>
+</html>

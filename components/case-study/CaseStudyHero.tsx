@@ -1,6 +1,12 @@
 'use client';
 
-export function CaseStudyHero({ subtitle, description }: { subtitle: string; description: string }) {
+interface CaseStudyHeroProps {
+  eyebrow: string;
+  subtitle: string;
+  description: string;
+}
+
+export function CaseStudyHero({ eyebrow, subtitle, description }: CaseStudyHeroProps) {
   return (
     <section className="cs-hero">
       <style jsx>{`
@@ -56,7 +62,7 @@ export function CaseStudyHero({ subtitle, description }: { subtitle: string; des
         }
       `}</style>
 
-      <div className="eyebrow">E-Commerce · Case Study</div>
+      <div className="eyebrow">{eyebrow}</div>
       <h1>{subtitle}</h1>
       <p className="cs-hero-sub">{description}</p>
     </section>

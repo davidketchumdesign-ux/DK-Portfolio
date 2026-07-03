@@ -1,0 +1,94 @@
+{
+  "slug": "brixli",
+  "title": "Brixli",
+  "industry": "Personal",
+  "category": "personal",
+  "tags": ["Product Design", "AI-Native Workflow"],
+  "summary": "An all-in-one triathlon training app, designed and prototyped end-to-end with Claude — no Figma required.",
+  "coverImage": "/images/projects/brixli/screen-home.png",
+  "hero": {
+    "subtitle": "Designing and prototyping a triathlon training app entirely through conversation with Claude.",
+    "description": "Brixli is an all-in-one training hub for triathletes — swim, bike, and run plans, Apple Watch sync, and a race-day community — built to replace the four different apps I was juggling while training for my own Ironman 70.3. I designed, systemized, and prototyped the entire product end-to-end by working directly with Claude: a token-based design system, a full Figma-ready component spec, and a tap-through interactive prototype, generated as real, running code instead of static frames."
+  },
+  "meta": {
+    "role": "Solo Designer & Builder",
+    "timeline": "3 weeks, nights and weekends",
+    "platform": "iOS (React Native, planned)",
+    "tools": "Claude"
+  },
+  "prototypeUrl": "/prototypes/brixli/index.html",
+  "phases": [
+    {
+      "number": 1,
+      "title": "Define",
+      "description": "Brixli started from a personal problem, not a client brief. Training for an Ironman 70.3 meant juggling Strava for tracking, TrainingPeaks for the plan, a separate group chat for my tri club, and a spreadsheet for race-day logistics — four tools for one sport.\n\nI scoped Brixli around five core jobs: a Home screen that surfaces today's workout and weekly progress at a glance, a Plan calendar for the full training block, Groups for club and race-day community, a Community tab for cross-club challenges and leaderboards, and a Profile for season stats and connected devices.",
+      "hmw": "How might we give a triathlete one home for training, tracking, and community instead of four disconnected apps?"
+    },
+    {
+      "number": 2,
+      "title": "Design Tokens, Prompted Not Painted",
+      "description": "Instead of opening Figma first, I built the design language directly with Claude as a living, interactive reference — not a static file. Background, text, and brand-accent colors as CSS custom properties; a full Comfortaa type scale from 11px labels up to 48px display headings; and a color system where each discipline gets its own identity — aqua for swim, mint-green for bike, orange for run, and a run-to-swim gradient reserved specifically for brick workouts.\n\nBuilding the system in code from the start meant every token was already implementation-ready. There was no translation step between 'the design system' and 'the design system the app actually uses' — they were the same artifact.",
+      "gallery": [
+        {
+          "label": "Color Tokens",
+          "image": "/images/projects/brixli/design-tokens.png"
+        },
+        {
+          "label": "Type Scale",
+          "image": "/images/projects/brixli/type-scale.png"
+        }
+      ]
+    },
+    {
+      "number": 3,
+      "title": "Reversing the Handoff",
+      "description": "Most design-to-dev handoff flows one direction: Figma file to spec to code. I inverted it. Once the components existed in code, I had Claude reverse-document them into a full Figma-ready component spec — exact padding, corner radius, spacing scale, and color values pulled directly from the working implementation, not eyeballed from a screenshot.\n\nEvery button, card, and nav element shipped with its own spec sheet: pixel-exact padding, border-radius scale, and state definitions for pressed, active, and selected — the kind of documentation a design system usually takes a dedicated systems designer weeks to produce by hand.",
+      "gallery": [
+        {
+          "label": "Buttons & Badges",
+          "image": "/images/projects/brixli/component-buttons.png"
+        },
+        {
+          "label": "Cards",
+          "image": "/images/projects/brixli/component-cards.png"
+        },
+        {
+          "label": "Navigation",
+          "image": "/images/projects/brixli/component-nav.png"
+        }
+      ]
+    },
+    {
+      "number": 4,
+      "title": "Prototype the Full Experience",
+      "description": "Rather than static frames, I built a fully clickable, tap-through prototype running in an iPhone frame — the same one embedded live at the top of this page. Onboarding slides, five-tab navigation, bottom sheets for workout detail and Apple Watch import, an animated weekly progress ring, and a simulated 'import from Apple Watch' flow with real selectable states.\n\nEvery interaction that would normally need a Figma prototype's chained click-targets — opening a sheet, selecting an import, seeing a success state — is real HTML, CSS, and JavaScript. It doesn't simulate the product experience; it is the product experience, just not yet wired to a backend.",
+      "chips": ["Interactive Prototype", "Micro-interactions", "Real Data States"]
+    },
+    {
+      "number": 5,
+      "title": "What This Proves",
+      "description": "UX is shifting from pixel-pushing in Figma to directing AI-generated, production-grade code — and designers who can do both will define the next wave of product work. Brixli was my proof of concept for that shift: could I run an entire design process — tokens, systemization, component spec, interactive prototype — through conversation with Claude, and end up with something more rigorous than a Figma file, not less?\n\nThe answer shipped as this page. The design system is real CSS. The component spec was generated from the implementation, not the other way around. And the prototype above isn't a video or a click-through mockup — it's the actual app shell, live, in your browser.",
+      "chips": ["AI-Native Workflow", "Design-to-Code Speed", "Adaptability"]
+    }
+  ],
+  "outcomes": [
+    {
+      "number": "5",
+      "label": "Core App Screens Built"
+    },
+    {
+      "number": "3",
+      "label": "Sport Disciplines Themed"
+    },
+    {
+      "number": "100%",
+      "label": "Interactive, Not Static"
+    },
+    {
+      "number": "0",
+      "label": "Figma Files Opened"
+    }
+  ],
+  "nextSlug": "shopify",
+  "nextTitle": "Shopify Design System & IA Redesign"
+}

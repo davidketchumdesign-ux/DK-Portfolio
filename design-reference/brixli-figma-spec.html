@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Brixli — Figma Component Spec</title>
+<link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#1a1a1a; --surface:#242424; --elevated:#2e2e2e; --overlay:#383838;
+  --border:rgba(255,255,255,0.07); --border2:rgba(255,255,255,0.14);
+  --orange:#ec742a; --orange-d:rgba(236,116,42,0.15);
+  --green:#aee694; --green-d:rgba(174,230,148,0.13);
+  --aqua:#94e6e4; --aqua-d:rgba(148,230,228,0.13);
+  --t1:#fafafa; --t2:#b8b8b8; --t3:#787878; --t4:#444444;
+  --font:'Comfortaa',sans-serif; --mono:'JetBrains Mono',monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:#111;color:var(--t1);font-family:var(--font);padding:48px;}
+
+/* PAGE LAYOUT */
+.page-header{max-width:1200px;margin:0 auto 56px;border-bottom:1px solid var(--border);padding-bottom:40px;}
+.page-title{font-size:42px;font-weight:700;margin-bottom:8px;}
+.page-title span{color:var(--orange);}
+.page-sub{font-size:15px;color:var(--t3);line-height:1.7;max-width:600px;margin-bottom:24px;}
+.meta-pills{display:flex;gap:10px;flex-wrap:wrap;}
+.meta-pill{display:inline-flex;align-items:center;gap:6px;background:var(--surface);border:1px solid var(--border2);border-radius:100px;padding:6px 14px;font-size:12px;color:var(--t2);}
+.meta-pill strong{color:var(--orange);}
+
+.spec-grid{max-width:1200px;margin:0 auto;display:flex;flex-direction:column;gap:80px;}
+
+/* SECTION */
+.spec-section{}
+.section-header{display:flex;align-items:baseline;gap:16px;margin-bottom:32px;padding-bottom:16px;border-bottom:1px solid var(--border);}
+.section-num{font-size:11px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:var(--orange);}
+.section-title{font-size:24px;font-weight:700;color:var(--t1);}
+.section-desc{font-size:13px;color:var(--t3);margin-left:auto;}
+
+/* COMPONENT GRID */
+.comp-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:24px;}
+.comp-grid.wide{grid-template-columns:1fr 1fr;}
+.comp-grid.solo{grid-template-columns:1fr;}
+
+/* COMPONENT CARD */
+.comp-card{background:var(--surface);border:1px solid var(--border);border-radius:20px;overflow:hidden;}
+.comp-preview{background:var(--bg);padding:32px 24px;display:flex;align-items:center;justify-content:center;min-height:120px;position:relative;}
+.comp-preview.tall{min-height:200px;align-items:flex-start;padding-top:24px;}
+.comp-preview.dark{background:#0f0f0f;}
+.comp-specs{padding:20px 24px;border-top:1px solid var(--border);}
+.comp-name{font-size:14px;font-weight:700;color:var(--t1);margin-bottom:4px;}
+.comp-desc{font-size:12px;color:var(--t3);margin-bottom:16px;line-height:1.6;}
+.spec-table{width:100%;border-collapse:collapse;}
+.spec-table tr{border-bottom:1px solid var(--border);}
+.spec-table tr:last-child{border-bottom:none;}
+.spec-table td{padding:6px 0;font-size:11px;vertical-align:top;}
+.spec-table td:first-child{color:var(--t3);width:45%;font-family:var(--mono);}
+.spec-table td:last-child{color:var(--t2);font-family:var(--mono);font-weight:600;}
+.spec-table td span.val{color:var(--t1);}
+.spec-table td span.orange{color:var(--orange);}
+.spec-table td span.aqua{color:var(--aqua);}
+.spec-table td span.green{color:var(--green);}
+
+/* COLOR SWATCH INLINE */
+.csw{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:4px;vertical-align:middle;}
+
+/* — ACTUAL COMPONENTS — */
+
+/* BUTTONS */
+.btn-primary{background:var(--orange);color:white;border-radius:14px;padding:14px 24px;font-size:15px;font-weight:700;font-family:var(--font);border:none;cursor:default;display:inline-block;}
+.btn-secondary{background:transparent;color:var(--t2);border-radius:14px;padding:14px 24px;font-size:15px;font-weight:600;font-family:var(--font);border:1px solid var(--border2);display:inline-block;}
+.btn-ghost{background:transparent;color:var(--orange);border-radius:14px;padding:14px 24px;font-size:15px;font-weight:600;font-family:var(--font);border:none;display:inline-block;}
+.btn-icon{width:56px;height:56px;border-radius:28px;background:var(--orange);display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(236,116,42,0.4);}
+.btn-icon svg{width:24px;height:24px;fill:none;stroke:white;stroke-width:2.5;stroke-linecap:round;}
+.btn-sm{background:var(--orange);color:white;border-radius:10px;padding:10px 18px;font-size:13px;font-weight:700;font-family:var(--font);border:none;display:inline-block;}
+
+/* CARDS */
+.workout-card{background:linear-gradient(145deg,#271e16,#1e1a16);border:1px solid rgba(236,116,42,0.22);border-radius:18px;padding:22px;position:relative;overflow:hidden;width:100%;}
+.workout-card::before{content:'';position:absolute;top:-40px;right:-40px;width:200px;height:200px;background:radial-gradient(circle,rgba(236,116,42,0.16),transparent 65%);}
+.workout-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#ec742a,transparent);}
+.wc-pill{background:var(--orange-d);color:var(--orange);padding:4px 10px;border-radius:100px;font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;display:inline-block;margin-bottom:12px;}
+.wc-title{font-size:22px;font-weight:700;color:var(--t1);margin-bottom:4px;}
+.wc-sub{font-size:13px;color:var(--t2);margin-bottom:18px;}
+.wc-metrics{display:flex;gap:0;}
+.wc-m{flex:1;border-right:1px solid rgba(255,255,255,0.06);padding-right:12px;margin-right:12px;}
+.wc-m:last-child{border:none;padding:0;margin:0;}
+.wc-mv{font-size:19px;font-weight:700;color:var(--t1);}
+.wc-mv span{font-size:11px;font-weight:400;color:var(--t3);}
+.wc-ml{font-size:9px;font-weight:500;text-transform:uppercase;letter-spacing:0.08em;color:var(--t3);margin-top:2px;}
+
+.surface-card{background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:20px;width:100%;}
+.stat-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;}
+.stat-box{background:var(--elevated);border-radius:12px;padding:14px;text-align:center;}
+.stat-val{font-size:20px;font-weight:700;color:var(--t1);}
+.stat-lbl{font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:var(--t3);margin-top:3px;}
+
+/* PROGRESS RING */
+.ring-demo{position:relative;width:88px;height:88px;}
+.ring-demo svg{transform:rotate(-90deg);}
+
+/* WEEK STRIP */
+.week-strip-demo{display:flex;gap:7px;width:100%;}
+.wd{flex:1;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:9px 4px;text-align:center;}
+.wd.active{border-color:var(--orange);background:var(--orange-d);}
+.wd-n{font-size:8px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--t3);}
+.wd.active .wd-n{color:var(--orange);}
+.wd-d{font-size:14px;font-weight:700;color:var(--t1);margin-top:3px;}
+.wd-dot{width:5px;height:5px;border-radius:50%;margin:4px auto 0;}
+
+/* FEED ITEM */
+.feed-demo{background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:14px 18px;display:flex;align-items:center;gap:13px;width:100%;}
+.feed-av{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:var(--bg);flex-shrink:0;}
+
+/* PILLS & BADGES */
+.pill-demo{display:inline-flex;align-items:center;gap:5px;padding:5px 12px;border-radius:100px;font-size:11px;font-weight:600;}
+.dot-sm{width:6px;height:6px;border-radius:50%;display:inline-block;}
+
+/* PLAN ROW */
+.plan-row{background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:15px 18px;display:flex;align-items:center;gap:14px;width:100%;}
+.plan-bar{width:4px;border-radius:2px;align-self:stretch;flex-shrink:0;}
+.plan-badge{font-size:10px;font-weight:700;padding:5px 11px;border-radius:100px;white-space:nowrap;}
+
+/* CALENDAR DAY */
+.cal-demo{display:flex;gap:5px;}
+.cal-d{width:36px;height:36px;border-radius:9px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:12px;font-weight:600;color:var(--t2);gap:2px;}
+.cal-d.today{background:var(--orange);color:white;}
+.cal-d.has{color:var(--t1);}
+.cal-cdot{width:5px;height:5px;border-radius:50%;}
+
+/* NAV BAR */
+.nav-demo{background:var(--surface);border-top:1px solid var(--border);border-radius:18px;display:flex;padding:10px 0 6px;}
+.nav-t{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;padding:4px 0;}
+.nav-icon-d{width:22px;height:22px;}
+.nav-icon-d svg{width:22px;height:22px;fill:none;stroke:var(--t3);stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
+.nav-t.active .nav-icon-d svg{stroke:var(--orange);}
+.nav-lbl{font-size:10px;font-weight:500;color:var(--t3);}
+.nav-t.active .nav-lbl{color:var(--orange);}
+
+/* SHEET HANDLE */
+.sheet-demo{background:var(--surface);border-radius:24px 24px 0 0;padding:20px 24px;width:100%;}
+.sh-handle-d{width:36px;height:4px;background:var(--t4);border-radius:2px;margin:0 auto 20px;}
+
+/* INTERVAL ROW */
+.iv-demo{padding:13px 0;display:flex;align-items:center;gap:14px;border-bottom:1px solid var(--border);}
+.iv-demo:last-child{border-bottom:none;}
+.iv-num{width:28px;height:28px;border-radius:50%;background:var(--orange-d);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--orange);flex-shrink:0;}
+
+/* IMPORT ITEM */
+.iw-demo{background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:16px 18px;display:flex;align-items:center;gap:14px;width:100%;}
+.iw-demo.sel{border-color:var(--orange);background:var(--orange-d);}
+.iw-sport{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;}
+.iw-ck{width:22px;height:22px;border-radius:50%;border:2px solid var(--t4);display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0;}
+.iw-ck.checked{background:var(--orange);border-color:var(--orange);color:white;}
+
+/* LOGO */
+.logo-row-d{display:flex;align-items:center;gap:10px;}
+.logo-wm{font-size:20px;font-weight:700;color:var(--t1);letter-spacing:-0.02em;}
+
+/* NOTIF BADGE */
+.notif-btn-d{width:36px;height:36px;background:var(--surface);border:1px solid var(--border);border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative;}
+.notif-dot-d{position:absolute;top:6px;right:6px;width:8px;height:8px;border-radius:50%;background:var(--orange);border:2px solid var(--bg);}
+
+/* RACE COUNTDOWN */
+.race-hero-d{background:linear-gradient(145deg,#121e1e,#182020);border:1px solid rgba(148,230,228,0.18);border-radius:18px;padding:22px;position:relative;overflow:hidden;width:100%;}
+.race-hero-d::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--aqua),transparent);}
+
+/* PROGRESS BAR */
+.prog-wrap-d{height:6px;background:var(--elevated);border-radius:3px;overflow:hidden;}
+.prog-fill-d{height:100%;border-radius:3px;}
+
+/* LEADERBOARD */
+.lb-row-d{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:13px 16px;display:flex;align-items:center;gap:12px;width:100%;}
+.lb-row-d.gold{border-color:rgba(255,200,60,0.28);background:rgba(255,200,60,0.04);}
+.lb-row-d.you{border-color:rgba(236,116,42,0.25);background:var(--orange-d);}
+.lb-av-d{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:var(--bg);}
+
+/* PROFILE CARD */
+.profile-d{background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:24px;position:relative;overflow:hidden;width:100%;}
+.profile-d::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--orange),var(--aqua));}
+.ph-av-d{width:66px;height:66px;border-radius:50%;background:linear-gradient(135deg,var(--orange),#f0a060);display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700;color:white;flex-shrink:0;}
+.ph-stats-d{display:flex;margin-top:20px;}
+.ph-stat-d{flex:1;text-align:center;border-right:1px solid var(--border);padding:0 8px;}
+.ph-stat-d:last-child{border-right:none;}
+
+/* TYPOGRAPHY SCALE */
+.type-row{padding:16px 0;border-bottom:1px solid var(--border);display:flex;align-items:baseline;gap:24px;}
+.type-row:last-child{border-bottom:none;}
+.type-label{font-size:10px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--t3);width:100px;flex-shrink:0;font-family:var(--mono);}
+.type-spec{font-size:10px;color:var(--t4);font-family:var(--mono);width:160px;flex-shrink:0;line-height:1.6;}
+
+/* SPACING SCALE */
+.spacing-row{display:flex;align-items:center;gap:20px;padding:10px 0;border-bottom:1px solid var(--border);}
+.spacing-row:last-child{border-bottom:none;}
+.spacing-bar{background:var(--orange-d);border:1px solid var(--orange-b);height:24px;border-radius:4px;flex-shrink:0;}
+.spacing-label{font-size:11px;font-family:var(--mono);color:var(--t2);width:60px;}
+.spacing-use{font-size:11px;color:var(--t3);}
+
+/* CORNER RADIUS */
+.radius-row{display:flex;gap:20px;flex-wrap:wrap;align-items:flex-end;}
+.radius-box{display:flex;flex-direction:column;align-items:center;gap:8px;}
+.radius-demo{background:var(--elevated);border:1px solid var(--border2);}
+.radius-label{font-size:10px;font-family:var(--mono);color:var(--t3);text-align:center;}
+
+/* ANNOTATION */
+.annotation{display:inline-block;background:var(--orange);color:white;font-size:9px;font-weight:700;padding:2px 7px;border-radius:4px;font-family:var(--mono);letter-spacing:0.05em;white-space:nowrap;}
+.redline{position:absolute;background:rgba(236,116,42,0.25);border:1px dashed rgba(236,116,42,0.5);}
+.measure{display:flex;align-items:center;gap:6px;font-size:10px;color:var(--orange);font-family:var(--mono);}
+.measure::before,.measure::after{content:'';flex:1;height:1px;background:var(--orange);}
+
+/* FIGMA TIPS BOX */
+.tip-box{background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--orange);border-radius:0 12px 12px 0;padding:16px 20px;margin-top:20px;}
+.tip-label{font-size:10px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--orange);margin-bottom:6px;}
+.tip-text{font-size:12px;color:var(--t2);line-height:1.65;}
+.tip-text code{font-family:var(--mono);background:var(--elevated);padding:2px 6px;border-radius:4px;font-size:11px;color:var(--aqua);}
+</style>
+</head>
+<body>
+
+<!-- PAGE HEADER -->
+<div class="page-header">
+  <div class="page-title">Brixli <span>Component Spec</span></div>
+  <div class="page-sub">Complete reference for building Brixli components in Figma. Every measurement, color, spacing value, and corner radius you need — organized by component type.</div>
+  <div class="meta-pills">
+    <div class="meta-pill">Frame: <strong>390 × 844</strong> (iPhone 14/15)</div>
+    <div class="meta-pill">Font: <strong>Comfortaa</strong></div>
+    <div class="meta-pill">Theme: <strong>Dark</strong></div>
+    <div class="meta-pill">Base grid: <strong>8px</strong></div>
+    <div class="meta-pill">Screen padding: <strong>24px</strong></div>
+  </div>
+</div>
+
+<div class="spec-grid">
+
+<!-- — 01 FOUNDATIONS — -->
+<div class="spec-section">
+  <div class="section-header">
+    <span class="section-num">01</span>
+    <span class="section-title">Color Tokens</span>
+    <span class="section-desc">Set these as Figma Variables first — everything references them</span>
+  </div>
+  <div class="comp-grid">
+
+    <!-- Backgrounds -->
+    <div class="comp-card">
+      <div class="comp-preview" style="gap:12px;flex-wrap:wrap;justify-content:flex-start;">
+        <div style="display:flex;flex-direction:column;gap:6px;">
+          <div style="width:56px;height:56px;border-radius:12px;background:#1a1a1a;border:1px solid rgba(255,255,255,0.1);"></div>
+          <div style="font-size:9px;color:var(--t3);font-family:var(--mono);">bg-primary</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:6px;">
+          <div style="width:56px;height:56px;border-radius:12px;background:#242424;border:1px solid rgba(255,255,255,0.1);"></div>
+          <div style="font-size:9px;color:var(--t3);font-family:var(--mono);">bg-surface</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:6px;">
+          <div style="width:56px;height:56px;border-radius:12px;background:#2e2e2e;border:1px solid rgba(255,255,255,0.1);"></div>
+          <div style="font-size:9px;color:var(--t3);font-family:var(--mono);">bg-elevated</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:6px;">
+          <div style="width:56px;height:56px;border-radius:12px;background:#383838;border:1px solid rgba(255,255,255,0.1);"></div>
+          <div style="font-size:9px;color:var(--t3);font-family:var(--mono);">bg-overlay</div>
+        </div>
+      </div>
+      <div class="comp-specs">
+        <div class="comp-name">Background Scale</div>
+        <div class="comp-desc">4 levels of depth — use to create visual hierarchy between screens, cards, and inputs</div>
+        <table class="spec-table">
+          <tr><td>bg-primary</td><td><span class="csw" style="background:#1a1a1a;border:1px solid #333;"></span><span class="val">#1A1A1A</span> — App background</td></tr>
+          <tr><td>bg-surface</td><td><span class="csw" style="background:#242424;"></span><span class="val">#242424</span> — Cards, sheets</td></tr>
+          <tr><td>bg-elevated</td><td><span class="csw" style="background:#2e2e2e;"></span><span class="val">#2E2E2E</span> — Stat boxes, inputs</td></tr>
+          <tr><td>bg-overlay</td><td><span class="csw" style="background:#383838;"></span><span class="val">#383838</span> — Hover states</td></tr>
+          <tr><td>border</td><td><span class="val">rgba(255,255,255, 0.07)</span></td></tr>
+          <tr><td>border-strong</td><td><span class="val">rgba(255,255,255, 0.14)</span></td></tr>
+        </table>
+      </div>
+    </div>
+
+    <!-- Brand + Sport Colors -->
+    <div class="comp-card">
+      <div class="comp-preview" style="gap:12px;flex-wrap:wrap;justify-content:flex-start;">
+        <div style="display:flex;flex-direction:column;gap:6px;">
+          <div style="width:56px;height:56px;border-radius:12px;background:#ec742a;"></div>
+          <div style="font-size:9px;color:var(--t3);font-family:var(--mono);">orange</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:6px;">
+          <div style="width:56px;height:56px;border-radius:12px;background:#aee694;"></div>
+          <div style="font-size:9px;color:var(--t3);font-family:var(--mono);">green</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:6px;">
+          <div style="width:56px;height:56px;border-radius:12px;background:#94e6e4;"></div>
+          <div style="font-size:9px;color:var(--t3);font-family:var(--mono);">aqua</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:6px;">
+          <div style="width:56px;height:56px;border-radius:12px;background:linear-gradient(135deg,#ec742a,#94e6e4);"></div>
+          <div style="font-size:9px;color:var(--t3);font-family:var(--mono);">brick</div>
+        </div>
+      </div>
+      <div class="comp-specs">
+        <div class="comp-name">Brand & Sport Colors</div>
+        <div class="comp-desc">Each discipline has its own color. Brick is always the Run→Swim gradient.</div>
+        <table class="spec-table">
+          <tr><td>accent-orange</td><td><span class="csw" style="background:#ec742a;"></span><span class="orange">#EC742A</span> — CTAs, active, Run</td></tr>
+          <tr><td>accent-green</td><td><span class="csw" style="background:#aee694;"></span><span class="green">#AEE694</span> — Bike</td></tr>
+          <tr><td>accent-aqua</td><td><span class="csw" style="background:#94e6e4;"></span><span class="aqua">#94E6E4</span> — Swim</td></tr>
+          <tr><td>sport-brick</td><td>gradient: <span class="orange">#EC742A</span> → <span class="aqua">#94E6E4</span></td></tr>
+          <tr><td>orange-dim</td><td>rgba(236,116,42, <span class="val">0.15</span>)</td></tr>
+          <tr><td>green-dim</td><td>rgba(174,230,148, <span class="val">0.13</span>)</td></tr>
+          <tr><td>aqua-dim</td><td>rgba(148,230,228, <span class="val">0.13</span>)</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <!-- Text Colors -->
+    <div class="comp-card">
+      <div class="comp-preview" style="flex-direction:column;gap:10px;align-items:flex-start;">
+        <div style="font-size:18px;font-weight:700;color:#fafafa;">Primary text</div>
+        <div style="font-size:16px;font-weight:400;color:#b8b8b8;">Secondary text</div>
+        <div style="font-size:14px;font-weight:400;color:#787878;">Muted / label text</div>
+        <div style="font-size:12px;font-weight:400;color:#444444;">Disabled text</div>
+      </div>
+      <div class="comp-specs">
+        <div class="comp-name">Text Colors</div>
+        <div class="comp-desc">4 levels — use primary for headings, secondary for body, muted for labels and captions</div>
+        <table class="spec-table">
+          <tr><td>text-primary</td><td><span class="csw" style="background:#fafafa;"></span><span class="val">#FAFAFA</span></td></tr>
+          <tr><td>text-secondary</td><td><span class="csw" style="background:#b8b8b8;"></span><span class="val">#B8B8B8</span></td></tr>
+          <tr><td>text-muted</td><td><span class="csw" style="background:#787878;"></span><span class="val">#787878</span></td></tr>
+          <tr><td>text-disabled</td><td><span class="csw" style="background:#444444;"></span><span class="val">#444444</span></td></tr>
+        </table>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- — 02 TYPOGRAPHY — -->
+<div class="spec-section">
+  <div class="section-header">
+    <span class="section-num">02</span>
+    <span class="section-title">Typography Scale</span>
+    <span class="section-desc">All Comfortaa — set as Figma Text Styles</span>
+  </div>
+  <div class="comp-grid solo">
+    <div class="comp-card">
+      <div class="comp-preview tall" style="flex-direction:column;align-items:flex-start;gap:0;padding:24px;">
+        <div class="type-row"><span class="type-label">Display</span><div style="font-size:48px;font-weight:700;color:var(--t1);line-height:1;">brixli</div><span class="type-spec">48px / Bold 700<br>LH: 1.0 · LS: -0.02em</span></div>
+        <div class="type-row"><span class="type-label">H1</span><div style="font-size:32px;font-weight:700;color:var(--t1);line-height:1.1;">Today's Workout</div><span class="type-spec">32px / Bold 700<br>LH: 1.1</span></div>
+        <div class="type-row"><span class="type-label">H2</span><div style="font-size:26px;font-weight:700;color:var(--t1);line-height:1.15;">Plan</div><span class="type-spec">26px / Bold 700<br>LH: 1.15</span></div>
+        <div class="type-row"><span class="type-label">H3</span><div style="font-size:22px;font-weight:700;color:var(--t1);line-height:1.2;">Tempo Run</div><span class="type-spec">22px / Bold 700<br>LH: 1.2</span></div>
+        <div class="type-row"><span class="type-label">Body Large</span><div style="font-size:16px;font-weight:400;color:var(--t1);line-height:1.5;">3 miles · Zone 3 · ~28 min</div><span class="type-spec">16px / Regular 400<br>LH: 1.5</span></div>
+        <div class="type-row"><span class="type-label">Body</span><div style="font-size:14px;font-weight:400;color:var(--t2);line-height:1.6;">Auto-sync from Apple Watch</div><span class="type-spec">14px / Regular 400<br>LH: 1.6</span></div>
+        <div class="type-row"><span class="type-label">Small</span><div style="font-size:13px;font-weight:400;color:var(--t2);line-height:1.6;">Imported from Apple Watch →</div><span class="type-spec">13px / Regular 400<br>LH: 1.6</span></div>
+        <div class="type-row"><span class="type-label">Caption</span><div style="font-size:12px;font-weight:400;color:var(--t3);line-height:1.5;">Last synced 4 min ago · 142 bpm avg</div><span class="type-spec">12px / Regular 400<br>LH: 1.5</span></div>
+        <div class="type-row"><span class="type-label">Label</span><div style="font-size:11px;font-weight:600;color:var(--t3);line-height:1.4;letter-spacing:0.04em;">UPCOMING</div><span class="type-spec">11px / SemiBold 600<br>LS: +0.04em · UPPERCASE</span></div>
+        <div class="type-row"><span class="type-label">Overline</span><div style="font-size:10px;font-weight:700;color:var(--orange);line-height:1.4;letter-spacing:0.16em;">THIS WEEK</div><span class="type-spec">10px / Bold 700<br>LS: +0.16em · UPPERCASE</span></div>
+      </div>
+      <div class="comp-specs">
+        <div class="comp-name">Comfortaa — Full Type Scale</div>
+        <div class="comp-desc">In Figma: Create each row as a Text Style. Name them exactly as shown in the left column.</div>
+        <div class="tip-box">
+          <div class="tip-label">💡 Figma Tip</div>
+          <div class="tip-text">Create a Text Styles page. Select text → right panel → Style → "+" to save. Name format: <code>Brixli/Display</code>, <code>Brixli/H1</code>, <code>Brixli/Body</code> etc. Install Comfortaa from Google Fonts plugin first.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- — 03 SPACING & RADIUS — -->
+<div class="spec-section">
+  <div class="section-header">
+    <span class="section-num">03</span>
+    <span class="section-title">Spacing & Corner Radius</span>
+    <span class="section-desc">All spacing is based on an 8px grid</span>
+  </div>
+  <div class="comp-grid">
+    <div class="comp-card">
+      <div class="comp-preview tall" style="flex-direction:column;align-items:flex-start;padding:24px;">
+        <div class="spacing-row"><div class="spacing-bar" style="width:4px;"></div><div class="spacing-label">4px</div><div class="spacing-use">Icon gaps, dot sizes</div></div>
+        <div class="spacing-row"><div class="spacing-bar" style="width:8px;"></div><div class="spacing-label">8px</div><div class="spacing-use">Tight gaps, pill padding-y</div></div>
+        <div class="spacing-row"><div class="spacing-bar" style="width:12px;"></div><div class="spacing-label">12px</div><div class="spacing-use">Inner card gaps</div></div>
+        <div class="spacing-row"><div class="spacing-bar" style="width:14px;"></div><div class="spacing-label">14px</div><div class="spacing-use">Card padding-y, metric gaps</div></div>
+        <div class="spacing-row"><div class="spacing-bar" style="width:16px;"></div><div class="spacing-label">16px</div><div class="spacing-use">Card padding, section spacing</div></div>
+        <div class="spacing-row"><div class="spacing-bar" style="width:20px;"></div><div class="spacing-label">20px</div><div class="spacing-use">Ring card padding</div></div>
+        <div class="spacing-row"><div class="spacing-bar" style="width:22px;"></div><div class="spacing-label">22px</div><div class="spacing-use">Today card, hero card padding</div></div>
+        <div class="spacing-row"><div class="spacing-bar" style="width:24px;"></div><div class="spacing-label">24px</div><div class="spacing-use">Screen horizontal padding (all screens)</div></div>
+        <div class="spacing-row"><div class="spacing-bar" style="width:32px;"></div><div class="spacing-label">32px</div><div class="spacing-use">Section label top spacing</div></div>
+        <div class="spacing-row"><div class="spacing-bar" style="width:48px;"></div><div class="spacing-label">48px</div><div class="spacing-use">Large section gaps</div></div>
+      </div>
+      <div class="comp-specs">
+        <div class="comp-name">Spacing Scale</div>
+        <div class="comp-desc">Use Auto Layout in Figma with these exact gap and padding values</div>
+        <div class="tip-box">
+          <div class="tip-label">💡 Figma Tip</div>
+          <div class="tip-text">Set up Spacing Variables: <code>space/4</code>, <code>space/8</code>, <code>space/12</code> etc. Apply via Auto Layout gap + padding fields.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="comp-card">
+      <div class="comp-preview tall" style="flex-direction:column;align-items:flex-start;padding:24px;gap:20px;">
+        <div class="radius-row">
+          <div class="radius-box"><div class="radius-demo" style="width:40px;height:40px;border-radius:4px;"></div><div class="radius-label">4px<br>Tags</div></div>
+          <div class="radius-box"><div class="radius-demo" style="width:48px;height:48px;border-radius:8px;"></div><div class="radius-label">8px<br>Badges</div></div>
+          <div class="radius-box"><div class="radius-demo" style="width:56px;height:56px;border-radius:12px;"></div><div class="radius-label">12px<br>Sport icons<br>Cal days</div></div>
+          <div class="radius-box"><div class="radius-demo" style="width:64px;height:64px;border-radius:14px;"></div><div class="radius-label">14px<br>Buttons</div></div>
+          <div class="radius-box"><div class="radius-demo" style="width:72px;height:72px;border-radius:18px;"></div><div class="radius-label">18px<br>Cards</div></div>
+          <div class="radius-box"><div class="radius-demo" style="width:72px;height:72px;border-radius:28px;"></div><div class="radius-label">28px<br>Sheet top</div></div>
+          <div class="radius-box"><div class="radius-demo" style="width:60px;height:60px;border-radius:50%;"></div><div class="radius-label">50%<br>Avatars<br>FAB</div></div>
+        </div>
+      </div>
+      <div class="comp-specs">
+        <div class="comp-name">Corner Radius Scale</div>
+        <div class="comp-desc">Consistent rounding makes the UI feel cohesive. Never mix radii within the same component type.</div>
+        <table class="spec-table">
+          <tr><td>r-xs (4px)</td><td>Annotation tags, tiny chips</td></tr>
+          <tr><td>r-badge (8px)</td><td>Status badges, calendar days, nav arrows</td></tr>
+          <tr><td>r-icon (12px)</td><td>Sport icons, group icons, notif icons</td></tr>
+          <tr><td>r-btn (14px)</td><td>All buttons (primary, secondary, ghost)</td></tr>
+          <tr><td>r-card (18px)</td><td>All cards, plan rows, feed items, sheets inner content</td></tr>
+          <tr><td>r-sheet (28px)</td><td>Bottom sheet top corners only</td></tr>
+          <tr><td>r-phone (52px)</td><td>Phone shell</td></tr>
+          <tr><td>r-circle (50%)</td><td>Avatars, FAB, notification button, progress ring</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- — 04 BUTTONS — -->
+<div class="spec-section">
+  <div class="section-header">
+    <span class="section-num">04</span>
+    <span class="section-title">Buttons</span>
+    <span class="section-desc">4 variants — Primary is always orange</span>
+  </div>
+  <div class="comp-grid">
+
+    <div class="comp-card">
+      <div class="comp-preview"><div class="btn-primary" style="width:280px;text-align:center;">Start Workout →</div></div>
+      <div class="comp-specs">
+        <div class="comp-name">Button / Primary</div>
+        <div class="comp-desc">Main CTA. Always full width inside cards and sheets.</div>
+        <table class="spec-table">
+          <tr><td>width</td><td><span class="val">Full width (fill container)</span></td></tr>
+          <tr><td>height</td><td><span class="val">52px</span></td></tr>
+          <tr><td>padding</td><td><span class="val">14px</span> top/bottom · <span class="val">24px</span> left/right</td></tr>
+          <tr><td>background</td><td><span class="orange">#EC742A</span></td></tr>
+          <tr><td>text</td><td><span class="val">#FFFFFF</span> · 15px · Bold 700</td></tr>
+          <tr><td>border-radius</td><td><span class="val">14px</span></td></tr>
+          <tr><td>border</td><td>None</td></tr>
+          <tr><td>pressed state</td><td>opacity <span class="val">0.8</span></td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="comp-card">
+      <div class="comp-preview"><div class="btn-secondary" style="width:280px;text-align:center;">Save for Later</div></div>
+      <div class="comp-specs">
+        <div class="comp-name">Button / Secondary</div>
+        <div class="comp-desc">Always paired below a Primary button as the alternative action.</div>
+        <table class="spec-table">
+          <tr><td>width</td><td><span class="val">Full width</span></td></tr>
+          <tr><td>height</td><td><span class="val">52px</span></td></tr>
+          <tr><td>padding</td><td><span class="val">14px</span> top/bottom · <span class="val">24px</span> left/right</td></tr>
+          <tr><td>background</td><td>Transparent</td></tr>
+          <tr><td>border</td><td>1px · rgba(255,255,255, <span class="val">0.14</span>)</td></tr>
+          <tr><td>text</td><td><span class="val">#B8B8B8</span> · 15px · SemiBold 600</td></tr>
+          <tr><td>border-radius</td><td><span class="val">14px</span></td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="comp-card">
+      <div class="comp-preview"><div class="btn-icon"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div></div>
+      <div class="comp-specs">
+        <div class="comp-name">Button / FAB (Floating Action)</div>
+        <div class="comp-desc">Fixed position above nav bar. Opens the import / log workout sheet.</div>
+        <table class="spec-table">
+          <tr><td>size</td><td><span class="val">56 × 56px</span></td></tr>
+          <tr><td>border-radius</td><td><span class="val">50%</span> (circle)</td></tr>
+          <tr><td>background</td><td><span class="orange">#EC742A</span></td></tr>
+          <tr><td>shadow</td><td>0 4px 20px rgba(236,116,42, <span class="val">0.4</span>)</td></tr>
+          <tr><td>icon</td><td>Plus sign · 24px · white · stroke 2.5</td></tr>
+          <tr><td>position</td><td>Fixed · bottom <span class="val">94px</span> · right <span class="val">24px</span></td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="comp-card">
+      <div class="comp-preview" style="gap:10px;">
+        <span class="pill-demo" style="background:var(--orange-d);color:var(--orange);">🏃 Run</span>
+        <span class="pill-demo" style="background:var(--aqua-d);color:var(--aqua);">🏊 Swimmer</span>
+        <span class="pill-demo" style="background:var(--green-d);color:var(--green);">Done ✓</span>
+        <span class="pill-demo" style="background:var(--elevated);color:var(--t3);">Upcoming</span>
+      </div>
+      <div class="comp-specs">
+        <div class="comp-name">Pills / Badges</div>
+        <div class="comp-desc">Inline status indicators. Color matches the sport or state.</div>
+        <table class="spec-table">
+          <tr><td>padding</td><td><span class="val">4–5px</span> y · <span class="val">10–12px</span> x</td></tr>
+          <tr><td>border-radius</td><td><span class="val">100px</span> (pill shape)</td></tr>
+          <tr><td>font</td><td>11px · Bold 700 (status) or SemiBold 600</td></tr>
+          <tr><td>sport-run</td><td>bg <span class="orange">orange-dim</span> · text <span class="orange">orange</span></td></tr>
+          <tr><td>sport-swim</td><td>bg <span class="aqua">aqua-dim</span> · text <span class="aqua">aqua</span></td></tr>
+          <tr><td>sport-bike</td><td>bg <span class="green">green-dim</span> · text <span class="green">green</span></td></tr>
+          <tr><td>status-done</td><td>bg green-dim · text green</td></tr>
+          <tr><td>status-upcoming</td><td>bg elevated · text muted</td></tr>
+        </table>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- — 05 CARDS — -->
+<div class="spec-section">
+  <div class="section-header">
+    <span class="section-num">05</span>
+    <span class="section-title">Cards</span>
+    <span class="section-desc">Horizontal screen padding always 24px · Cards span full width between margins</span>
+  </div>
+  <div class="comp-grid wide">
+
+    <!-- Today Workout Card -->
+    <div class="comp-card">
+      <div class="comp-preview tall dark" style="padding:20px;">
+        <div class="workout-card">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;">
+            <span class="wc-pill">🏃 Run</span>
+            <span style="width:6px;height:6px;border-radius:50%;background:var(--green);box-shadow:0 0 6px var(--green);"></span>
+            <span style="font-size:11px;color:var(--green);font-weight:600;">Watch Ready</span>
+          </div>
+          <div class="wc-title">Tempo Run</div>
+          <div class="wc-sub">3 miles · Zone 3 · ~28 min</div>
+          <div class="wc-metrics">
+            <div class="wc-m"><div class="wc-mv">8:32<span>/mi</span></div><div class="wc-ml">Pace</div></div>
+            <div class="wc-m"><div class="wc-mv">155<span>bpm</span></div><div class="wc-ml">HR</div></div>
+            <div class="wc-m"><div class="wc-mv">28<span>min</span></div><div class="wc-ml">Time</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="comp-specs">
+        <div class="comp-name">Card / Today Workout</div>
+        <div class="comp-desc">Hero card on Home screen. Background has a radial orange glow and bottom accent line.</div>
+        <table class="spec-table">
+          <tr><td>width</td><td>Full width − <span class="val">48px</span> (24px each side)</td></tr>
+          <tr><td>padding</td><td><span class="val">22px</span> all sides</td></tr>
+          <tr><td>background</td><td>gradient: <span class="val">#271E16</span> → <span class="val">#1E1A16</span></td></tr>
+          <tr><td>border</td><td>1px · rgba(236,116,42, <span class="val">0.22</span>)</td></tr>
+          <tr><td>border-radius</td><td><span class="val">18px</span></td></tr>
+          <tr><td>glow effect</td><td>Radial gradient overlay top-right · 200×200px · orange 16% opacity</td></tr>
+          <tr><td>bottom accent</td><td>3px line · gradient orange → transparent</td></tr>
+          <tr><td>pill</td><td>bg orange-dim · text orange · 10px Bold · UPPERCASE · LS +0.1em</td></tr>
+          <tr><td>title</td><td>24px · Bold 700 · text-primary</td></tr>
+          <tr><td>subtitle</td><td>13px · Regular · text-secondary</td></tr>
+          <tr><td>metric value</td><td>21px · Bold 700 · text-primary</td></tr>
+          <tr><td>metric unit</td><td>12px · Regular · text-muted (inline span)</td></tr>
+          <tr><td>metric label</td><td>10px · Medium 500 · UPPERCASE · LS +0.08em · muted</td></tr>
+          <tr><td>metric divider</td><td>1px · rgba(255,255,255, <span class="val">0.06</span>)</td></tr>
+          <tr><td>metric spacing</td><td>14px gap between metrics</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <!-- Progress Ring Card -->
+    <div class="comp-card">
+      <div class="comp-preview tall dark" style="padding:20px;">
+        <div class="surface-card">
+          <div style="display:flex;align-items:center;gap:20px;">
+            <div class="ring-demo">
+              <svg viewBox="0 0 88 88" width="88" height="88" style="transform:rotate(-90deg);">
+                <defs><linearGradient id="rg2"><stop offset="0%" stop-color="#ec742a"/><stop offset="100%" stop-color="#f0a060"/></linearGradient></defs>
+                <circle fill="none" stroke="#2e2e2e" stroke-width="8" cx="44" cy="44" r="36"/>
+                <circle fill="none" stroke="url(#rg2)" stroke-width="8" stroke-linecap="round" cx="44" cy="44" r="36" stroke-dasharray="226" stroke-dashoffset="68"/>
+                <text x="44" y="40" text-anchor="middle" dominant-baseline="middle" style="fill:#fafafa;font-size:16px;font-weight:700;font-family:'Comfortaa',sans-serif;transform:rotate(90deg);transform-origin:44px 44px;">70%</text>
+                <text x="44" y="54" text-anchor="middle" dominant-baseline="middle" style="fill:#787878;font-size:8px;font-weight:600;font-family:'Comfortaa',sans-serif;letter-spacing:0.1em;transform:rotate(90deg);transform-origin:44px 44px;">WEEK</text>
+              </svg>
+            </div>
+            <div style="flex:1;">
+              <div style="font-size:16px;font-weight:700;color:var(--t1);margin-bottom:3px;">Week 3 of 16</div>
+              <div style="font-size:12px;color:var(--t3);margin-bottom:14px;">Ironman 70.3 Build · 4 of 6 done</div>
+              <div style="display:flex;gap:16px;">
+                <div><div style="font-size:17px;font-weight:700;color:var(--aqua);">4.2<small style="font-size:10px;color:var(--t3);">mi</small></div><div style="font-size:9px;color:var(--t3);text-transform:uppercase;letter-spacing:0.08em;">Swim</div></div>
+                <div><div style="font-size:17px;font-weight:700;color:var(--green);">62<small style="font-size:10px;color:var(--t3);">mi</small></div><div style="font-size:9px;color:var(--t3);text-transform:uppercase;letter-spacing:0.08em;">Bike</div></div>
+                <div><div style="font-size:17px;font-weight:700;color:var(--orange);">18<small style="font-size:10px;color:var(--t3);">mi</small></div><div style="font-size:9px;color:var(--t3);text-transform:uppercase;letter-spacing:0.08em;">Run</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="comp-specs">
+        <div class="comp-name">Card / Weekly Progress Ring</div>
+        <div class="comp-desc">Tappable card on Home. Ring uses SVG with counter-rotated text for perfect centering.</div>
+        <table class="spec-table">
+          <tr><td>card padding</td><td><span class="val">20px</span> all sides</td></tr>
+          <tr><td>background</td><td>bg-surface · border 1px border-color</td></tr>
+          <tr><td>ring size</td><td><span class="val">88 × 88px</span></td></tr>
+          <tr><td>ring radius</td><td><span class="val">36px</span> (SVG circle r=36)</td></tr>
+          <tr><td>ring track</td><td>stroke bg-elevated · stroke-width <span class="val">8px</span></td></tr>
+          <tr><td>ring fill</td><td>gradient orange → #F0A060 · stroke-width <span class="val">8px</span> · round cap</td></tr>
+          <tr><td>ring 70%</td><td>stroke-dasharray <span class="val">226</span> · stroke-dashoffset <span class="val">68</span></td></tr>
+          <tr><td>pct text</td><td>16px · Bold · centered via SVG text</td></tr>
+          <tr><td>week text</td><td>8px · Bold · UPPERCASE · LS +0.1em · muted</td></tr>
+          <tr><td>gap (ring→info)</td><td><span class="val">20px</span></td></tr>
+          <tr><td>title</td><td>16px · Bold 700</td></tr>
+          <tr><td>subtitle</td><td>12px · Regular · muted · LH 1.5</td></tr>
+          <tr><td>stat value</td><td>18px · Bold · discipline color</td></tr>
+          <tr><td>stat gap</td><td><span class="val">18px</span></td></tr>
+        </table>
+      </div>
+    </div>
+
+    <!-- Plan Row -->
+    <div class="comp-card">
+      <div class="comp-preview tall dark" style="flex-direction:column;gap:8px;padding:20px;">
+        <div class="plan-row">
+          <div class="plan-bar" style="background:var(--aqua);height:48px;"></div>
+          <div class="pw-info"><div style="font-size:15px;font-weight:600;color:var(--t1);margin-bottom:3px;">Open Water Swim</div><div style="font-size:12px;color:var(--t3);">Mon · 60 min · 2,000m · Zone 2</div></div>
+          <span class="plan-badge" style="background:var(--aqua-d);color:var(--aqua);">Done ✓</span>
+        </div>
+        <div class="plan-row">
+          <div class="plan-bar" style="background:var(--orange);height:48px;"></div>
+          <div class="pw-info"><div style="font-size:15px;font-weight:600;color:var(--t1);margin-bottom:3px;">Tempo Run</div><div style="font-size:12px;color:var(--t3);">Wed · 28 min · 3 miles · Zone 3</div></div>
+          <span class="plan-badge" style="background:var(--orange-d);color:var(--orange);">Today →</span>
+        </div>
+        <div class="plan-row">
+          <div class="plan-bar" style="background:var(--elevated);height:48px;"></div>
+          <div class="pw-info"><div style="font-size:15px;font-weight:600;color:var(--t1);margin-bottom:3px;">Rest Day</div><div style="font-size:12px;color:var(--t3);">Fri · Active recovery</div></div>
+          <span class="plan-badge" style="background:var(--elevated);color:var(--t3);">Upcoming</span>
+        </div>
+      </div>
+      <div class="comp-specs">
+        <div class="comp-name">Card / Plan Workout Row</div>
+        <div class="comp-desc">Used in Plan screen list. Left bar color = sport discipline color.</div>
+        <table class="spec-table">
+          <tr><td>height</td><td><span class="val">~64px</span> (auto with padding)</td></tr>
+          <tr><td>padding</td><td><span class="val">15px</span> y · <span class="val">18px</span> x</td></tr>
+          <tr><td>border-radius</td><td><span class="val">18px</span></td></tr>
+          <tr><td>left bar width</td><td><span class="val">4px</span> · border-radius <span class="val">2px</span> · full height</td></tr>
+          <tr><td>title</td><td>15px · SemiBold 600 · text-primary</td></tr>
+          <tr><td>meta</td><td>12px · Regular · text-muted</td></tr>
+          <tr><td>gap (bar→info)</td><td><span class="val">14px</span></td></tr>
+        </table>
+      </div>
+    </div>
+
+    <!-- Feed Item -->
+    <div class="comp-card">
+      <div class="comp-preview tall dark" style="flex-direction:column;gap:8px;padding:20px;">
+        <div class="feed-demo">
+          <div class="feed-av" style="background:var(--aqua);">SK</div>
+          <div style="flex:1;min-width:0;"><div style="font-size:13px;font-weight:600;color:var(--t1);margin-bottom:2px;">Sarah K.</div><div style="font-size:12px;color:var(--t3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Just crushed a 40mi brick! 🔥🚴</div></div>
+          <span style="font-size:11px;color:var(--t3);">2m</span>
+        </div>
+        <div class="feed-demo">
+          <div class="feed-av" style="background:var(--orange);">AT</div>
+          <div style="flex:1;min-width:0;"><div style="font-size:13px;font-weight:600;color:var(--t1);margin-bottom:2px;">Alex T.</div><div style="font-size:12px;color:var(--t3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Week 3 done. 70.3 in 47 days 💪</div></div>
+          <span style="font-size:11px;color:var(--t3);">1h</span>
+        </div>
+      </div>
+      <div class="comp-specs">
+        <div class="comp-name">Card / Community Feed Item</div>
+        <div class="comp-desc">Community preview on Home screen. Text truncates with ellipsis.</div>
+        <table class="spec-table">
+          <tr><td>padding</td><td><span class="val">14px</span> y · <span class="val">18px</span> x</td></tr>
+          <tr><td>border-radius</td><td><span class="val">18px</span></td></tr>
+          <tr><td>avatar size</td><td><span class="val">40 × 40px</span> · 50% radius</td></tr>
+          <tr><td>avatar font</td><td>14px · Bold 700 · bg-primary text</td></tr>
+          <tr><td>name</td><td>13px · SemiBold 600 · text-primary</td></tr>
+          <tr><td>preview text</td><td>12px · Regular · text-muted · truncate</td></tr>
+          <tr><td>timestamp</td><td>11px · Regular · text-muted · right-aligned</td></tr>
+          <tr><td>gap (av→content)</td><td><span class="val">13px</span></td></tr>
+        </table>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- — 06 NAVIGATION — -->
+<div class="spec-section">
+  <div class="section-header">
+    <span class="section-num">06</span>
+    <span class="section-title">Navigation</span>
+    <span class="section-desc">Status bar + top header + bottom tab bar</span>
+  </div>
+  <div class="comp-grid wide">
+
+    <div class="comp-card">
+      <div class="comp-preview tall dark" style="flex-direction:column;gap:0;padding:0;justify-content:flex-end;">
+        <div class="nav-demo" style="border-radius:0;width:100%;">
+          <div class="nav-t active" id="tab-home">
+            <div class="nav-icon-d"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
+            <div class="nav-lbl">Home</div>
+          </div>
+          <div class="nav-t">
+            <div class="nav-icon-d"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
+            <div class="nav-lbl">Plan</div>
+          </div>
+          <div class="nav-t">
+            <div class="nav-icon-d"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg></div>
+            <div class="nav-lbl">Groups</div>
+          </div>
+          <div class="nav-t">
+            <div class="nav-icon-d"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg></div>
+            <div class="nav-lbl">Community</div>
+          </div>
+          <div class="nav-t">
+            <div class="nav-icon-d"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+            <div class="nav-lbl">You</div>
+          </div>
+        </div>
+      </div>
+      <div class="comp-specs">
+        <div class="comp-name">Navigation / Bottom Tab Bar</div>
+        <div class="comp-desc">5 tabs. Active tab = orange icon + orange label. Inactive = muted grey.</div>
+        <table class="spec-table">
+          <tr><td>height</td><td><span class="val">82px</span></td></tr>
+          <tr><td>background</td><td>bg-surface</td></tr>
+          <tr><td>top border</td><td>1px · border-color</td></tr>
+          <tr><td>padding-top</td><td><span class="val">10px</span></td></tr>
+          <tr><td>tab width</td><td>Equal flex (1/5 each)</td></tr>
+          <tr><td>icon size</td><td><span class="val">22 × 22px</span> · stroke 2px · round cap/join</td></tr>
+          <tr><td>icon active</td><td>stroke <span class="orange">orange</span></td></tr>
+          <tr><td>icon inactive</td><td>stroke text-muted</td></tr>
+          <tr><td>label size</td><td>10px · Medium 500</td></tr>
+          <tr><td>label active</td><td><span class="orange">orange</span></td></tr>
+          <tr><td>label inactive</td><td>text-muted</td></tr>
+          <tr><td>icon→label gap</td><td><span class="val">4px</span></td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="comp-card">
+      <div class="comp-preview dark" style="flex-direction:column;gap:12px;padding:20px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;width:100%;">
+          <div class="logo-row-d">
+            <svg width="30" height="30" viewBox="0 0 100 100" fill="none"><rect width="100" height="100" rx="22" fill="#ec742a"/><circle cx="50" cy="22" r="10" fill="white"/><rect x="22" y="36" width="56" height="13" rx="6.5" fill="white"/><rect x="22" y="54" width="56" height="13" rx="6.5" fill="white"/><rect x="22" y="72" width="56" height="13" rx="6.5" fill="white"/></svg>
+            <span class="logo-wm">brixli</span>
+          </div>
+          <div style="display:flex;gap:10px;align-items:center;">
+            <div class="notif-btn-d"><span style="font-size:16px;">🔔</span><div class="notif-dot-d"></div></div>
+            <div style="width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,#ec742a,#f0a060);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:white;">DJ</div>
+          </div>
+        </div>
+      </div>
+      <div class="comp-specs">
+        <div class="comp-name">Navigation / Top App Bar</div>
+        <div class="comp-desc">Logo + wordmark on left. Notification bell + avatar on right. Consistent across all screens.</div>
+        <table class="spec-table">
+          <tr><td>height</td><td><span class="val">54px</span> (including status bar)</td></tr>
+          <tr><td>padding</td><td><span class="val">10px</span> top · <span class="val">24px</span> horizontal</td></tr>
+          <tr><td>logo size</td><td><span class="val">30 × 30px</span></td></tr>
+          <tr><td>logo→wordmark gap</td><td><span class="val">10px</span></td></tr>
+          <tr><td>wordmark</td><td>20px · Bold 700 · LS -0.02em</td></tr>
+          <tr><td>notif button</td><td><span class="val">36 × 36px</span> · circle · bg-surface</td></tr>
+          <tr><td>notif dot</td><td><span class="val">8px</span> circle · orange · border 2px bg-primary</td></tr>
+          <tr><td>avatar</td><td><span class="val">38 × 38px</span> · circle · gradient orange</td></tr>
+          <tr><td>avatar font</td><td>13px · Bold</td></tr>
+        </table>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- — 07 WEEK STRIP — -->
+<div class="spec-section">
+  <div class="section-header">
+    <span class="section-num">07</span>
+    <span class="section-title">Week Strip & Calendar</span>
+    <span class="section-desc">Week overview strip on Home · Full calendar on Plan</span>
+  </div>
+  <div class="comp-grid wide">
+    <div class="comp-card">
+      <div class="comp-preview dark" style="padding:20px;">
+        <div class="week-strip-demo">
+          <div class="wd"><div class="wd-n">Mon</div><div class="wd-d">17</div><div class="wd-dot" style="background:var(--aqua);"></div></div>
+          <div class="wd"><div class="wd-n">Tue</div><div class="wd-d">18</div><div class="wd-dot" style="background:var(--green);"></div></div>
+          <div class="wd active"><div class="wd-n">Wed</div><div class="wd-d">19</div><div class="wd-dot" style="background:var(--orange);"></div></div>
+          <div class="wd"><div class="wd-n">Thu</div><div class="wd-d">20</div><div class="wd-dot" style="background:var(--aqua);opacity:0.35;"></div></div>
+          <div class="wd"><div class="wd-n">Fri</div><div class="wd-d">21</div><div class="wd-dot" style="background:var(--t4);"></div></div>
+          <div class="wd"><div class="wd-n">Sat</div><div class="wd-d">22</div><div class="wd-dot" style="background:var(--green);opacity:0.35;"></div></div>
+          <div class="wd"><div class="wd-n">Sun</div><div class="wd-d">23</div><div class="wd-dot" style="background:linear-gradient(135deg,var(--orange),var(--aqua));opacity:0.35;"></div></div>
+        </div>
+      </div>
+      <div class="comp-specs">
+        <div class="comp-name">Week Strip</div>
+        <div class="comp-desc">7 day tiles. Today = orange border + orange-dim fill. Completed days have full opacity dots. Future days 35% opacity.</div>
+        <table class="spec-table">
+          <tr><td>tile padding</td><td><span class="val">9px</span> y · <span class="val">4px</span> x</td></tr>
+          <tr><td>tile border-radius</td><td><span class="val">12px</span></td></tr>
+          <tr><td>tile gap</td><td><span class="val">7px</span></td></tr>
+          <tr><td>day name</td><td>9px · Bold 700 · UPPERCASE · LS +0.06em · muted</td></tr>
+          <tr><td>day number</td><td>15px · Bold 700 · text-primary</td></tr>
+          <tr><td>discipline dot</td><td><span class="val">5 × 5px</span> · 50% radius · centered · mt 4px</td></tr>
+          <tr><td>today border</td><td>1px <span class="orange">orange</span></td></tr>
+          <tr><td>today fill</td><td>orange-dim</td></tr>
+          <tr><td>today day name</td><td>color <span class="orange">orange</span></td></tr>
+          <tr><td>future dot opacity</td><td><span class="val">0.35</span></td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="comp-card">
+      <div class="comp-preview dark" style="padding:16px;">
+        <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:4px;width:100%;">
+          <div style="font-size:8px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--t3);text-align:center;padding-bottom:6px;">S</div>
+          <div style="font-size:8px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--t3);text-align:center;padding-bottom:6px;">M</div>
+          <div style="font-size:8px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--t3);text-align:center;padding-bottom:6px;">T</div>
+          <div style="font-size:8px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--t3);text-align:center;padding-bottom:6px;">W</div>
+          <div style="font-size:8px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--t3);text-align:center;padding-bottom:6px;">T</div>
+          <div style="font-size:8px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--t3);text-align:center;padding-bottom:6px;">F</div>
+          <div style="font-size:8px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--t3);text-align:center;padding-bottom:6px;">S</div>
+          <div class="cal-d" style="opacity:0;"></div><div class="cal-d" style="opacity:0;"></div><div class="cal-d" style="opacity:0;"></div><div class="cal-d" style="opacity:0;"></div><div class="cal-d" style="opacity:0;"></div><div class="cal-d" style="opacity:0;"></div>
+          <div class="cal-d has">1<div class="cal-cdot" style="background:var(--green);"></div></div>
+          <div class="cal-d has">2<div class="cal-cdot" style="background:var(--aqua);"></div></div>
+          <div class="cal-d has">3<div class="cal-cdot" style="background:var(--orange);"></div></div>
+          <div class="cal-d has">4<div class="cal-cdot" style="background:var(--green);"></div></div>
+          <div class="cal-d has">5<div class="cal-cdot" style="background:var(--aqua);"></div></div>
+          <div class="cal-d">6</div>
+          <div class="cal-d has">7<div class="cal-cdot" style="background:var(--green);"></div></div>
+          <div class="cal-d">8</div><div class="cal-d">9</div><div class="cal-d">10</div><div class="cal-d">11</div><div class="cal-d">12</div><div class="cal-d">13</div>
+          <div class="cal-d today">19</div>
+        </div>
+      </div>
+      <div class="comp-specs">
+        <div class="comp-name">Calendar Grid</div>
+        <div class="comp-desc">7-column grid. Today = orange fill. Workout days show discipline dot below number.</div>
+        <table class="spec-table">
+          <tr><td>grid columns</td><td>7 equal columns</td></tr>
+          <tr><td>cell gap</td><td><span class="val">5px</span></td></tr>
+          <tr><td>cell aspect ratio</td><td><span class="val">1:1</span> (square)</td></tr>
+          <tr><td>cell border-radius</td><td><span class="val">9px</span></td></tr>
+          <tr><td>day number</td><td>13px · SemiBold 600</td></tr>
+          <tr><td>today cell</td><td>bg <span class="orange">orange</span> · text white</td></tr>
+          <tr><td>has-workout text</td><td>text-primary</td></tr>
+          <tr><td>empty text</td><td>text-muted</td></tr>
+          <tr><td>dot size</td><td><span class="val">5 × 5px</span></td></tr>
+          <tr><td>DOW header</td><td>9px · Bold 700 · UPPERCASE · LS +0.1em · muted</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /spec-grid -->
+</body>
+</html>

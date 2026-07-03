@@ -1,11 +1,14 @@
 'use client';
 
 import { use } from 'react';
+import { motion } from 'framer-motion';
 import { getCaseStudyBySlug } from '@/content/projects';
+import { revealVariants } from '@/lib/animation';
 import { BackLink } from '@/components/case-study/BackLink';
 import { CaseStudyHero } from '@/components/case-study/CaseStudyHero';
 import { CaseMeta } from '@/components/case-study/CaseMeta';
 import { PhaseSection } from '@/components/case-study/PhaseSection';
+import { PrototypeEmbed } from '@/components/case-study/PrototypeEmbed';
 import { OutcomesGrid } from '@/components/case-study/OutcomesGrid';
 import { NextProject } from '@/components/case-study/NextProject';
 
@@ -27,7 +30,11 @@ export default function CaseStudyPage({ params }: CaseStudyPageProps) {
     <>
       <BackLink />
 
-      <CaseStudyHero subtitle={caseStudy.hero.subtitle} description={caseStudy.hero.description} />
+      <CaseStudyHero
+        eyebrow={`${caseStudy.industry} · Case Study`}
+        subtitle={caseStudy.hero.subtitle}
+        description={caseStudy.hero.description}
+      />
 
       <CaseMeta
         role={caseStudy.meta.role}
@@ -36,48 +43,48 @@ export default function CaseStudyPage({ params }: CaseStudyPageProps) {
         tools={caseStudy.meta.tools}
       />
 
-      <div className="cs-cover reveal">
-        <style jsx>{`
-          .cs-cover {
-            max-width: var(--container);
-            margin: 56px auto 0;
-            padding: 0 var(--gutter);
-          }
-
-          .cs-cover-inner {
-            height: 460px;
-            border-radius: var(--radius);
-            background: linear-gradient(135deg, #6e8cff, #c2ceff);
-          }
-
-          .reveal {
-            opacity: 0;
-            transform: translateY(24px);
-            transition: opacity 0.7s var(--ease), transform 0.7s var(--ease);
-          }
-
-          .reveal.revealed {
-            opacity: 1;
-            transform: translateY(0);
-          }
-
-          @media (max-width: 860px) {
+      {caseStudy.prototypeUrl ? (
+        <PrototypeEmbed url={caseStudy.prototypeUrl} />
+      ) : (
+        <motion.div
+          className="cs-cover"
+          variants={revealVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+        >
+          <style jsx>{`
             .cs-cover {
-              padding: 0 22px;
+              max-width: var(--container);
+              margin: 56px auto 0;
+              padding: 0 var(--gutter);
             }
 
             .cs-cover-inner {
-              height: 240px;
+              height: 460px;
+              border-radius: var(--radius);
+              background: linear-gradient(135deg, #6e8cff, #c2ceff);
             }
-          }
-        `}</style>
-        <div className="cs-cover-inner" />
-      </div>
+
+            @media (max-width: 860px) {
+              .cs-cover {
+                padding: 0 22px;
+              }
+
+              .cs-cover-inner {
+                height: 240px;
+              }
+            }
+          `}</style>
+          <div className="cs-cover-inner" />
+        </motion.div>
+      )}
 
       {caseStudy.phases.map((phase) => (
         <PhaseSection
           key={phase.number}
           number={phase.number}
+          totalPhases={caseStudy.phases.length}
           title={phase.title}
           description={phase.description}
           chips={phase.chips}

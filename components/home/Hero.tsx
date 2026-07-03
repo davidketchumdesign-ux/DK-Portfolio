@@ -62,7 +62,7 @@ export function Hero() {
 
       <div className="eyebrow">Senior UX Designer / Strategist</div>
       <h1>
-        I design systems that make <span>complexity</span> feel obvious.
+        Chop it up with users. Cook up the design. <span>Ship it hot.</span>
       </h1>
       <p className="hero-sub">
         I am a senior UX designer and strategist at Slalom Consulting. Located in Central, PA.

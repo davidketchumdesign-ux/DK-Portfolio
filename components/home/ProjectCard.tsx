@@ -22,6 +22,7 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
   };
 
   const gradient = gradients[project.slug] || 'linear-gradient(135deg, #3352E1, #8AA3FF)';
+  const hasRealCover = /\.(png|webp)$/.test(project.coverImage);
 
   return (
     <motion.div
@@ -46,14 +47,27 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
               variants={imageZoomVariants}
               initial="initial"
               whileHover="hover"
-              style={{
-                background: `linear-gradient(${gradient})`,
-                position: 'absolute',
-                top: 0,
-                right: 0,
-                bottom: 0,
-                left: 0,
-              } as React.CSSProperties}
+              style={
+                hasRealCover
+                  ? {
+                      backgroundImage: `url(${project.coverImage})`,
+                      backgroundSize: 'cover',
+                      backgroundPosition: 'top center',
+                      position: 'absolute',
+                      top: 0,
+                      right: 0,
+                      bottom: 0,
+                      left: 0,
+                    }
+                  : ({
+                      background: `linear-gradient(${gradient})`,
+                      position: 'absolute',
+                      top: 0,
+                      right: 0,
+                      bottom: 0,
+                      left: 0,
+                    } as React.CSSProperties)
+              }
             />
           </div>
           <div className="card-body">

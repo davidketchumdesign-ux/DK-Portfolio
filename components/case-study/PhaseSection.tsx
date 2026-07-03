@@ -5,18 +5,20 @@ import { revealVariants } from '@/lib/animation';
 
 interface PhaseSectionProps {
   number: number;
+  totalPhases?: number;
   title: string;
   description: string;
   chips?: string[];
   hmw?: string;
   gallery?: Array<{
     label: string;
-    gradient: string;
+    gradient?: string;
+    image?: string;
     twoCol?: boolean;
   }>;
 }
 
-export function PhaseSection({ number, title, description, chips, hmw, gallery }: PhaseSectionProps) {
+export function PhaseSection({ number, totalPhases = 5, title, description, chips, hmw, gallery }: PhaseSectionProps) {
   return (
     <section className="phase">
       <style jsx>{`
@@ -128,6 +130,8 @@ export function PhaseSection({ number, title, description, chips, hmw, gallery }
 
         .gallery-tile-inner {
           height: 200px;
+          background-size: cover;
+          background-position: center;
         }
 
         .gallery-tile-label {
@@ -169,7 +173,7 @@ export function PhaseSection({ number, title, description, chips, hmw, gallery }
 
       <motion.div className="phase-label" variants={revealVariants} initial="hidden" whileInView="visible" viewport={{ once: true }}>
         <div className="phase-num">
-          {String(number).padStart(2, '0')} / 05
+          {String(number).padStart(2, '0')} / {String(totalPhases).padStart(2, '0')}
         </div>
         <div className="phase-title">{title}</div>
       </motion.div>
@@ -200,7 +204,14 @@ export function PhaseSection({ number, title, description, chips, hmw, gallery }
           <div className={`phase-gallery ${gallery.some((g) => g.twoCol) ? 'two-col' : ''}`}>
             {gallery.map((item) => (
               <div key={item.label} className="gallery-tile">
-                <div className="gallery-tile-inner" style={{ background: `linear-gradient(${item.gradient})` }} />
+                <div
+                  className="gallery-tile-inner"
+                  style={
+                    item.image
+                      ? { backgroundImage: `url(${item.image})` }
+                      : { background: `linear-gradient(${item.gradient})` }
+                  }
+                />
                 <div className="gallery-tile-label">{item.label}</div>
               </div>
             ))}

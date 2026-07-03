@@ -1,4 +1,5 @@
 import shopify from './shopify.json';
+import brixli from './brixli.json';
 
 export interface Project {
   slug: string;
@@ -21,6 +22,7 @@ export interface CaseStudyData extends Project {
     platform: string;
     tools: string;
   };
+  prototypeUrl?: string;
   phases: Array<{
     number: number;
     title: string;
@@ -29,7 +31,8 @@ export interface CaseStudyData extends Project {
     hmw?: string;
     gallery?: Array<{
       label: string;
-      gradient: string;
+      gradient?: string;
+      image?: string;
       twoCol?: boolean;
     }>;
   }>;
@@ -78,9 +81,9 @@ export const personalProjects: Project[] = [
     title: 'Brixli',
     industry: 'Personal',
     category: 'personal',
-    tags: ['Product Design', 'Branding'],
-    summary: '[Short description of what Brixli is and your role — swap in your real copy here.]',
-    coverImage: '/images/projects/brixli-cover.jpg',
+    tags: ['Product Design', 'AI-Native Workflow'],
+    summary: 'An all-in-one triathlon training app, designed and prototyped end-to-end with Claude — no Figma required.',
+    coverImage: '/images/projects/brixli/card-cover.webp',
   },
   {
     slug: 'icebreakr',
@@ -105,6 +108,7 @@ export const personalProjects: Project[] = [
 // Case study lookup
 export const caseStudies: Record<string, CaseStudyData> = {
   shopify: shopify as CaseStudyData,
+  brixli: brixli as CaseStudyData,
 };
 
 export function getProjectBySlug(slug: string): Project | undefined {

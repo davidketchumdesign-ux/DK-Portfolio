@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Brixli</title>
+<meta name="theme-color" content="#ec742a">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Brixli">
+<link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+:root{
+  --bg:#1a1a1a;--surface:#242424;--elevated:#2e2e2e;--overlay:#383838;
+  --border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.12);
+  --orange:#ec742a;--orange-d:rgba(236,116,42,0.15);--orange-b:rgba(236,116,42,0.25);
+  --green:#aee694;--green-d:rgba(174,230,148,0.13);
+  --aqua:#94e6e4;--aqua-d:rgba(148,230,228,0.13);
+  --t1:#fafafa;--t2:#b8b8b8;--t3:#787878;--t4:#444444;
+  --font:'Comfortaa',sans-serif;--r:18px;--r-sm:12px;
+}
+html,body{height:100%;background:#0d0d0d;display:flex;align-items:center;justify-content:center;font-family:var(--font);overflow:hidden;}
+.phone{width:390px;height:844px;background:var(--bg);border-radius:52px;overflow:hidden;position:relative;
+  box-shadow:0 0 0 1px rgba(255,255,255,0.08),0 60px 160px rgba(0,0,0,0.9);display:flex;flex-direction:column;}
+.status-bar{height:54px;display:flex;align-items:flex-end;padding:0 28px 10px;justify-content:space-between;flex-shrink:0;z-index:10;}
+.status-time{font-size:15px;font-weight:600;color:var(--t1);}
+.status-icons{display:flex;gap:5px;align-items:center;font-size:11px;color:var(--t1);}
+.screens{flex:1;overflow:hidden;position:relative;}
+.screen{position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;opacity:0;pointer-events:none;transition:opacity 0.25s;scrollbar-width:none;padding-bottom:90px;}
+.screen::-webkit-scrollbar{display:none;}
+.screen.active{opacity:1;pointer-events:all;}
+.nav{height:82px;background:var(--surface);border-top:1px solid var(--border);display:flex;align-items:flex-start;padding-top:10px;flex-shrink:0;z-index:20;}
+.nav-tab{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;padding:6px 0;}
+.nav-tab:active{opacity:0.6;}
+.nav-icon{width:24px;height:24px;display:flex;align-items:center;justify-content:center;}
+.nav-icon svg{width:22px;height:22px;fill:none;stroke:var(--t3);stroke-width:2;stroke-linecap:round;stroke-linejoin:round;transition:stroke 0.2s;}
+.nav-label{font-size:10px;font-weight:500;color:var(--t3);transition:color 0.2s;}
+.nav-tab.active .nav-label{color:var(--orange);}
+.nav-tab.active .nav-icon svg{stroke:var(--orange);}
+.logo-row{display:flex;align-items:center;gap:10px;}
+.logo-wm{font-size:20px;font-weight:700;color:var(--t1);letter-spacing:-0.02em;}
+.sec-lbl{font-size:10px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:var(--t3);padding:20px 24px 10px;}
+.pill{display:inline-flex;align-items:center;gap:5px;padding:4px 11px;border-radius:100px;font-size:11px;font-weight:600;}
+.btn-p{background:var(--orange);color:white;border-radius:14px;padding:14px;text-align:center;font-size:15px;font-weight:700;font-family:var(--font);cursor:pointer;border:none;width:100%;transition:opacity 0.15s;}
+.btn-p:active{opacity:0.8;}
+.btn-s{background:transparent;color:var(--t2);border-radius:14px;padding:14px;text-align:center;font-size:15px;font-weight:600;font-family:var(--font);cursor:pointer;border:1px solid var(--border2);width:100%;}
+.backdrop{position:absolute;inset:0;background:rgba(0,0,0,0.65);z-index:100;opacity:0;pointer-events:none;transition:opacity 0.3s;border-radius:52px;}
+.backdrop.open{opacity:1;pointer-events:all;}
+.sheet{position:absolute;bottom:0;left:0;right:0;background:var(--surface);border-radius:28px 28px 0 0;z-index:101;transform:translateY(100%);transition:transform 0.38s cubic-bezier(0.34,1.1,0.64,1);max-height:90%;overflow-y:auto;scrollbar-width:none;padding-bottom:40px;}
+.sheet::-webkit-scrollbar{display:none;}
+.sheet.open{transform:translateY(0);}
+.sh-handle{width:36px;height:4px;background:var(--t4);border-radius:2px;margin:12px auto 20px;}
+.sh-title{font-size:20px;font-weight:700;color:var(--t1);padding:0 24px 16px;}
+.sh-close{position:absolute;top:16px;right:20px;width:30px;height:30px;border-radius:50%;background:var(--elevated);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:13px;color:var(--t3);}
+#splash{position:absolute;inset:0;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;gap:18px;border-radius:52px;transition:opacity 0.5s,transform 0.5s;}
+#splash.hide{opacity:0;transform:scale(1.03);pointer-events:none;}
+.sp-logo{display:flex;flex-direction:column;align-items:center;gap:16px;animation:popIn 0.6s cubic-bezier(0.34,1.56,0.64,1) both;animation-delay:0.2s;}
+.sp-wm{font-size:38px;font-weight:700;color:var(--t1);letter-spacing:-0.02em;}
+.sp-tag{font-size:13px;color:var(--t3);animation:fadeUp 0.5s ease both;animation-delay:0.7s;}
+.sp-bar{width:48px;height:3px;background:var(--elevated);border-radius:2px;overflow:hidden;animation:fadeUp 0.5s ease both;animation-delay:0.85s;}
+.sp-fill{height:100%;background:linear-gradient(90deg,var(--orange),#f0a060);border-radius:2px;animation:loadBar 1.4s ease both;animation-delay:0.95s;}
+#ob{position:absolute;inset:0;background:var(--bg);z-index:500;border-radius:52px;overflow:hidden;display:flex;flex-direction:column;transition:opacity 0.4s,transform 0.4s;}
+#ob.hide{opacity:0;transform:scale(1.03);pointer-events:none;}
+.ob-slide{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:flex-end;padding:36px 32px;opacity:0;pointer-events:none;transition:opacity 0.35s;}
+.ob-slide.active{opacity:1;pointer-events:all;}
+.ob-bg{position:absolute;top:50%;left:50%;transform:translate(-50%,-60%);font-size:130px;opacity:0.09;}
+.ob-ey{font-size:11px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:var(--orange);margin-bottom:10px;}
+.ob-h1{font-size:31px;font-weight:700;color:var(--t1);line-height:1.15;margin-bottom:14px;}
+.ob-h1 em{color:var(--orange);font-style:normal;}
+.ob-body{font-size:14px;color:var(--t2);line-height:1.7;margin-bottom:28px;}
+.ob-dots{display:flex;gap:8px;margin-bottom:22px;}
+.ob-dot{width:8px;height:8px;border-radius:4px;background:var(--t4);transition:all 0.3s;}
+.ob-dot.active{width:24px;background:var(--orange);}
+@keyframes popIn{from{opacity:0;transform:scale(0.7)}to{opacity:1;transform:scale(1)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+@keyframes loadBar{from{width:0}to{width:100%}}
+@keyframes ringAnim{from{stroke-dashoffset:226}to{stroke-dashoffset:68}}
+@keyframes barGrow{from{width:0}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}
+@keyframes fadeSlideUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+.screen.active>*{animation:fadeSlideUp 0.35s ease both;}
+.screen.active>*:nth-child(1){animation-delay:0s}.screen.active>*:nth-child(2){animation-delay:.05s}
+.screen.active>*:nth-child(3){animation-delay:.08s}.screen.active>*:nth-child(4){animation-delay:.11s}
+.screen.active>*:nth-child(5){animation-delay:.14s}.screen.active>*:nth-child(6){animation-delay:.17s}
+.screen.active>*:nth-child(7){animation-delay:.20s}.screen.active>*:nth-child(8){animation-delay:.23s}
+.screen.active>*:nth-child(9){animation-delay:.26s}.screen.active>*:nth-child(10){animation-delay:.29s}
+.notif-btn{width:36px;height:36px;background:var(--surface);border:1px solid var(--border);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;position:relative;}
+.notif-dot{position:absolute;top:6px;right:6px;width:8px;height:8px;border-radius:50%;background:var(--orange);border:2px solid var(--bg);}
+.ring-card{margin:16px 24px 0;background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:20px;display:flex;align-items:center;gap:20px;cursor:pointer;position:relative;overflow:hidden;}
+.ring-card::before{content:'';position:absolute;top:-50px;right:-50px;width:180px;height:180px;background:radial-gradient(circle,rgba(236,116,42,0.1),transparent 70%);pointer-events:none;}
+.today-card{margin:0 24px;border-radius:var(--r);cursor:pointer;transition:transform 0.18s;}
+.today-card:active{transform:scale(0.97);}
+.today-inner{background:linear-gradient(145deg,#271e16,#1e1a16);border:1px solid rgba(236,116,42,0.22);border-radius:var(--r);padding:22px;position:relative;overflow:hidden;}
+.today-inner::before{content:'';position:absolute;top:-40px;right:-40px;width:200px;height:200px;background:radial-gradient(circle,rgba(236,116,42,0.16),transparent 65%);}
+.today-inner::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--orange),transparent);}
+.td-pill{background:var(--orange-d);color:var(--orange);padding:4px 10px;border-radius:100px;font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;}
+.live-dot{width:6px;height:6px;border-radius:50%;background:var(--green);box-shadow:0 0 6px var(--green);animation:pulse 1.8s infinite;}
+.week-strip{margin:0 24px;display:flex;gap:7px;}
+.wday{flex:1;background:var(--surface);border:1px solid var(--border);border-radius:var(--r-sm);padding:9px 4px;text-align:center;cursor:pointer;}
+.wday.today{border-color:var(--orange);background:var(--orange-d);}
+.wday.today .wd-n{color:var(--orange);}
+.wd-n{font-size:9px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--t3);}
+.wd-d{font-size:15px;font-weight:700;color:var(--t1);margin-top:3px;}
+.wd-dot{width:5px;height:5px;border-radius:50%;margin:4px auto 0;}
+.feed-item{margin:0 24px;padding:14px 18px;display:flex;align-items:center;gap:13px;cursor:pointer;background:var(--surface);border:1px solid var(--border);border-radius:var(--r);transition:background 0.15s;}
+.feed-item+.feed-item{margin-top:8px;}
+.feed-item:active{background:var(--elevated);}
+.fav{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:var(--bg);flex-shrink:0;}
+.fab{position:absolute;bottom:94px;right:24px;width:56px;height:56px;border-radius:28px;background:var(--orange);display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(236,116,42,0.4);cursor:pointer;z-index:50;transition:transform 0.18s;}
+.fab:active{transform:scale(0.93);}
+.fab svg{width:24px;height:24px;fill:none;stroke:white;stroke-width:2.5;stroke-linecap:round;}
+.cal-grid{margin:14px 24px 0;display:grid;grid-template-columns:repeat(7,1fr);gap:5px;}
+.cal-dow{font-size:9px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--t3);text-align:center;padding-bottom:6px;}
+.cal-day{aspect-ratio:1;border-radius:9px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:13px;font-weight:600;color:var(--t2);cursor:pointer;gap:2px;}
+.cal-day:active{background:var(--elevated);}
+.cal-day.tc{background:var(--orange);color:white;}
+.cal-day.hw{color:var(--t1);}
+.cal-day.em{opacity:0;pointer-events:none;}
+.cdot{width:5px;height:5px;border-radius:50%;}
+.pw{margin:0 24px;padding:15px 18px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r);display:flex;align-items:center;gap:14px;cursor:pointer;transition:background 0.15s;}
+.pw+.pw{margin-top:8px;}
+.pw:active{background:var(--elevated);}
+.pw-bar{width:4px;border-radius:2px;align-self:stretch;flex-shrink:0;}
+.pw-info{flex:1;}
+.pw-title{font-size:15px;font-weight:600;color:var(--t1);margin-bottom:3px;}
+.pw-meta{font-size:12px;color:var(--t3);}
+.pw-badge{font-size:10px;font-weight:700;padding:5px 11px;border-radius:100px;white-space:nowrap;}
+.race-hero{margin:16px 24px 0;background:linear-gradient(145deg,#121e1e,#182020);border:1px solid rgba(148,230,228,0.18);border-radius:var(--r);padding:22px;position:relative;overflow:hidden;cursor:pointer;}
+.race-hero::before{content:'';position:absolute;top:-50px;right:-50px;width:200px;height:200px;background:radial-gradient(circle,rgba(148,230,228,0.09),transparent 65%);}
+.race-hero::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--aqua),transparent);}
+.grp-card{margin:0 24px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;cursor:pointer;}
+.grp-card+.grp-card{margin-top:8px;}
+.gc-hdr{padding:16px 18px 14px;display:flex;align-items:center;gap:12px;}
+.gc-icon{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
+.gfi{padding:12px 18px;border-top:1px solid var(--border);display:flex;gap:12px;}
+.gfi-av{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--bg);flex-shrink:0;}
+.gfi-r{font-size:11px;padding:3px 9px;background:var(--elevated);border-radius:100px;cursor:pointer;color:var(--t2);}
+.ch-card{margin:0 24px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:18px;cursor:pointer;transition:background 0.15s;}
+.ch-card+.ch-card{margin-top:8px;}
+.ch-card:active{background:var(--elevated);}
+.prog-wrap{height:6px;background:var(--elevated);border-radius:3px;overflow:hidden;margin-bottom:8px;}
+.prog-fill{height:100%;border-radius:3px;animation:barGrow 1s ease both;}
+.lb-row{margin:0 24px;padding:13px 16px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r-sm);display:flex;align-items:center;gap:12px;cursor:pointer;}
+.lb-row+.lb-row{margin-top:4px;}
+.lb-row.gold{border-color:rgba(255,200,60,0.28);background:rgba(255,200,60,0.04);}
+.lb-row.you{border-color:var(--orange-b);background:var(--orange-d);}
+.lb-av{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:var(--bg);}
+.profile-hero{margin:16px 24px 0;background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:24px;position:relative;overflow:hidden;}
+.profile-hero::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--orange),var(--aqua));}
+.ph-av{width:66px;height:66px;border-radius:50%;background:linear-gradient(135deg,var(--orange),#f0a060);display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700;color:white;flex-shrink:0;}
+.ph-stats{display:flex;}
+.ph-stat{flex:1;text-align:center;border-right:1px solid var(--border);padding:0 8px;}
+.ph-stat:last-child{border-right:none;}
+.phs-val{font-size:20px;font-weight:700;color:var(--t1);}
+.phs-lbl{font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:var(--t3);margin-top:2px;}
+.stat-row{margin:0 24px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:18px;}
+.disc-stats{display:flex;}
+.disc-stat{flex:1;text-align:center;border-right:1px solid var(--border);}
+.disc-stat:last-child{border-right:none;}
+.rr{margin:0 24px;padding:14px 18px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r-sm);display:flex;align-items:center;gap:14px;cursor:pointer;transition:background 0.15s;}
+.rr+.rr{margin-top:4px;}
+.rr:active{background:var(--elevated);}
+.sr{margin:0 24px;padding:15px 18px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r-sm);display:flex;align-items:center;gap:14px;cursor:pointer;transition:background 0.15s;}
+.sr+.sr{margin-top:4px;}
+.sr:active{background:var(--elevated);}
+.sr-icon{font-size:18px;width:28px;text-align:center;}
+.sr-label{flex:1;font-size:14px;color:var(--t1);}
+.sr-right{font-size:13px;color:var(--t3);}
+.wd-hero{margin:0 24px 18px;background:linear-gradient(145deg,#271e16,#1e1a16);border:1px solid rgba(236,116,42,0.2);border-radius:var(--r);padding:20px;position:relative;overflow:hidden;}
+.wd-hero::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--orange),transparent);}
+.wd-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:0 24px 16px;}
+.wd-box{background:var(--elevated);border-radius:var(--r-sm);padding:14px 16px;}
+.wd-bv{font-size:21px;font-weight:700;color:var(--t1);}
+.wd-bl{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:var(--t3);margin-top:3px;}
+.iv-row{padding:13px 24px;display:flex;align-items:center;gap:14px;border-bottom:1px solid var(--border);}
+.iv-row:last-of-type{border-bottom:none;}
+.iv-n{width:28px;height:28px;border-radius:50%;background:var(--orange-d);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--orange);flex-shrink:0;}
+.iv-info{flex:1;}
+.iv-title{font-size:13px;font-weight:600;color:var(--t1);}
+.iv-meta{font-size:11px;color:var(--t3);margin-top:1px;}
+.iv-pace{font-size:14px;font-weight:700;color:var(--orange);}
+.iw-item{margin:0 24px;padding:16px 18px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r);display:flex;align-items:center;gap:14px;cursor:pointer;transition:all 0.2s;}
+.iw-item+.iw-item{margin-top:8px;}
+.iw-item.sel{border-color:var(--orange);background:var(--orange-d);}
+.iw-ck{width:22px;height:22px;border-radius:50%;border:2px solid var(--t4);display:flex;align-items:center;justify-content:center;font-size:12px;transition:all 0.2s;flex-shrink:0;}
+.iw-item.sel .iw-ck{background:var(--orange);border-color:var(--orange);color:white;}
+.wc-hero{margin:0 24px 18px;border-radius:var(--r);padding:28px 24px;text-align:center;position:relative;overflow:hidden;}
+.wc-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin:0 24px 18px;}
+.wc-box{background:var(--elevated);border-radius:var(--r-sm);padding:14px 10px;text-align:center;}
+.ni-icon{width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+.field-i{width:100%;background:var(--elevated);border:1px solid var(--border2);border-radius:var(--r-sm);padding:13px 16px;font-size:14px;color:var(--t1);font-family:var(--font);outline:none;}
+.field-i:focus{border-color:var(--orange);}
+</style>
+</head>
+<body>
+<div class="phone">
+<!-- SPLASH -->
+<div id="splash">
+  <div class="sp-logo">
+    <svg width="80" height="80" viewBox="0 0 100 100" fill="none"><rect width="100" height="100" rx="22" fill="#ec742a"/><circle cx="50" cy="22" r="10" fill="white"/><rect x="22" y="36" width="56" height="13" rx="6.5" fill="white"/><rect x="22" y="54" width="56" height="13" rx="6.5" fill="white"/><rect x="22" y="72" width="56" height="13" rx="6.5" fill="white"/></svg>
+    <div class="sp-wm">brixli</div>
+  </div>
+  <div class="sp-tag">Train. Track. Tri.</div>
+  <div class="sp-bar"><div class="sp-fill"></div></div>
+</div>
+<!-- ONBOARDING -->
+<div id="ob">
+  <div style="height:54px;"></div>
+  <div style="flex:1;position:relative;">
+    <div class="ob-slide active" id="ob0">
+      <div class="ob-bg">🏊</div>
+      <div class="ob-ey">Welcome to Brixli</div>
+      <div class="ob-h1">The hub built for <em>triathletes</em></div>
+      <div class="ob-body">Plan your training, track every swim, bike, and run — all in one place. No more juggling apps.</div>
+      <div class="ob-dots"><div class="ob-dot active"></div><div class="ob-dot"></div><div class="ob-dot"></div></div>
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <button class="btn-p" onclick="obNext()">Get Started →</button>
+        <button class="btn-s" onclick="finishOb()">I have an account</button>
+      </div>
+    </div>
+    <div class="ob-slide" id="ob1">
+      <div class="ob-bg">⌚</div>
+      <div class="ob-ey">Seamless Sync</div>
+      <div class="ob-h1">Finish your run. Open <em>Brixli</em>. Done.</div>
+      <div class="ob-body">Import directly from Apple Watch after every workout — pace, heart rate, splits. All automatic.</div>
+      <div class="ob-dots"><div class="ob-dot"></div><div class="ob-dot active"></div><div class="ob-dot"></div></div>
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <button class="btn-p" onclick="obNext()">Next →</button>
+        <button class="btn-s" onclick="obBack()">Back</button>
+      </div>
+    </div>
+    <div class="ob-slide" id="ob2">
+      <div class="ob-bg">🧱</div>
+      <div class="ob-ey">Community</div>
+      <div class="ob-h1">Train with your <em>tribe</em></div>
+      <div class="ob-body">Race groups, challenges, and a community that actually knows what brick workouts feel like.</div>
+      <div class="ob-dots"><div class="ob-dot"></div><div class="ob-dot"></div><div class="ob-dot active"></div></div>
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <button class="btn-p" onclick="finishOb()">Start Training 🔥</button>
+        <button class="btn-s" onclick="obBack()">Back</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- STATUS BAR -->
+<div class="status-bar"><span class="status-time">9:41</span><div class="status-icons"><span>▂▄▆</span><span>📶</span><span>🔋</span></div></div>
+<div class="screens">
+<!-- HOME -->
+<div class="screen active" id="home">
+  <div style="padding:10px 24px 0;display:flex;align-items:center;justify-content:space-between;">
+    <div class="logo-row"><svg width="30" height="30" viewBox="0 0 100 100" fill="none"><rect width="100" height="100" rx="22" fill="#ec742a"/><circle cx="50" cy="22" r="10" fill="white"/><rect x="22" y="36" width="56" height="13" rx="6.5" fill="white"/><rect x="22" y="54" width="56" height="13" rx="6.5" fill="white"/><rect x="22" y="72" width="56" height="13" rx="6.5" fill="white"/></svg><span class="logo-wm">brixli</span></div>
+    <div style="display:flex;gap:10px;align-items:center;">
+      <div class="notif-btn" onclick="openSheet('sh-notif')"><span style="font-size:16px;">🔔</span><div class="notif-dot"></div></div>
+      <div style="width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,#ec742a,#f0a060);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:white;cursor:pointer;" onclick="switchTab('you')">DJ</div>
+    </div>
+  </div>
+  <div style="padding:16px 24px 0;"><div style="font-size:13px;color:var(--t3);margin-bottom:3px;">Good morning 👋</div><div style="font-size:26px;font-weight:700;color:var(--t1);">Hey, <span style="color:var(--orange);">D.J.</span></div></div>
+  <div class="ring-card" onclick="openSheet('sh-week')">
+    <div style="width:88px;height:88px;flex-shrink:0;">
+      <svg viewBox="0 0 88 88" width="88" height="88" style="transform:rotate(-90deg);">
+        <defs><linearGradient id="rg"><stop offset="0%" stop-color="#ec742a"/><stop offset="100%" stop-color="#f0a060"/></linearGradient></defs>
+        <circle fill="none" stroke="#2e2e2e" stroke-width="8" cx="44" cy="44" r="36"/>
+        <circle fill="none" stroke="url(#rg)" stroke-width="8" stroke-linecap="round" cx="44" cy="44" r="36" stroke-dasharray="226" stroke-dashoffset="68" style="animation:ringAnim 1.2s ease both;animation-delay:0.3s;"/>
+        <text x="44" y="40" text-anchor="middle" dominant-baseline="middle" style="fill:#fafafa;font-size:16px;font-weight:700;font-family:'Comfortaa',sans-serif;transform:rotate(90deg);transform-origin:44px 44px;">70%</text>
+        <text x="44" y="54" text-anchor="middle" dominant-baseline="middle" style="fill:#787878;font-size:8px;font-weight:600;font-family:'Comfortaa',sans-serif;letter-spacing:0.1em;transform:rotate(90deg);transform-origin:44px 44px;">WEEK</text>
+      </svg>
+    </div>
+    <div style="flex:1;">
+      <div style="font-size:16px;font-weight:700;color:var(--t1);margin-bottom:3px;">Week 3 of 16</div>
+      <div style="font-size:12px;color:var(--t3);margin-bottom:14px;line-height:1.5;">Ironman 70.3 Build · 4 of 6 done</div>
+      <div style="display:flex;gap:18px;">
+        <div><div style="font-size:18px;font-weight:700;color:var(--aqua);">4.2<small style="font-size:11px;color:var(--t3);">mi</small></div><div style="font-size:9px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--t3);">Swim</div></div>
+        <div><div style="font-size:18px;font-weight:700;color:var(--green);">62<small style="font-size:11px;color:var(--t3);">mi</small></div><div style="font-size:9px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--t3);">Bike</div></div>
+        <div><div style="font-size:18px;font-weight:700;color:var(--orange);">18<small style="font-size:11px;color:var(--t3);">mi</small></div><div style="font-size:9px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--t3);">Run</div></div>
+      </div>
+    </div>
+    <div style="font-size:16px;color:var(--t3);">›</div>
+  </div>
+  <div class="sec-lbl">Today's Workout</div>
+  <div class="today-card" onclick="openSheet('sh-workout')">
+    <div class="today-inner">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;"><span class="td-pill">🏃 Run</span><span class="live-dot"></span><span style="font-size:11px;color:var(--green);font-weight:600;">Watch Ready</span></div>
+      <div style="font-size:24px;font-weight:700;color:var(--t1);margin-bottom:4px;">Tempo Run</div>
+      <div style="font-size:13px;color:var(--t2);margin-bottom:20px;">3 miles · Zone 3 · ~28 min · 6 intervals</div>
+      <div style="display:flex;">
+        <div style="flex:1;border-right:1px solid rgba(255,255,255,0.06);padding-right:14px;margin-right:14px;"><div style="font-size:21px;font-weight:700;color:var(--t1);">8:32<span style="font-size:12px;color:var(--t3);">/mi</span></div><div style="font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:0.08em;color:var(--t3);margin-top:2px;">Pace</div></div>
+        <div style="flex:1;border-right:1px solid rgba(255,255,255,0.06);padding-right:14px;margin-right:14px;"><div style="font-size:21px;font-weight:700;color:var(--t1);">155<span style="font-size:12px;color:var(--t3);">bpm</span></div><div style="font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:0.08em;color:var(--t3);margin-top:2px;">HR</div></div>
+        <div style="flex:1;"><div style="font-size:21px;font-weight:700;color:var(--t1);">28<span style="font-size:12px;color:var(--t3);">min</span></div><div style="font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:0.08em;color:var(--t3);margin-top:2px;">Time</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="sec-lbl">This Week</div>
+  <div class="week-strip">
+    <div class="wday" onclick="openSheet('sh-past')"><div class="wd-n">Mon</div><div class="wd-d">17</div><div class="wd-dot" style="background:var(--aqua);"></div></div>
+    <div class="wday" onclick="openSheet('sh-past')"><div class="wd-n">Tue</div><div class="wd-d">18</div><div class="wd-dot" style="background:var(--green);"></div></div>
+    <div class="wday today" onclick="openSheet('sh-workout')"><div class="wd-n">Wed</div><div class="wd-d">19</div><div class="wd-dot" style="background:var(--orange);"></div></div>
+    <div class="wday"><div class="wd-n">Thu</div><div class="wd-d">20</div><div class="wd-dot" style="background:var(--aqua);opacity:0.35;"></div></div>
+    <div class="wday"><div class="wd-n">Fri</div><div class="wd-d">21</div><div class="wd-dot" style="background:var(--t4);"></div></div>
+    <div class="wday"><div class="wd-n">Sat</div><div class="wd-d">22</div><div class="wd-dot" style="background:var(--green);opacity:0.35;"></div></div>
+    <div class="wday"><div class="wd-n">Sun</div><div class="wd-d">23</div><div class="wd-dot" style="background:linear-gradient(135deg,var(--orange),var(--aqua));opacity:0.35;"></div></div>
+  </div>
+  <div class="sec-lbl">From Your Groups</div>
+  <div class="feed-item" onclick="switchTab('groups')"><div class="fav" style="background:var(--aqua);">SK</div><div style="flex:1;min-width:0;"><div style="font-size:13px;font-weight:600;color:var(--t1);margin-bottom:2px;">Sarah K.</div><div style="font-size:12px;color:var(--t3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Just crushed a 40mi brick! Legs are cooked 🔥🚴</div></div><span style="font-size:11px;color:var(--t3);">2m</span></div>
+  <div class="feed-item" onclick="switchTab('groups')"><div class="fav" style="background:var(--green);">MR</div><div style="flex:1;min-width:0;"><div style="font-size:13px;font-weight:600;color:var(--t1);margin-bottom:2px;">Mike R.</div><div style="font-size:12px;color:var(--t3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">OWS this morning — 1.2mi in 38 mins 🏊</div></div><span style="font-size:11px;color:var(--t3);">18m</span></div>
+  <div class="feed-item" onclick="switchTab('groups')"><div class="fav" style="background:var(--orange);">AT</div><div style="flex:1;min-width:0;"><div style="font-size:13px;font-weight:600;color:var(--t1);margin-bottom:2px;">Alex T.</div><div style="font-size:12px;color:var(--t3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Week 3 done. 70.3 in 47 days 💪</div></div><span style="font-size:11px;color:var(--t3);">1h</span></div>
+</div>
+<!-- PLAN -->
+<div class="screen" id="plan">
+  <div style="padding:10px 24px 0;display:flex;align-items:center;justify-content:space-between;"><div class="logo-row"><svg width="30" height="30" viewBox="0 0 100 100" fill="none"><rect width="100" height="100" rx="22" fill="#ec742a"/><circle cx="50" cy="22" r="10" fill="white"/><rect x="22" y="36" width="56" height="13" rx="6.5" fill="white"/><rect x="22" y="54" width="56" height="13" rx="6.5" fill="white"/><rect x="22" y="72" width="56" height="13" rx="6.5" fill="white"/></svg><span class="logo-wm">brixli</span></div><span style="font-size:12px;color:var(--t3);font-weight:600;">Week 3 of 16</span></div>
+  <div style="font-size:26px;font-weight:700;color:var(--t1);padding:12px 24px 0;">Plan</div>
+  <div style="padding:16px 24px 0;display:flex;align-items:center;justify-content:space-between;"><div style="font-size:22px;font-weight:700;color:var(--t1);">March 2026</div><div style="display:flex;gap:8px;"><div style="width:32px;height:32px;border-radius:8px;background:var(--surface);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:14px;color:var(--t2);">‹</div><div style="width:32px;height:32px;border-radius:8px;background:var(--surface);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:14px;color:var(--t2);">›</div></div></div>
+  <div class="cal-grid">
+    <div class="cal-dow">S</div><div class="cal-dow">M</div><div class="cal-dow">T</div><div class="cal-dow">W</div><div class="cal-dow">T</div><div class="cal-dow">F</div><div class="cal-dow">S</div>
+    <div class="cal-day em"></div><div class="cal-day em"></div><div class="cal-day em"></div><div class="cal-day em"></div><div class="cal-day em"></div><div class="cal-day em"></div>
+    <div class="cal-day hw" onclick="openSheet('sh-past')">1<div class="cdot" style="background:var(--green);"></div></div>
+    <div class="cal-day hw" onclick="openSheet('sh-past')">2<div class="cdot" style="background:var(--aqua);"></div></div>
+    <div class="cal-day hw" onclick="openSheet('sh-past')">3<div class="cdot" style="background:var(--orange);"></div></div>
+    <div class="cal-day hw">4<div class="cdot" style="background:var(--green);"></div></div>
+    <div class="cal-day hw">5<div class="cdot" style="background:var(--aqua);"></div></div>
+    <div class="cal-day">6</div><div class="cal-day hw">7<div class="cdot" style="background:var(--green);"></div></div>
+    <div class="cal-day hw">8<div class="cdot" style="background:linear-gradient(135deg,var(--orange),var(--aqua));"></div></div>
+    <div class="cal-day hw">9<div class="cdot" style="background:var(--aqua);"></div></div>
+    <div class="cal-day hw">10<div class="cdot" style="background:var(--orange);"></div></div>
+    <div class="cal-day hw">11<div class="cdot" style="background:var(--green);"></div></div>
+    <div class="cal-day hw">12<div class="cdot" style="background:var(--aqua);"></div></div>
+    <div class="cal-day">13</div><div class="cal-day hw">14<div class="cdot" style="background:var(--green);"></div></div>
+    <div class="cal-day hw">15<div class="cdot" style="background:linear-gradient(135deg,var(--orange),var(--aqua));"></div></div>
+    <div class="cal-day hw">16<div class="cdot" style="background:var(--aqua);"></div></div>
+    <div class="cal-day hw">17<div class="cdot" style="background:var(--orange);"></div></div>
+    <div class="cal-day hw">18<div class="cdot" style="background:var(--green);"></div></div>
+    <div class="cal-day tc" onclick="openSheet('sh-workout')">19</div>
+    <div class="cal-day hw">20<div class="cdot" style="background:var(--aqua);opacity:0.4;"></div></div>
+    <div class="cal-day">21</div><div class="cal-day hw">22<div class="cdot" style="background:var(--green);opacity:0.4;"></div></div>
+    <div class="cal-day hw">23<div class="cdot" style="background:linear-gradient(135deg,var(--orange),var(--aqua));opacity:0.4;"></div></div>
+    <div class="cal-day">24</div><div class="cal-day">25</div><div class="cal-day">26</div><div class="cal-day">27</div><div class="cal-day">28</div><div class="cal-day">29</div><div class="cal-day">30</div><div class="cal-day">31</div>
+  </div>
+  <div class="sec-lbl">This Week</div>
+  <div class="pw" onclick="openSheet('sh-past')"><div class="pw-bar" style="background:var(--aqua);"></div><div class="pw-info"><div class="pw-title">Open Water Swim</div><div class="pw-meta">Mon · 60 min · 2,000m · Zone 2</div></div><span class="pw-badge" style="background:var(--aqua-d);color:var(--aqua);">Done ✓</span></div>
+  <div class="pw" onclick="openSheet('sh-past')"><div class="pw-bar" style="background:var(--green);"></div><div class="pw-info"><div class="pw-title">Easy Bike</div><div class="pw-meta">Tue · 90 min · 28 miles · Zone 2</div></div><span class="pw-badge" style="background:var(--green-d);color:var(--green);">Done ✓</span></div>
+  <div class="pw" onclick="openSheet('sh-workout')"><div class="pw-bar" style="background:var(--orange);"></div><div class="pw-info"><div class="pw-title">Tempo Run</div><div class="pw-meta">Wed · 28 min · 3 miles · Zone 3</div></div><span class="pw-badge" style="background:var(--orange-d);color:var(--orange);">Today →</span></div>
+  <div class="pw" onclick="openSheet('sh-upcoming')"><div class="pw-bar" style="background:var(--aqua);opacity:0.5;"></div><div class="pw-info"><div class="pw-title">Pool Swim</div><div class="pw-meta">Thu · 45 min · 1,500m · Intervals</div></div><span class="pw-badge" style="background:var(--elevated);color:var(--t3);">Upcoming</span></div>
+  <div class="pw"><div class="pw-bar" style="background:var(--t4);"></div><div class="pw-info"><div class="pw-title">Rest Day</div><div class="pw-meta">Fri · Active recovery</div></div><span class="pw-badge" style="background:var(--elevated);color:var(--t3);">Upcoming</span></div>
+  <div class="pw" onclick="openSheet('sh-brick')"><div class="pw-bar" style="background:linear-gradient(180deg,var(--orange),var(--aqua));"></div><div class="pw-info"><div class="pw-title">Brick Workout</div><div class="pw-meta">Sun · 30mi bike + 6mi run</div></div><span class="pw-badge" style="background:var(--elevated);color:var(--t3);">Upcoming</span></div>
+</div>
+<!-- GROUPS -->
+<div class="screen" id="groups">
+  <div style="padding:10px 24px 0;display:flex;align-items:center;justify-content:space-between;"><div class="logo-row"><svg width="30" height="30" viewBox="0 0 100 100" fill="none"><rect width="100" height="100" rx="22" fill="#ec742a"/><circle cx="50" cy="22" r="10" fill="white"/><rect x="22" y="36" width="56" height="13" rx="6.5" fill="white"/><rect x="22" y="54" width="56" height="13" rx="6.5" fill="white"/><rect x="22" y="72" width="56" height="13" rx="6.5" fill="white"/></svg><span class="logo-wm">brixli</span></div><div style="width:34px;height:34px;background:var(--surface);border:1px solid var(--border);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:18px;color:var(--t2);" onclick="openSheet('sh-new-group')">＋</div></div>
+  <div style="font-size:26px;font-weight:700;color:var(--t1);padding:12px 24px 0;">Groups</div>
+  <div class="race-hero" onclick="openSheet('sh-race')">
+    <div style="font-size:10px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--aqua);margin-bottom:6px;">🏁 Your Next Race</div>
+    <div style="font-size:20px;font-weight:700;color:var(--t1);margin-bottom:16px;">Ironman 70.3 Raleigh</div>
+    <div style="display:flex;gap:16px;align-items:flex-end;">
+      <div style="text-align:center;"><div style="font-size:30px;font-weight:700;color:var(--aqua);line-height:1;">47</div><div style="font-size:9px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--t3);margin-top:3px;">Days</div></div>
+      <div style="font-size:26px;font-weight:300;color:var(--t4);padding-bottom:8px;">:</div>
+      <div style="text-align:center;"><div style="font-size:30px;font-weight:700;color:var(--t1);line-height:1;">14</div><div style="font-size:9px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--t3);margin-top:3px;">Hrs</div></div>
+      <div style="font-size:26px;font-weight:300;color:var(--t4);padding-bottom:8px;">:</div>
+      <div style="text-align:center;"><div style="font-size:30px;font-weight:700;color:var(--t1);line-height:1;">32</div><div style="font-size:9px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--t3);margin-top:3px;">Min</div></div>
+    </div>
+  </div>
+  <div class="sec-lbl">Your Groups</div>
+  <div class="grp-card" onclick="openSheet('sh-group')">
+    <div class="gc-hdr"><div class="gc-icon" style="background:var(--aqua-d);">🏊</div><div><div style="font-size:15px;font-weight:700;color:var(--t1);margin-bottom:2px;">Triangle Tri Club</div><div style="font-size:12px;color:var(--t3);">📍 128 athletes · Raleigh, NC</div></div></div>
+    <div class="gfi"><div class="gfi-av" style="background:var(--aqua);">SK</div><div style="flex:1;"><div style="font-size:12px;color:var(--t2);line-height:1.55;"><strong style="color:var(--t1);">Sarah K.</strong> crushed a 40mi brick this morning 🔥 Full race sim — feeling strong heading into taper!</div><div style="display:flex;gap:6px;margin-top:8px;"><span class="gfi-r">🔥 14</span><span class="gfi-r">💪 8</span><span class="gfi-r">🚴 5</span></div></div></div>
+    <div class="gfi"><div class="gfi-av" style="background:var(--green);">MR</div><div style="flex:1;"><div style="font-size:12px;color:var(--t2);line-height:1.55;"><strong style="color:var(--t1);">Mike R.</strong> OWS PR — 1.2mi in 38 mins 🏊</div><div style="display:flex;gap:6px;margin-top:8px;"><span class="gfi-r">🏊 9</span><span class="gfi-r">👏 6</span></div></div></div>
+  </div>
+  <div class="grp-card" onclick="openSheet('sh-group')">
+    <div class="gc-hdr"><div class="gc-icon" style="background:var(--orange-d);">🚴</div><div><div style="font-size:15px;font-weight:700;color:var(--t1);margin-bottom:2px;">70.3 Raleigh Finishers</div><div style="font-size:12px;color:var(--t3);">🎯 64 athletes · Racing May 2026</div></div></div>
+    <div class="gfi"><div class="gfi-av" style="background:var(--orange);">AT</div><div style="flex:1;"><div style="font-size:12px;color:var(--t2);line-height:1.55;"><strong style="color:var(--t1);">Alex T.</strong> Week 3 in the books. 47 days out 💪</div><div style="display:flex;gap:6px;margin-top:8px;"><span class="gfi-r">🔥 22</span><span class="gfi-r">🏁 11</span></div></div></div>
+  </div>
+  <div class="sec-lbl">Suggested</div>
+  <div class="grp-card" onclick="openSheet('sh-join-group')">
+    <div class="gc-hdr"><div class="gc-icon" style="background:var(--green-d);">🧱</div><div><div style="font-size:15px;font-weight:700;color:var(--t1);margin-bottom:2px;">Brick Addicts</div><div style="font-size:12px;color:var(--t3);">🌎 2.4k athletes worldwide</div></div><span class="pill" style="background:var(--green-d);color:var(--green);font-size:10px;margin-left:auto;">Join</span></div>
+  </div>
+</div>
+<!-- COMMUNITY -->
+<div class="screen" id="community">
+  <div style="padding:10px 24px 0;display:flex;align-items:center;justify-content:space-between;"><div class="logo-row"><svg width="30" height="30" viewBox="0 0 100 100" fill="none"><rect width="100" height="100" rx="22" fill="#ec742a"/><circle cx="50" cy="22" r="10" fill="white"/><rect x="22" y="36" width="56" height="13" rx="6.5" fill="white"/><rect x="22" y="54" width="56" height="13" rx="6.5" fill="white"/><rect x="22" y="72" width="56" height="13" rx="6.5" fill="white"/></svg><span class="logo-wm">brixli</span></div><span style="font-size:13px;color:var(--orange);font-weight:600;cursor:pointer;">Explore</span></div>
+  <div style="font-size:26px;font-weight:700;color:var(--t1);padding:12px 24px 0;">Community</div>
+  <div class="sec-lbl">🏆 Active Challenges</div>
+  <div class="ch-card" onclick="openSheet('sh-challenge')">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;"><div><div style="font-size:15px;font-weight:700;color:var(--t1);margin-bottom:3px;">Swim 10K This Month</div><div style="font-size:12px;color:var(--t3);">🏊 2,847 athletes · Ends Mar 31</div></div><div style="font-size:20px;width:44px;height:44px;border-radius:12px;background:var(--aqua-d);display:flex;align-items:center;justify-content:center;">🏊</div></div>
+    <div class="prog-wrap"><div class="prog-fill" style="width:68%;background:var(--aqua);"></div></div>
+    <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--t3);"><span style="color:var(--aqua);font-weight:600;">6,800m done</span><span>10,000m goal</span></div>
+  </div>
+  <div class="ch-card" onclick="openSheet('sh-challenge')">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;"><div><div style="font-size:15px;font-weight:700;color:var(--t1);margin-bottom:3px;">Brick Every Weekend</div><div style="font-size:12px;color:var(--t3);">🧱 1,204 athletes · 4 weeks left</div></div><div style="font-size:20px;width:44px;height:44px;border-radius:12px;background:var(--orange-d);display:flex;align-items:center;justify-content:center;">🔥</div></div>
+    <div class="prog-wrap"><div class="prog-fill" style="width:50%;background:linear-gradient(90deg,var(--orange),var(--aqua));"></div></div>
+    <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--t3);"><span style="color:var(--orange);font-weight:600;">2 of 4 done</span><span>4 bricks goal</span></div>
+  </div>
+  <div class="ch-card" onclick="openSheet('sh-challenge')">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;"><div><div style="font-size:15px;font-weight:700;color:var(--t1);margin-bottom:3px;">March Miles — Bike 200mi</div><div style="font-size:12px;color:var(--t3);">🚴 4,102 athletes · 12 days left</div></div><div style="font-size:20px;width:44px;height:44px;border-radius:12px;background:var(--green-d);display:flex;align-items:center;justify-content:center;">🚵</div></div>
+    <div class="prog-wrap"><div class="prog-fill" style="width:82%;background:var(--green);"></div></div>
+    <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--t3);"><span style="color:var(--green);font-weight:600;">164mi done</span><span>200mi goal</span></div>
+  </div>
+  <div class="sec-lbl">🥇 Leaderboard — Swim</div>
+  <div class="lb-row gold"><div style="font-size:14px;font-weight:700;color:var(--t3);width:24px;text-align:center;">🥇</div><div class="lb-av" style="background:linear-gradient(135deg,#ffd700,#ffa500);">EZ</div><div style="flex:1;font-size:13px;font-weight:600;color:var(--t1);">Ezekiel T.</div><div style="font-size:13px;font-weight:700;color:var(--orange);">9,840m</div></div>
+  <div class="lb-row"><div style="font-size:14px;font-weight:700;color:var(--t3);width:24px;text-align:center;">2</div><div class="lb-av" style="background:var(--aqua);">SK</div><div style="flex:1;font-size:13px;font-weight:600;color:var(--t1);">Sarah K.</div><div style="font-size:13px;font-weight:700;color:var(--orange);">9,200m</div></div>
+  <div class="lb-row"><div style="font-size:14px;font-weight:700;color:var(--t3);width:24px;text-align:center;">3</div><div class="lb-av" style="background:var(--green);">PR</div><div style="flex:1;font-size:13px;font-weight:600;color:var(--t1);">Paul R.</div><div style="font-size:13px;font-weight:700;color:var(--orange);">7,400m</div></div>
+  <div class="lb-row you" onclick="switchTab('you')"><div style="font-size:14px;font-weight:700;color:var(--orange);width:24px;text-align:center;">4</div><div class="lb-av" style="background:var(--orange);">DJ</div><div style="flex:1;font-size:13px;font-weight:600;color:var(--t1);">D.J. (You) 👋</div><div style="font-size:13px;font-weight:700;color:var(--orange);">6,800m</div></div>
+  <div class="lb-row"><div style="font-size:14px;font-weight:700;color:var(--t3);width:24px;text-align:center;">5</div><div class="lb-av" style="background:var(--green);">MR</div><div style="flex:1;font-size:13px;font-weight:600;color:var(--t1);">Mike R.</div><div style="font-size:13px;font-weight:700;color:var(--orange);">6,200m</div></div>
+</div>
+<!-- YOU -->
+<div class="screen" id="you">
+  <div style="padding:10px 24px 0;display:flex;align-items:center;justify-content:space-between;"><div class="logo-row"><svg width="30" height="30" viewBox="0 0 100 100" fill="none"><rect width="100" height="100" rx="22" fill="#ec742a"/><circle cx="50" cy="22" r="10" fill="white"/><rect x="22" y="36" width="56" height="13" rx="6.5" fill="white"/><rect x="22" y="54" width="56" height="13" rx="6.5" fill="white"/><rect x="22" y="72" width="56" height="13" rx="6.5" fill="white"/></svg><span class="logo-wm">brixli</span></div><div style="width:34px;height:34px;background:var(--surface);border:1px solid var(--border);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;" onclick="openSheet('sh-settings')">⚙️</div></div>
+  <div style="font-size:26px;font-weight:700;color:var(--t1);padding:12px 24px 0;">Profile</div>
+  <div class="profile-hero">
+    <div style="display:flex;align-items:center;gap:16px;margin-bottom:20px;"><div class="ph-av">DJ</div><div><div style="font-size:20px;font-weight:700;color:var(--t1);">D.J. Ketchum</div><div style="font-size:13px;color:var(--t3);margin-top:2px;">📍 Durham, NC · Age Group 30–34</div><div style="display:flex;gap:6px;margin-top:8px;flex-wrap:wrap;"><span class="pill" style="background:var(--orange-d);color:var(--orange);font-size:10px;">🔥 18-day streak</span><span class="pill" style="background:var(--aqua-d);color:var(--aqua);font-size:10px;">🏊 Swimmer</span></div></div></div>
+    <div class="ph-stats"><div class="ph-stat"><div class="phs-val">5</div><div class="phs-lbl">Races</div></div><div class="ph-stat"><div class="phs-val">847</div><div class="phs-lbl">Workouts</div></div><div class="ph-stat"><div class="phs-val">2.1K</div><div class="phs-lbl">Miles</div></div><div class="ph-stat"><div class="phs-val">142</div><div class="phs-lbl">Followers</div></div></div>
+  </div>
+  <div class="sec-lbl">2026 Season Stats</div>
+  <div class="stat-row"><div style="font-size:10px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--t3);margin-bottom:14px;">Total Distance</div><div class="disc-stats"><div class="disc-stat"><div style="font-size:20px;margin-bottom:5px;">🏊</div><div style="font-size:18px;font-weight:700;color:var(--aqua);">18.4</div><div style="font-size:10px;color:var(--t3);margin-top:2px;">mi swim</div></div><div class="disc-stat"><div style="font-size:20px;margin-bottom:5px;">🚴</div><div style="font-size:18px;font-weight:700;color:var(--green);">614</div><div style="font-size:10px;color:var(--t3);margin-top:2px;">mi bike</div></div><div class="disc-stat"><div style="font-size:20px;margin-bottom:5px;">🏃</div><div style="font-size:18px;font-weight:700;color:var(--orange);">186</div><div style="font-size:10px;color:var(--t3);margin-top:2px;">mi run</div></div></div></div>
+  <div class="sec-lbl">Race History</div>
+  <div class="rr" onclick="openSheet('sh-race')"><div style="font-size:22px;">🏁</div><div style="flex:1;"><div style="font-size:14px;font-weight:600;color:var(--t1);margin-bottom:2px;">Ironman 70.3 Raleigh</div><div style="font-size:12px;color:var(--t3);">May 2026 · 47 days away</div></div><span class="pill" style="background:var(--orange-d);color:var(--orange);font-size:10px;">Registered</span></div>
+  <div class="rr" onclick="openSheet('sh-past')"><div style="font-size:22px;">✅</div><div style="flex:1;"><div style="font-size:14px;font-weight:600;color:var(--t1);margin-bottom:2px;">Raleigh Sprint Tri</div><div style="font-size:12px;color:var(--t3);">Sep 2025 · 1:24:38</div></div><span class="pill" style="background:var(--green-d);color:var(--green);font-size:10px;">Finished</span></div>
+  <div class="rr"><div style="font-size:22px;">✅</div><div style="flex:1;"><div style="font-size:14px;font-weight:600;color:var(--t1);margin-bottom:2px;">Tobacco Road Sprint</div><div style="font-size:12px;color:var(--t3);">Jun 2025 · 1:18:54</div></div><span class="pill" style="background:var(--green-d);color:var(--green);font-size:10px;">Finished</span></div>
+  <div class="sec-lbl">Connected Devices</div>
+  <div class="sr" onclick="openSheet('sh-watch')"><div class="sr-icon">⌚</div><div class="sr-label">Apple Watch</div><span style="font-size:12px;color:var(--green);font-weight:600;">✓ Connected</span></div>
+  <div class="sr" onclick="openSheet('sh-connect')"><div class="sr-icon">🔴</div><div class="sr-label">Garmin</div><span class="sr-right">Connect →</span></div>
+  <div class="sr" onclick="openSheet('sh-connect')"><div class="sr-icon">⬛</div><div class="sr-label">COROS</div><span class="sr-right">Connect →</span></div>
+  <div class="sec-lbl">Account</div>
+  <div class="sr" onclick="openSheet('sh-edit')"><div class="sr-icon">👤</div><div class="sr-label">Edit Profile</div><div class="sr-right">›</div></div>
+  <div class="sr" onclick="openSheet('sh-notif')"><div class="sr-icon">🔔</div><div class="sr-label">Notifications</div><div class="sr-right">›</div></div>
+  <div class="sr"><div class="sr-icon">🔒</div><div class="sr-label">Privacy</div><div class="sr-right">›</div></div>
+  <div class="sr"><div class="sr-icon">❓</div><div class="sr-label">Help & Support</div><div class="sr-right">›</div></div>
+</div>
+</div><!-- /screens -->
+<!-- FAB -->
+<div class="fab" onclick="openSheet('sh-import')"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-tab active" id="tab-home" onclick="switchTab('home')"><div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div><div class="nav-label">Home</div></div>
+  <div class="nav-tab" id="tab-plan" onclick="switchTab('plan')"><div class="nav-icon"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div><div class="nav-label">Plan</div></div>
+  <div class="nav-tab" id="tab-groups" onclick="switchTab('groups')"><div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg></div><div class="nav-label">Groups</div></div>
+  <div class="nav-tab" id="tab-community" onclick="switchTab('community')"><div class="nav-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg></div><div class="nav-label">Community</div></div>
+  <div class="nav-tab" id="tab-you" onclick="switchTab('you')"><div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div><div class="nav-label">You</div></div>
+</nav>
+<div class="backdrop" id="bd" onclick="closeSheets()"></div>
+<!-- SHEETS -->
+<!-- Workout Detail -->
+<div class="sheet" id="sh-workout">
+  <div class="sh-handle"></div><div class="sh-close" onclick="closeSheets()">✕</div>
+  <div class="sh-title">Tempo Run</div>
+  <div class="wd-hero">
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;"><span class="td-pill">🏃 Run</span><span style="font-size:11px;color:var(--green);font-weight:600;">✓ Watch Ready</span></div>
+    <div style="font-size:13px;color:var(--t3);margin-bottom:18px;">Wednesday, Mar 19 · Zone 3 · Ironman 70.3 Build</div>
+    <div style="display:flex;gap:20px;">
+      <div><div style="font-size:21px;font-weight:700;color:var(--orange);">8:32<span style="font-size:12px;color:var(--t3);">/mi</span></div><div style="font-size:10px;text-transform:uppercase;letter-spacing:0.08em;color:var(--t3);">Target Pace</div></div>
+      <div><div style="font-size:21px;font-weight:700;color:var(--t1);">155<span style="font-size:12px;color:var(--t3);">bpm</span></div><div style="font-size:10px;text-transform:uppercase;letter-spacing:0.08em;color:var(--t3);">Heart Rate</div></div>
+      <div><div style="font-size:21px;font-weight:700;color:var(--t1);">28<span style="font-size:12px;color:var(--t3);">min</span></div><div style="font-size:10px;text-transform:uppercase;letter-spacing:0.08em;color:var(--t3);">Est. Time</div></div>
+    </div>
+  </div>
+  <div class="wd-grid">
+    <div class="wd-box"><div class="wd-bv">3.0<span style="font-size:13px;color:var(--t3);">mi</span></div><div class="wd-bl">Distance</div></div>
+    <div class="wd-box"><div class="wd-bv">6</div><div class="wd-bl">Intervals</div></div>
+    <div class="wd-box"><div class="wd-bv">450<span style="font-size:13px;color:var(--t3);">cal</span></div><div class="wd-bl">Est. Calories</div></div>
+    <div class="wd-box"><div class="wd-bv">Zone 3</div><div class="wd-bl">Training Zone</div></div>
+  </div>
+  <div style="padding:0 24px;font-size:10px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:var(--t3);margin-bottom:12px;">Workout Breakdown</div>
+  <div class="iv-row"><div class="iv-n" style="background:var(--green-d);color:var(--green);">W</div><div class="iv-info"><div class="iv-title">Warm Up</div><div class="iv-meta">1.0 mile · Easy</div></div><div class="iv-pace" style="color:var(--green);">10:00/mi</div></div>
+  <div class="iv-row"><div class="iv-n">1</div><div class="iv-info"><div class="iv-title">Tempo Interval</div><div class="iv-meta">0.25 mi · Zone 3</div></div><div class="iv-pace">8:32/mi</div></div>
+  <div class="iv-row"><div class="iv-n" style="background:var(--aqua-d);color:var(--aqua);">R</div><div class="iv-info"><div class="iv-title">Recovery</div><div class="iv-meta">60 sec · Walk</div></div><div class="iv-pace" style="color:var(--aqua);">Easy</div></div>
+  <div class="iv-row"><div class="iv-n">2</div><div class="iv-info"><div class="iv-title">Tempo Interval</div><div class="iv-meta">0.25 mi · Zone 3</div></div><div class="iv-pace">8:32/mi</div></div>
+  <div class="iv-row"><div class="iv-n" style="background:var(--aqua-d);color:var(--aqua);">R</div><div class="iv-info"><div class="iv-title">Recovery</div><div class="iv-meta">60 sec · Walk</div></div><div class="iv-pace" style="color:var(--aqua);">Easy</div></div>
+  <div class="iv-row"><div class="iv-n">3–6</div><div class="iv-info"><div class="iv-title">Tempo Intervals</div><div class="iv-meta">4 × 0.25 mi + 60s recovery each</div></div><div class="iv-pace">8:32/mi</div></div>
+  <div class="iv-row"><div class="iv-n" style="background:var(--green-d);color:var(--green);">C</div><div class="iv-info"><div class="iv-title">Cool Down</div><div class="iv-meta">0.5 mile · Easy</div></div><div class="iv-pace" style="color:var(--green);">10:30/mi</div></div>
+  <div style="padding:20px 24px 0;display:flex;flex-direction:column;gap:10px;">
+    <button class="btn-p" onclick="startWorkout()">Start Workout 🏃</button>
+    <button class="btn-s" onclick="closeSheets()">Save for Later</button>
+  </div>
+</div>
+<!-- Past Workout -->
+<div class="sheet" id="sh-past">
+  <div class="sh-handle"></div><div class="sh-close" onclick="closeSheets()">✕</div>
+  <div class="sh-title">Open Water Swim ✓</div>
+  <div class="wd-hero" style="background:linear-gradient(145deg,#0e1a1a,#142020);border-color:rgba(148,230,228,0.2);">
+    <div style="margin-bottom:12px;"><span class="pill" style="background:var(--aqua-d);color:var(--aqua);font-size:10px;">🏊 Swim</span></div>
+    <div style="font-size:13px;color:var(--t3);margin-bottom:16px;">Monday, Mar 17 · Zone 2 · Imported from Apple Watch ⌚</div>
+    <div style="display:flex;gap:20px;">
+      <div><div style="font-size:21px;font-weight:700;color:var(--aqua);">2,080<span style="font-size:12px;color:var(--t3);">m</span></div><div style="font-size:10px;text-transform:uppercase;letter-spacing:0.08em;color:var(--t3);">Distance</div></div>
+      <div><div style="font-size:21px;font-weight:700;color:var(--t1);">58<span style="font-size:12px;color:var(--t3);">min</span></div><div style="font-size:10px;text-transform:uppercase;letter-spacing:0.08em;color:var(--t3);">Duration</div></div>
+      <div><div style="font-size:21px;font-weight:700;color:var(--t1);">138<span style="font-size:12px;color:var(--t3);">bpm</span></div><div style="font-size:10px;text-transform:uppercase;letter-spacing:0.08em;color:var(--t3);">Avg HR</div></div>
+    </div>
+  </div>
+  <div class="wd-grid">
+    <div class="wd-box"><div class="wd-bv">1:47<span style="font-size:12px;color:var(--t3);">/100m</span></div><div class="wd-bl">Avg Pace</div></div>
+    <div class="wd-box"><div class="wd-bv">41</div><div class="wd-bl">Laps</div></div>
+    <div class="wd-box"><div class="wd-bv">520<span style="font-size:12px;color:var(--t3);">cal</span></div><div class="wd-bl">Calories</div></div>
+    <div class="wd-box"><div class="wd-bv" style="color:var(--green);">PR 🏆</div><div class="wd-bl">Personal Best</div></div>
+  </div>
+  <div style="margin:0 24px 20px;padding:16px;background:var(--elevated);border-radius:var(--r-sm);font-size:13px;color:var(--t2);line-height:1.6;">💬 <strong style="color:var(--t1);">Coach Note:</strong> Great pacing — held Zone 2 the whole way with minimal HR drift. PR on the distance! Keep building this aerobic base. 💪</div>
+  <div style="padding:0 24px;"><button class="btn-s" onclick="closeSheets()">Close</button></div>
+</div>
+<!-- Upcoming Pool Swim -->
+<div class="sheet" id="sh-upcoming">
+  <div class="sh-handle"></div><div class="sh-close" onclick="closeSheets()">✕</div>
+  <div class="sh-title">Pool Swim</div>
+  <div class="wd-hero" style="background:linear-gradient(145deg,#0e1a1a,#142020);border-color:rgba(148,230,228,0.2);">
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;"><span class="pill" style="background:var(--aqua-d);color:var(--aqua);font-size:10px;">🏊 Swim</span><span style="font-size:11px;color:var(--t3);">Thursday, Mar 20</span></div>
+    <div style="font-size:13px;color:var(--t3);margin-bottom:16px;">Interval session · Week 3 · Ironman 70.3 Build</div>
+    <div style="display:flex;gap:20px;">
+      <div><div style="font-size:21px;font-weight:700;color:var(--aqua);">1,500<span style="font-size:12px;color:var(--t3);">m</span></div><div style="font-size:10px;text-transform:uppercase;letter-spacing:0.08em;color:var(--t3);">Distance</div></div>
+      <div><div style="font-size:21px;font-weight:700;color:var(--t1);">45<span style="font-size:12px;color:var(--t3);">min</span></div><div style="font-size:10px;text-transform:uppercase;letter-spacing:0.08em;color:var(--t3);">Est. Time</div></div>
+      <div><div style="font-size:21px;font-weight:700;color:var(--t1);">1:48<span style="font-size:12px;color:var(--t3);">/100m</span></div><div style="font-size:10px;text-transform:uppercase;letter-spacing:0.08em;color:var(--t3);">Target</div></div>
+    </div>
+  </div>
+  <div style="padding:0 24px;font-size:10px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:var(--t3);margin-bottom:12px;">Breakdown</div>
+  <div class="iv-row"><div class="iv-n" style="background:var(--green-d);color:var(--green);">W</div><div class="iv-info"><div class="iv-title">Warm Up</div><div class="iv-meta">200m easy</div></div><div class="iv-pace" style="color:var(--green);">Easy</div></div>
+  <div class="iv-row"><div class="iv-n">×6</div><div class="iv-info"><div class="iv-title">Main Set</div><div class="iv-meta">6 × 150m on 3:00</div></div><div class="iv-pace">1:45/100m</div></div>
+  <div class="iv-row"><div class="iv-n" style="background:var(--green-d);color:var(--green);">C</div><div class="iv-info"><div class="iv-title">Cool Down</div><div class="iv-meta">100m easy</div></div><div class="iv-pace" style="color:var(--green);">Easy</div></div>
+  <div style="padding:20px 24px 0;display:flex;flex-direction:column;gap:10px;"><button class="btn-p" onclick="closeSheets()">Add to Calendar</button><button class="btn-s" onclick="closeSheets()">Close</button></div>
+</div>
+<!-- Brick -->
+<div class="sheet" id="sh-brick">
+  <div class="sh-handle"></div><div class="sh-close" onclick="closeSheets()">✕</div>
+  <div class="sh-title">Brick Workout 🧱</div>
+  <div class="wd-hero">
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;"><span class="pill" style="background:rgba(255,255,255,0.06);color:var(--t1);font-size:10px;border:1px solid rgba(255,255,255,0.08);">🧱 Brick</span><span style="font-size:11px;color:var(--t3);">Sunday, Mar 23</span></div>
+    <div style="font-size:13px;color:var(--t3);margin-bottom:16px;">Race simulation · 70.3 Race Pace</div>
+    <div style="display:flex;gap:14px;align-items:center;">
+      <div><div style="font-size:20px;font-weight:700;color:var(--green);">30<span style="font-size:12px;color:var(--t3);">mi</span></div><div style="font-size:10px;text-transform:uppercase;letter-spacing:0.08em;color:var(--t3);">Bike</div></div>
+      <div style="font-size:20px;color:var(--t4);">+</div>
+      <div><div style="font-size:20px;font-weight:700;color:var(--orange);">6<span style="font-size:12px;color:var(--t3);">mi</span></div><div style="font-size:10px;text-transform:uppercase;letter-spacing:0.08em;color:var(--t3);">Run</div></div>
+      <div style="margin-left:auto;"><div style="font-size:20px;font-weight:700;color:var(--t1);">2:45<span style="font-size:12px;color:var(--t3);">hr</span></div><div style="font-size:10px;text-transform:uppercase;letter-spacing:0.08em;color:var(--t3);">Est. Time</div></div>
+    </div>
+  </div>
+  <div style="margin:0 24px 20px;padding:16px;background:var(--elevated);border-radius:var(--r-sm);font-size:13px;color:var(--t2);line-height:1.65;">Your key session this week. Ride at race pace, then run the first mile easy to practice the transition. Focus on fueling — eat on the bike, not the run.</div>
+  <div style="padding:0 24px;display:flex;flex-direction:column;gap:10px;"><button class="btn-p" onclick="closeSheets()">Prepare Gear List 📋</button><button class="btn-s" onclick="closeSheets()">Close</button></div>
+</div>
+<!-- Import from Apple Watch -->
+<div class="sheet" id="sh-import">
+  <div class="sh-handle"></div><div class="sh-close" onclick="closeSheets()">✕</div>
+  <div class="sh-title">Log Workout</div>
+  <div style="margin:0 24px 20px;background:linear-gradient(145deg,#0e1a1a,#142020);border:1px solid rgba(148,230,228,0.18);border-radius:var(--r);padding:24px;text-align:center;position:relative;overflow:hidden;">
+    <div style="position:absolute;bottom:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--aqua),transparent);"></div>
+    <div style="font-size:52px;margin-bottom:12px;">⌚</div>
+    <div style="font-size:18px;font-weight:700;color:var(--t1);margin-bottom:6px;">Import from Apple Watch</div>
+    <div style="font-size:13px;color:var(--t3);line-height:1.6;">Recent workouts synced from your Apple Watch are ready to import into Brixli.</div>
+  </div>
+  <div style="padding:0 24px;font-size:10px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:var(--t3);margin-bottom:12px;">Recent Workouts — Tap to Select</div>
+  <div class="iw-item" id="iw1" onclick="selectImport('iw1')">
+    <div style="width:44px;height:44px;border-radius:12px;background:var(--orange-d);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;">🏃</div>
+    <div style="flex:1;"><div style="font-size:14px;font-weight:600;color:var(--t1);margin-bottom:3px;">Outdoor Run</div><div style="font-size:12px;color:var(--t3);">Today · 3.1mi · 28:42 · 9:14/mi · 144bpm</div></div>
+    <div class="iw-ck" id="ck1"></div>
+  </div>
+  <div class="iw-item" id="iw2" onclick="selectImport('iw2')">
+    <div style="width:44px;height:44px;border-radius:12px;background:var(--green-d);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;">🚴</div>
+    <div style="flex:1;"><div style="font-size:14px;font-weight:600;color:var(--t1);margin-bottom:3px;">Outdoor Cycle</div><div style="font-size:12px;color:var(--t3);">Yesterday · 28.4mi · 1:32:10 · 138bpm</div></div>
+    <div class="iw-ck" id="ck2"></div>
+  </div>
+  <div class="iw-item" id="iw3" onclick="selectImport('iw3')">
+    <div style="width:44px;height:44px;border-radius:12px;background:var(--aqua-d);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;">🏊</div>
+    <div style="flex:1;"><div style="font-size:14px;font-weight:600;color:var(--t1);margin-bottom:3px;">Pool Swim</div><div style="font-size:12px;color:var(--t3);">Mon · 2,080m · 58:14 · 1:48/100m</div></div>
+    <div class="iw-ck" id="ck3"></div>
+  </div>
+  <div style="padding:20px 24px 0;display:flex;flex-direction:column;gap:10px;">
+    <button class="btn-p" id="import-btn" onclick="doImport()" style="opacity:0.4;pointer-events:none;">Select a Workout</button>
+    <button class="btn-s" onclick="openSheet('sh-manual')">Log Manually Instead</button>
+  </div>
+</div>
+<!-- Workout Imported! -->
+<div class="sheet" id="sh-complete">
+  <div class="sh-handle"></div>
+  <div style="margin:0 24px 18px;background:linear-gradient(145deg,#0e1a0e,#141e14);border:1px solid rgba(174,230,148,0.2);border-radius:var(--r);padding:28px 24px;text-align:center;position:relative;overflow:hidden;">
+    <div style="position:absolute;bottom:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--green),transparent);"></div>
+    <div style="font-size:52px;margin-bottom:12px;">🎉</div>
+    <div style="font-size:22px;font-weight:700;color:var(--t1);margin-bottom:6px;">Workout Imported!</div>
+    <div style="font-size:13px;color:var(--t3);">Outdoor Run · Today · Added to your log</div>
+  </div>
+  <div class="wc-grid">
+    <div class="wc-box"><div style="font-size:19px;font-weight:700;color:var(--t1);">3.1<span style="font-size:12px;color:var(--t3);">mi</span></div><div style="font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.07em;color:var(--t3);margin-top:3px;">Distance</div></div>
+    <div class="wc-box"><div style="font-size:19px;font-weight:700;color:var(--t1);">28:42</div><div style="font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.07em;color:var(--t3);margin-top:3px;">Time</div></div>
+    <div class="wc-box"><div style="font-size:19px;font-weight:700;color:var(--t1);">144<span style="font-size:12px;color:var(--t3);">bpm</span></div><div style="font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.07em;color:var(--t3);margin-top:3px;">Avg HR</div></div>
+    <div class="wc-box"><div style="font-size:19px;font-weight:700;color:var(--t1);">9:14<span style="font-size:12px;color:var(--t3);">/mi</span></div><div style="font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.07em;color:var(--t3);margin-top:3px;">Avg Pace</div></div>
+    <div class="wc-box"><div style="font-size:19px;font-weight:700;color:var(--green);">Z2</div><div style="font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.07em;color:var(--t3);margin-top:3px;">Zone</div></div>
+    <div class="wc-box"><div style="font-size:19px;font-weight:700;color:var(--t1);">312<span style="font-size:12px;color:var(--t3);">cal</span></div><div style="font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.07em;color:var(--t3);margin-top:3px;">Calories</div></div>
+  </div>
+  <div style="margin:0 24px 16px;padding:14px 16px;background:var(--elevated);border-radius:var(--r-sm);font-size:13px;color:var(--t2);line-height:1.6;">💬 Share this with your group?</div>
+  <div style="padding:0 24px;display:flex;flex-direction:column;gap:10px;">
+    <button class="btn-p" onclick="closeSheets();switchTab('home')">Share to Triangle Tri Club 🎉</button>
+    <button class="btn-s" onclick="closeSheets();switchTab('home')">Done</button>
+  </div>
+</div>
+<!-- Workout Started -->
+<div class="sheet" id="sh-started">
+  <div class="sh-handle"></div>
+  <div style="margin:0 24px 18px;background:linear-gradient(145deg,#271e16,#1e1a16);border:1px solid rgba(236,116,42,0.2);border-radius:var(--r);padding:28px 24px;text-align:center;position:relative;overflow:hidden;">
+    <div style="position:absolute;bottom:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--orange),transparent);"></div>
+    <div style="font-size:52px;margin-bottom:12px;">🏃</div>
+    <div style="font-size:22px;font-weight:700;color:var(--t1);margin-bottom:6px;">Workout Started!</div>
+    <div style="font-size:13px;color:var(--t3);">Your Apple Watch is recording. Go crush it!</div>
+  </div>
+  <div style="margin:0 24px 20px;padding:16px;background:var(--elevated);border-radius:var(--r-sm);font-size:13px;color:var(--t2);line-height:1.65;">When you're done, open Brixli and tap <strong style="color:var(--orange);">+ Import</strong> to pull your stats directly from Apple Watch.</div>
+  <div style="padding:0 24px;"><button class="btn-s" onclick="closeSheets()">Got it 💪</button></div>
+</div>
+<!-- Manual Log -->
+<div class="sheet" id="sh-manual">
+  <div class="sh-handle"></div><div class="sh-close" onclick="closeSheets()">✕</div>
+  <div class="sh-title">Log Manually</div>
+  <div style="padding:0 24px 16px;font-size:13px;color:var(--t3);">Select sport type</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:0 24px 20px;">
+    <div onclick="closeSheets()" style="background:var(--aqua-d);border:1px solid rgba(148,230,228,0.2);border-radius:var(--r-sm);padding:18px;text-align:center;cursor:pointer;"><div style="font-size:28px;">🏊</div><div style="font-size:13px;font-weight:600;color:var(--aqua);margin-top:6px;">Swim</div></div>
+    <div onclick="closeSheets()" style="background:var(--green-d);border:1px solid rgba(174,230,148,0.2);border-radius:var(--r-sm);padding:18px;text-align:center;cursor:pointer;"><div style="font-size:28px;">🚴</div><div style="font-size:13px;font-weight:600;color:var(--green);margin-top:6px;">Bike</div></div>
+    <div onclick="closeSheets()" style="background:var(--orange-d);border:1px solid rgba(236,116,42,0.2);border-radius:var(--r-sm);padding:18px;text-align:center;cursor:pointer;"><div style="font-size:28px;">🏃</div><div style="font-size:13px;font-weight:600;color:var(--orange);margin-top:6px;">Run</div></div>
+    <div onclick="closeSheets()" style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:var(--r-sm);padding:18px;text-align:center;cursor:pointer;"><div style="font-size:28px;">🧱</div><div style="font-size:13px;font-weight:600;color:var(--t1);margin-top:6px;">Brick</div></div>
+  </div>
+</div>
+<!-- Notifications -->
+<div class="sheet" id="sh-notif">
+  <div class="sh-handle"></div><div class="sh-close" onclick="closeSheets()">✕</div>
+  <div class="sh-title">Notifications</div>
+  <div style="padding:14px 24px;display:flex;gap:14px;border-bottom:1px solid var(--border);cursor:pointer;" onclick="openSheet('sh-workout')"><div class="ni-icon" style="background:var(--orange-d);">🏃</div><div><div style="font-size:13px;font-weight:600;color:var(--t1);margin-bottom:3px;">Workout Reminder</div><div style="font-size:12px;color:var(--t3);line-height:1.5;">Your Tempo Run is scheduled for today. Apple Watch is ready.</div><div style="font-size:11px;color:var(--t4);margin-top:4px;">Just now</div></div></div>
+  <div style="padding:14px 24px;display:flex;gap:14px;border-bottom:1px solid var(--border);cursor:pointer;"><div class="ni-icon" style="background:var(--aqua-d);">🔥</div><div><div style="font-size:13px;font-weight:600;color:var(--t1);margin-bottom:3px;">Sarah K. reacted to your post</div><div style="font-size:12px;color:var(--t3);line-height:1.5;">🔥 on your Open Water Swim PR from Monday</div><div style="font-size:11px;color:var(--t4);margin-top:4px;">14 min ago</div></div></div>
+  <div style="padding:14px 24px;display:flex;gap:14px;border-bottom:1px solid var(--border);cursor:pointer;" onclick="openSheet('sh-challenge')"><div class="ni-icon" style="background:var(--green-d);">🏆</div><div><div style="font-size:13px;font-weight:600;color:var(--t1);margin-bottom:3px;">Challenge Update</div><div style="font-size:12px;color:var(--t3);line-height:1.5;">You're 68% toward your Swim 10K goal — 3,200m to go!</div><div style="font-size:11px;color:var(--t4);margin-top:4px;">2 hrs ago</div></div></div>
+  <div style="padding:14px 24px;display:flex;gap:14px;border-bottom:1px solid var(--border);cursor:pointer;" onclick="openSheet('sh-race')"><div class="ni-icon" style="background:var(--orange-d);">🏁</div><div><div style="font-size:13px;font-weight:600;color:var(--t1);margin-bottom:3px;">Race Countdown</div><div style="font-size:12px;color:var(--t3);line-height:1.5;">47 days until Ironman 70.3 Raleigh. Training on track 💪</div><div style="font-size:11px;color:var(--t4);margin-top:4px;">This morning</div></div></div>
+  <div style="padding:14px 24px;display:flex;gap:14px;cursor:pointer;" onclick="openSheet('sh-group')"><div class="ni-icon" style="background:var(--aqua-d);">🧱</div><div><div style="font-size:13px;font-weight:600;color:var(--t1);margin-bottom:3px;">Group Milestone</div><div style="font-size:12px;color:var(--t3);line-height:1.5;">Triangle Tri Club just hit 500 total miles this month!</div><div style="font-size:11px;color:var(--t4);margin-top:4px;">Yesterday</div></div></div>
+</div>
+<!-- Week Overview -->
+<div class="sheet" id="sh-week">
+  <div class="sh-handle"></div><div class="sh-close" onclick="closeSheets()">✕</div>
+  <div class="sh-title">Week 3 Overview</div>
+  <div style="margin:0 24px 16px;background:var(--elevated);border-radius:var(--r-sm);padding:20px;">
+    <div style="display:flex;justify-content:space-between;margin-bottom:14px;"><span style="font-size:13px;color:var(--t3);">Weekly Progress</span><span style="font-size:13px;font-weight:700;color:var(--orange);">70%</span></div>
+    <div style="height:8px;background:var(--surface);border-radius:4px;overflow:hidden;"><div style="height:100%;width:70%;background:linear-gradient(90deg,var(--orange),#f0a060);border-radius:4px;animation:barGrow 1s ease both;"></div></div>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin:0 24px 16px;">
+    <div style="background:var(--aqua-d);border-radius:var(--r-sm);padding:14px;text-align:center;"><div style="font-size:20px;font-weight:700;color:var(--aqua);">4.2</div><div style="font-size:10px;color:var(--t3);margin-top:2px;">mi swim</div></div>
+    <div style="background:var(--green-d);border-radius:var(--r-sm);padding:14px;text-align:center;"><div style="font-size:20px;font-weight:700;color:var(--green);">62</div><div style="font-size:10px;color:var(--t3);margin-top:2px;">mi bike</div></div>
+    <div style="background:var(--orange-d);border-radius:var(--r-sm);padding:14px;text-align:center;"><div style="font-size:20px;font-weight:700;color:var(--orange);">18</div><div style="font-size:10px;color:var(--t3);margin-top:2px;">mi run</div></div>
+  </div>
+  <div style="padding:0 24px;font-size:10px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:var(--t3);margin-bottom:12px;">Sessions</div>
+  <div style="padding:13px 24px;display:flex;justify-content:space-between;border-bottom:1px solid var(--border);cursor:pointer;" onclick="closeSheets();openSheet('sh-past')"><span style="font-size:13px;color:var(--t1);">Mon · Open Water Swim</span><span class="pill" style="background:var(--aqua-d);color:var(--aqua);font-size:10px;">Done</span></div>
+  <div style="padding:13px 24px;display:flex;justify-content:space-between;border-bottom:1px solid var(--border);cursor:pointer;" onclick="closeSheets();openSheet('sh-past')"><span style="font-size:13px;color:var(--t1);">Tue · Easy Bike</span><span class="pill" style="background:var(--green-d);color:var(--green);font-size:10px;">Done</span></div>
+  <div style="padding:13px 24px;display:flex;justify-content:space-between;border-bottom:1px solid var(--border);cursor:pointer;" onclick="closeSheets();openSheet('sh-workout')"><span style="font-size:13px;color:var(--orange);font-weight:600;">Wed · Tempo Run</span><span class="pill" style="background:var(--orange-d);color:var(--orange);font-size:10px;">Today</span></div>
+  <div style="padding:13px 24px;display:flex;justify-content:space-between;border-bottom:1px solid var(--border);"><span style="font-size:13px;color:var(--t2);">Thu · Pool Swim</span><span style="font-size:11px;color:var(--t3);">Upcoming</span></div>
+  <div style="padding:13px 24px;display:flex;justify-content:space-between;border-bottom:1px solid var(--border);"><span style="font-size:13px;color:var(--t2);">Fri · Rest</span><span style="font-size:11px;color:var(--t3);">Upcoming</span></div>
+  <div style="padding:13px 24px;display:flex;justify-content:space-between;"><span style="font-size:13px;color:var(--t2);">Sun · Brick Workout</span><span style="font-size:11px;color:var(--t3);">Upcoming</span></div>
+</div>
+<!-- Race Detail -->
+<div class="sheet" id="sh-race">
+  <div class="sh-handle"></div><div class="sh-close" onclick="closeSheets()">✕</div>
+  <div class="sh-title">Race Details</div>
+  <div style="margin:0 24px 18px;background:linear-gradient(145deg,#121e1e,#182020);border:1px solid rgba(148,230,228,0.2);border-radius:var(--r);padding:22px;position:relative;overflow:hidden;">
+    <div style="position:absolute;bottom:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--aqua),var(--orange));"></div>
+    <div style="font-size:10px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--aqua);margin-bottom:6px;">🏁 Ironman 70.3</div>
+    <div style="font-size:22px;font-weight:700;color:var(--t1);margin-bottom:4px;">Ironman 70.3 Raleigh</div>
+    <div style="font-size:13px;color:var(--t3);margin-bottom:18px;">📍 Raleigh, NC · May 5, 2026 · 47 days away</div>
+    <div style="display:flex;gap:12px;">
+      <div style="flex:1;background:rgba(0,0,0,0.2);border-radius:var(--r-sm);padding:12px;text-align:center;"><div style="font-size:16px;font-weight:700;color:var(--aqua);">1.2mi</div><div style="font-size:10px;color:var(--t3);margin-top:2px;">Swim</div></div>
+      <div style="flex:1;background:rgba(0,0,0,0.2);border-radius:var(--r-sm);padding:12px;text-align:center;"><div style="font-size:16px;font-weight:700;color:var(--green);">56mi</div><div style="font-size:10px;color:var(--t3);margin-top:2px;">Bike</div></div>
+      <div style="flex:1;background:rgba(0,0,0,0.2);border-radius:var(--r-sm);padding:12px;text-align:center;"><div style="font-size:16px;font-weight:700;color:var(--orange);">13.1mi</div><div style="font-size:10px;color:var(--t3);margin-top:2px;">Run</div></div>
+    </div>
+  </div>
+  <div style="padding:0 24px;font-size:10px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:var(--t3);margin-bottom:12px;">Race Day Timeline</div>
+  <div class="iv-row"><div class="iv-n" style="background:var(--aqua-d);color:var(--aqua);font-size:9px;">5am</div><div class="iv-info"><div class="iv-title">Transition Opens</div><div class="iv-meta">Body marking, gear setup</div></div></div>
+  <div class="iv-row"><div class="iv-n" style="background:var(--aqua-d);color:var(--aqua);font-size:9px;">7am</div><div class="iv-info"><div class="iv-title">Swim Start</div><div class="iv-meta">Jordan Lake · Rolling start</div></div></div>
+  <div class="iv-row"><div class="iv-n" style="background:var(--green-d);color:var(--green);">T1</div><div class="iv-info"><div class="iv-title">Transition 1</div><div class="iv-meta">Swim → Bike</div></div></div>
+  <div class="iv-row"><div class="iv-n" style="background:var(--green-d);color:var(--green);font-size:9px;">Bike</div><div class="iv-info"><div class="iv-title">56 Mile Bike Course</div><div class="iv-meta">Rolling hills · Target: 2:48</div></div></div>
+  <div class="iv-row"><div class="iv-n" style="background:var(--orange-d);color:var(--orange);">T2</div><div class="iv-info"><div class="iv-title">Transition 2</div><div class="iv-meta">Bike → Run</div></div></div>
+  <div class="iv-row"><div class="iv-n" style="background:var(--orange-d);color:var(--orange);font-size:9px;">Run</div><div class="iv-info"><div class="iv-title">Half Marathon</div><div class="iv-meta">Flat course · Target: 1:58</div></div></div>
+  <div style="padding:20px 24px 0;"><button class="btn-s" onclick="closeSheets()">Close</button></div>
+</div>
+<!-- Group Detail -->
+<div class="sheet" id="sh-group">
+  <div class="sh-handle"></div><div class="sh-close" onclick="closeSheets()">✕</div>
+  <div class="sh-title">Triangle Tri Club</div>
+  <div style="padding:0 24px 16px;display:flex;align-items:center;gap:12px;"><div style="font-size:14px;color:var(--t3);">📍 128 athletes · Raleigh, NC</div><span class="pill" style="background:var(--green-d);color:var(--green);font-size:10px;margin-left:auto;">✓ Member</span></div>
+  <div style="height:1px;background:var(--border);margin:0 24px;"></div>
+  <div style="padding:16px 24px;font-size:13px;color:var(--t2);line-height:1.65;">Local triathlon club based in Raleigh. We train together, race together, and celebrate every PR. All levels welcome — sprint to full iron.</div>
+  <div style="height:1px;background:var(--border);margin:0 24px;"></div>
+  <div style="padding:0 24px;font-size:10px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:var(--t3);margin:16px 0 12px;">Group Feed</div>
+  <div style="padding:12px 24px;display:flex;gap:12px;border-bottom:1px solid var(--border);"><div class="gfi-av" style="background:var(--aqua);">SK</div><div><div style="font-size:12px;color:var(--t2);line-height:1.55;"><strong style="color:var(--t1);">Sarah K.</strong> crushed a 40mi brick 🔥 Full race sim!</div><div style="display:flex;gap:6px;margin-top:8px;"><span class="gfi-r">🔥 14</span><span class="gfi-r">💪 8</span><span class="gfi-r">+ React</span></div></div></div>
+  <div style="padding:12px 24px;display:flex;gap:12px;"><div class="gfi-av" style="background:var(--green);">MR</div><div><div style="font-size:12px;color:var(--t2);line-height:1.55;"><strong style="color:var(--t1);">Mike R.</strong> OWS PR — 1.2mi in 38 mins 🏊</div><div style="display:flex;gap:6px;margin-top:8px;"><span class="gfi-r">🏊 9</span><span class="gfi-r">👏 6</span></div></div></div>
+  <div style="padding:20px 24px 0;"><button class="btn-p" onclick="closeSheets()">Post to Group 📣</button></div>
+</div>
+<!-- Join Group -->
+<div class="sheet" id="sh-join-group">
+  <div class="sh-handle"></div><div class="sh-close" onclick="closeSheets()">✕</div>
+  <div class="sh-title">Brick Addicts 🧱</div>
+  <div style="padding:0 24px 16px;font-size:13px;color:var(--t2);line-height:1.65;">A global community of triathlon athletes obsessed with brick workouts. Share sessions, tips, and war stories with 2,400+ athletes worldwide.</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:0 24px 20px;">
+    <div style="background:var(--elevated);border-radius:var(--r-sm);padding:14px;text-align:center;"><div style="font-size:18px;font-weight:700;color:var(--t1);">2.4K</div><div style="font-size:10px;color:var(--t3);">Members</div></div>
+    <div style="background:var(--elevated);border-radius:var(--r-sm);padding:14px;text-align:center;"><div style="font-size:18px;font-weight:700;color:var(--orange);">🌎</div><div style="font-size:10px;color:var(--t3);">Worldwide</div></div>
+  </div>
+  <div style="padding:0 24px;display:flex;flex-direction:column;gap:10px;"><button class="btn-p" onclick="closeSheets()">Join Group</button><button class="btn-s" onclick="closeSheets()">Maybe Later</button></div>
+</div>
+<!-- New Group -->
+<div class="sheet" id="sh-new-group">
+  <div class="sh-handle"></div><div class="sh-close" onclick="closeSheets()">✕</div>
+  <div class="sh-title">Create a Group</div>
+  <div style="margin:0 24px 14px;"><div style="font-size:11px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--t3);margin-bottom:8px;">Group Name</div><input class="field-i" placeholder="e.g. Durham Tri Squad"></div>
+  <div style="margin:0 24px 14px;"><div style="font-size:11px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--t3);margin-bottom:8px;">Focus</div><div style="display:flex;gap:8px;flex-wrap:wrap;"><span class="pill" style="background:var(--orange-d);color:var(--orange);cursor:pointer;">Race</span><span class="pill" style="background:var(--elevated);color:var(--t2);cursor:pointer;">Training</span><span class="pill" style="background:var(--elevated);color:var(--t2);cursor:pointer;">Social</span></div></div>
+  <div style="margin:0 24px 20px;"><div style="font-size:11px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--t3);margin-bottom:8px;">Location (optional)</div><input class="field-i" placeholder="City, State"></div>
+  <div style="padding:0 24px;"><button class="btn-p" onclick="closeSheets()">Create Group</button></div>
+</div>
+<!-- Challenge Detail -->
+<div class="sheet" id="sh-challenge">
+  <div class="sh-handle"></div><div class="sh-close" onclick="closeSheets()">✕</div>
+  <div class="sh-title">Swim 10K This Month 🏊</div>
+  <div style="margin:0 24px 16px;background:var(--aqua-d);border:1px solid rgba(148,230,228,0.18);border-radius:var(--r);padding:20px;">
+    <div style="height:10px;background:rgba(0,0,0,0.2);border-radius:5px;overflow:hidden;margin-bottom:12px;"><div style="height:100%;width:68%;background:var(--aqua);border-radius:5px;animation:barGrow 1s ease both;"></div></div>
+    <div style="display:flex;justify-content:space-between;font-size:13px;"><span style="color:var(--aqua);font-weight:700;">6,800m done</span><span style="color:var(--t3);">10,000m goal</span></div>
+    <div style="margin-top:12px;font-size:13px;color:var(--t2);">3,200m remaining · 12 days left</div>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:0 24px 16px;">
+    <div style="background:var(--elevated);border-radius:var(--r-sm);padding:14px;text-align:center;"><div style="font-size:18px;font-weight:700;color:var(--t1);">4</div><div style="font-size:10px;color:var(--t3);">Your Rank</div></div>
+    <div style="background:var(--elevated);border-radius:var(--r-sm);padding:14px;text-align:center;"><div style="font-size:18px;font-weight:700;color:var(--t1);">2,847</div><div style="font-size:10px;color:var(--t3);">Athletes</div></div>
+  </div>
+  <div style="padding:0 24px;font-size:10px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:var(--t3);margin-bottom:12px;">Top Swimmers</div>
+  <div class="lb-row gold"><div style="font-size:14px;font-weight:700;color:var(--t3);width:24px;text-align:center;">🥇</div><div class="lb-av" style="background:linear-gradient(135deg,#ffd700,#ffa500);">EZ</div><div style="flex:1;font-size:13px;font-weight:600;color:var(--t1);">Ezekiel T.</div><div style="font-size:13px;font-weight:700;color:var(--orange);">9,840m</div></div>
+  <div class="lb-row" style="margin-top:4px;"><div style="font-size:14px;font-weight:700;color:var(--t3);width:24px;text-align:center;">2</div><div class="lb-av" style="background:var(--aqua);">SK</div><div style="flex:1;font-size:13px;font-weight:600;color:var(--t1);">Sarah K.</div><div style="font-size:13px;font-weight:700;color:var(--orange);">9,200m</div></div>
+  <div class="lb-row you" style="margin-top:4px;"><div style="font-size:14px;font-weight:700;color:var(--orange);width:24px;text-align:center;">4</div><div class="lb-av" style="background:var(--orange);">DJ</div><div style="flex:1;font-size:13px;font-weight:600;color:var(--t1);">D.J. (You)</div><div style="font-size:13px;font-weight:700;color:var(--orange);">6,800m</div></div>
+  <div style="padding:20px 24px 0;"><button class="btn-p" onclick="closeSheets();openSheet('sh-import')">Log a Swim 🏊</button></div>
+</div>
+<!-- Apple Watch Settings -->
+<div class="sheet" id="sh-watch">
+  <div class="sh-handle"></div><div class="sh-close" onclick="closeSheets()">✕</div>
+  <div class="sh-title">Apple Watch</div>
+  <div style="margin:0 24px 20px;background:var(--green-d);border:1px solid rgba(174,230,148,0.2);border-radius:var(--r);padding:22px;text-align:center;">
+    <div style="font-size:48px;margin-bottom:10px;">⌚</div>
+    <div style="font-size:16px;font-weight:700;color:var(--green);margin-bottom:4px;">✓ Connected</div>
+    <div style="font-size:13px;color:var(--t3);">Apple Watch Series 9 · Last synced 4 min ago</div>
+  </div>
+  <div style="padding:0 24px;font-size:10px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:var(--t3);margin-bottom:12px;">Auto-Sync Settings</div>
+  <div class="sr"><div class="sr-icon">🏃</div><div class="sr-label">Outdoor Run</div><span style="font-size:12px;color:var(--green);font-weight:600;">On</span></div>
+  <div class="sr"><div class="sr-icon">🚴</div><div class="sr-label">Outdoor Cycle</div><span style="font-size:12px;color:var(--green);font-weight:600;">On</span></div>
+  <div class="sr"><div class="sr-icon">🏊</div><div class="sr-label">Pool Swim</div><span style="font-size:12px;color:var(--green);font-weight:600;">On</span></div>
+  <div class="sr"><div class="sr-icon">🌊</div><div class="sr-label">Open Water Swim</div><span style="font-size:12px;color:var(--green);font-weight:600;">On</span></div>
+  <div class="sr"><div class="sr-icon">❤️</div><div class="sr-label">Heart Rate</div><span style="font-size:12px;color:var(--green);font-weight:600;">On</span></div>
+  <div style="padding:20px 24px 0;"><button class="btn-p" onclick="closeSheets();openSheet('sh-import')">Import Latest Workout →</button></div>
+</div>
+<!-- Connect Device -->
+<div class="sheet" id="sh-connect">
+  <div class="sh-handle"></div><div class="sh-close" onclick="closeSheets()">✕</div>
+  <div class="sh-title">Connect Device</div>
+  <div style="margin:0 24px 20px;background:var(--elevated);border-radius:var(--r);padding:24px;text-align:center;">
+    <div style="font-size:48px;margin-bottom:12px;">🔗</div>
+    <div style="font-size:15px;font-weight:600;color:var(--t1);margin-bottom:8px;">Connect Garmin or COROS</div>
+    <div style="font-size:13px;color:var(--t3);line-height:1.6;">Auto-sync workouts from Garmin Connect or COROS app directly into Brixli. Coming in the full app release.</div>
+  </div>
+  <div style="padding:0 24px;display:flex;flex-direction:column;gap:10px;"><button class="btn-p" onclick="closeSheets()">Join Waitlist 🔔</button><button class="btn-s" onclick="closeSheets()">Back</button></div>
+</div>
+<!-- Edit Profile -->
+<div class="sheet" id="sh-edit">
+  <div class="sh-handle"></div><div class="sh-close" onclick="closeSheets()">✕</div>
+  <div class="sh-title">Edit Profile</div>
+  <div style="margin:0 24px 14px;"><div style="font-size:11px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--t3);margin-bottom:8px;">Name</div><input class="field-i" value="D.J. Ketchum"></div>
+  <div style="margin:0 24px 14px;"><div style="font-size:11px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--t3);margin-bottom:8px;">Location</div><input class="field-i" value="Durham, NC"></div>
+  <div style="margin:0 24px 14px;"><div style="font-size:11px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--t3);margin-bottom:8px;">Age Group</div><input class="field-i" value="30–34"></div>
+  <div style="margin:0 24px 20px;"><div style="font-size:11px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--t3);margin-bottom:8px;">Primary Discipline</div><div style="display:flex;gap:8px;"><span class="pill" style="background:var(--aqua-d);color:var(--aqua);cursor:pointer;">🏊 Swim</span><span class="pill" style="background:var(--elevated);color:var(--t2);cursor:pointer;">🚴 Bike</span><span class="pill" style="background:var(--elevated);color:var(--t2);cursor:pointer;">🏃 Run</span></div></div>
+  <div style="padding:0 24px;"><button class="btn-p" onclick="closeSheets()">Save Changes</button></div>
+</div>
+<!-- Settings -->
+<div class="sheet" id="sh-settings">
+  <div class="sh-handle"></div><div class="sh-close" onclick="closeSheets()">✕</div>
+  <div class="sh-title">Settings</div>
+  <div style="padding:0 24px 10px;font-size:10px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:var(--t3);">App</div>
+  <div class="sr"><div class="sr-icon">🔔</div><div class="sr-label">Push Notifications</div><span style="font-size:12px;color:var(--green);font-weight:600;">On</span></div>
+  <div class="sr"><div class="sr-icon">🌙</div><div class="sr-label">Dark Mode</div><span style="font-size:12px;color:var(--green);font-weight:600;">On</span></div>
+  <div class="sr"><div class="sr-icon">📏</div><div class="sr-label">Units</div><span class="sr-right">Miles ›</span></div>
+  <div style="padding:14px 24px 10px;font-size:10px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:var(--t3);">Privacy</div>
+  <div class="sr"><div class="sr-icon">👁️</div><div class="sr-label">Profile Visibility</div><span class="sr-right">Public ›</span></div>
+  <div class="sr"><div class="sr-icon">📍</div><div class="sr-label">Share Location</div><span style="font-size:12px;color:var(--t3);font-weight:600;">Off</span></div>
+  <div style="padding:20px 24px 0;"><button class="btn-s" onclick="closeSheets()" style="color:#e05555;border-color:rgba(224,85,85,0.3);">Sign Out</button></div>
+</div>
+</div><!-- /phone -->
+<script>
+let obSlide=0, selImport=null;
+function switchTab(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.getElementById('tab-'+id).classList.add('active');
+  document.getElementById(id).scrollTop=0;
+  closeSheets();
+}
+function openSheet(id){
+  closeSheets(false);
+  document.getElementById('bd').classList.add('open');
+  document.getElementById(id).classList.add('open');
+}
+function closeSheets(closeBd=true){
+  document.querySelectorAll('.sheet').forEach(s=>s.classList.remove('open'));
+  if(closeBd)document.getElementById('bd').classList.remove('open');
+}
+function obNext(){document.getElementById('ob'+obSlide).classList.remove('active');obSlide++;document.getElementById('ob'+obSlide).classList.add('active');}
+function obBack(){document.getElementById('ob'+obSlide).classList.remove('active');obSlide--;document.getElementById('ob'+obSlide).classList.add('active');}
+function finishOb(){const o=document.getElementById('ob');o.style.opacity='0';o.style.transform='scale(1.03)';setTimeout(()=>o.remove(),400);}
+function selectImport(id){
+  ['iw1','iw2','iw3'].forEach(i=>{document.getElementById(i).classList.remove('sel');document.getElementById('ck'+i.slice(2)).textContent='';});
+  document.getElementById(id).classList.add('sel');
+  document.getElementById('ck'+id.slice(2)).textContent='✓';
+  selImport=id;
+  const btn=document.getElementById('import-btn');
+  btn.textContent='Import Workout →';btn.style.opacity='1';btn.style.pointerEvents='auto';
+}
+function doImport(){if(!selImport)return;closeSheets();setTimeout(()=>openSheet('sh-complete'),300);}
+function startWorkout(){closeSheets();setTimeout(()=>openSheet('sh-started'),300);}
+window.addEventListener('load',()=>{setTimeout(()=>{const s=document.getElementById('splash');s.classList.add('hide');setTimeout(()=>s.remove(),600);},2400);});
+function updateClock(){const n=new Date(),h=n.getHours()%12||12,m=String(n.getMinutes()).padStart(2,'0');document.querySelector('.status-time').textContent=h+':'+m;}
+updateClock();setInterval(updateClock,30000);
+</script>
+</body>
+</html>
