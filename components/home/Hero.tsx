@@ -56,10 +56,10 @@ export function Hero() {
 
       <div className="eyebrow">Senior UX Designer / Strategist</div>
       <h1>
-        Chop it up with users. Cook up the design. <span>Ship it hot.</span>
+        I serve empathy and design craft, <span>across a dozen industries and counting.</span>
       </h1>
       <p className="hero-sub">
-        I am a senior UX designer and strategist at Slalom Consulting. Located in Central, PA.
+        Currently at Slalom Consulting. Located in Central, PA.
       </p>
     </section>
   );
