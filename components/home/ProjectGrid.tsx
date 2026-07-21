@@ -45,7 +45,8 @@ export function ProjectGrid({ title, description, projects, sectionId }: Project
         .project-grid {
           display: grid;
           grid-template-columns: repeat(3, 1fr);
-          gap: 24px;
+          gap: clamp(20px, 2vw, 28px);
+          align-items: stretch;
         }
 
         @media (max-width: 860px) {

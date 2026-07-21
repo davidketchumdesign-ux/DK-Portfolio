@@ -24,6 +24,8 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
   const gradient = gradients[project.slug] || 'linear-gradient(135deg, #3352E1, #8AA3FF)';
   const hasRealCover = /\.(png|webp)$/.test(project.coverImage);
 
+  const cardTag = [project.industry, project.tags?.[0]].filter(Boolean).join(' · ');
+
   return (
     <motion.div
       custom={index}
@@ -38,7 +40,6 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
         initial="initial"
         whileHover="hover"
         className="card"
-        style={{ cursor: 'pointer' }}
       >
         <Link href={`/case-studies/${project.slug}`} className="card-link">
           <div className="card-cover">
@@ -71,7 +72,7 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
             />
           </div>
           <div className="card-body">
-            <span className="card-tag">{project.industry}</span>
+            <span className="card-tag">{cardTag}</span>
             <h3 className="card-title">{project.title}</h3>
             <p className="card-desc">{project.summary}</p>
           </div>
@@ -79,22 +80,29 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
       </motion.div>
 
       <style jsx>{`
-        .card-wrapper {
+        :global(.card-wrapper) {
           width: 100%;
+          height: 100%;
         }
 
-        .card {
-          display: block;
+        :global(.card) {
+          display: flex;
+          flex-direction: column;
+          height: 100%;
           background: var(--bg-elevated);
           border: 1px solid var(--border);
           border-radius: var(--radius);
           overflow: hidden;
           box-shadow: var(--card-shadow);
-          transition: border-color 0.4s var(--ease), box-shadow 0.4s var(--ease);
+          transition: transform 0.4s var(--ease), box-shadow 0.4s var(--ease), border-color 0.4s var(--ease);
+          text-decoration: none;
+          color: inherit;
         }
 
-        .card:hover {
+        :global(.card:hover) {
+          transform: translateY(-6px);
           box-shadow: var(--card-shadow-hover);
+          border-color: rgba(51, 82, 225, 0.35);
         }
 
         :global(.card-link) {
@@ -102,25 +110,33 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
           color: inherit;
           display: flex;
           flex-direction: column;
-          height: 100%;
+          flex: 1;
         }
 
         .card-cover {
           height: 220px;
+          flex-shrink: 0;
           position: relative;
           overflow: hidden;
+          background: color-mix(in srgb, var(--accent) 10%, var(--bg-elevated));
         }
 
         .card-cover-inner {
           position: absolute;
           inset: 0;
+          transition: transform 0.6s var(--ease);
+        }
+
+        :global(.card:hover) .card-cover-inner {
+          transform: scale(1.06);
         }
 
         .card-body {
           padding: 22px 24px 26px;
-          flex: 1;
           display: flex;
           flex-direction: column;
+          flex: 1;
+          gap: 10px;
         }
 
         .card-tag {
@@ -128,9 +144,8 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
           font-size: 11px;
           color: var(--accent);
           text-transform: uppercase;
-          letter-spacing: 0.04em;
-          margin-bottom: 10px;
-          display: block;
+          letter-spacing: 0.05em;
+          display: inline-block;
         }
 
         .card-title {
@@ -138,15 +153,15 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
           font-weight: 600;
           font-size: 19px;
           letter-spacing: -0.01em;
-          margin-bottom: 8px;
           color: var(--text);
+          margin: 0;
         }
 
         .card-desc {
           color: var(--text-muted);
           font-size: 14px;
-          line-height: 1.5;
-          flex: 1;
+          line-height: 1.6;
+          margin: 0;
         }
       `}</style>
     </motion.div>

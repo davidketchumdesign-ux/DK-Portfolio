@@ -79,7 +79,7 @@ export const personalProjects: Project[] = [
   {
     slug: 'brixli',
     title: 'Brixli',
-    industry: 'Personal',
+    industry: 'Fitness App',
     category: 'personal',
     tags: ['Product Design', 'AI-Native Workflow'],
     summary: 'An all-in-one triathlon training app, designed and prototyped end-to-end with Claude — no Figma required.',
