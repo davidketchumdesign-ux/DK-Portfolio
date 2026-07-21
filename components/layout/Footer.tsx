@@ -6,14 +6,14 @@ export function Footer() {
       <style jsx>{`
         .footer {
           border-top: 1px solid var(--border);
-          padding: 64px var(--gutter);
+          padding: var(--section-pad-footer) var(--gutter);
           max-width: var(--container);
           margin: 0 auto;
           display: flex;
           justify-content: space-between;
           align-items: flex-end;
           flex-wrap: wrap;
-          gap: 32px;
+          gap: var(--space-9);
         }
 
         .footer h2 {
@@ -27,7 +27,7 @@ export function Footer() {
         .footer-links {
           display: flex;
           flex-direction: column;
-          gap: 10px;
+          gap: var(--space-3);
           align-items: flex-end;
         }
 
@@ -44,7 +44,6 @@ export function Footer() {
 
         @media (max-width: 860px) {
           .footer {
-            padding: 48px 22px;
             flex-direction: column;
             align-items: flex-start;
           }

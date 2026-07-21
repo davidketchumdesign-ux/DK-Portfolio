@@ -13,7 +13,7 @@ export function CaseStudyHero({ eyebrow, subtitle, description }: CaseStudyHeroP
         .cs-hero {
           max-width: var(--container);
           margin: 0 auto;
-          padding: 28px var(--gutter) 56px;
+          padding: clamp(var(--space-7), 3vw, var(--space-8)) var(--gutter) clamp(var(--space-11), 5vw, var(--space-13));
         }
 
         .eyebrow {
@@ -22,10 +22,10 @@ export function CaseStudyHero({ eyebrow, subtitle, description }: CaseStudyHeroP
           color: var(--accent);
           text-transform: uppercase;
           letter-spacing: 0.06em;
-          margin-bottom: 24px;
+          margin-bottom: var(--space-8);
           display: flex;
           align-items: center;
-          gap: 10px;
+          gap: var(--space-3);
         }
 
         .eyebrow::before {
@@ -44,7 +44,7 @@ export function CaseStudyHero({ eyebrow, subtitle, description }: CaseStudyHeroP
           line-height: 1.03;
           letter-spacing: -0.03em;
           max-width: 900px;
-          margin-bottom: 28px;
+          margin-bottom: var(--space-8);
           color: var(--text);
         }
 
@@ -53,12 +53,6 @@ export function CaseStudyHero({ eyebrow, subtitle, description }: CaseStudyHeroP
           color: var(--text-muted);
           max-width: 640px;
           line-height: 1.6;
-        }
-
-        @media (max-width: 860px) {
-          .cs-hero {
-            padding: 24px 22px 40px;
-          }
         }
       `}</style>
 

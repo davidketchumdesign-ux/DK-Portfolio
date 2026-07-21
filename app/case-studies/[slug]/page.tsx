@@ -80,7 +80,7 @@ export default function CaseStudyPage({ params }: CaseStudyPageProps) {
         </motion.div>
       )}
 
-      {caseStudy.phases.map((phase) => (
+      {caseStudy.phases.map((phase, i) => (
         <PhaseSection
           key={phase.number}
           number={phase.number}
@@ -90,6 +90,7 @@ export default function CaseStudyPage({ params }: CaseStudyPageProps) {
           chips={phase.chips}
           hmw={phase.hmw}
           gallery={phase.gallery}
+          isLast={i === caseStudy.phases.length - 1}
         />
       ))}
 

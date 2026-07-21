@@ -21,14 +21,12 @@ export function CaseMeta({ role, timeline, platform, tools }: CaseMetaProps) {
         .cs-meta {
           max-width: var(--container);
           margin: 0 auto;
-          padding: 0 var(--gutter) 56px;
+          padding: var(--space-9) var(--gutter);
           display: grid;
           grid-template-columns: repeat(4, 1fr);
-          gap: 24px;
+          gap: var(--space-7);
           border-top: 1px solid var(--border);
           border-bottom: 1px solid var(--border);
-          padding-top: 32px;
-          padding-bottom: 32px;
         }
 
         .meta-item {
@@ -42,7 +40,7 @@ export function CaseMeta({ role, timeline, platform, tools }: CaseMetaProps) {
           color: var(--text-muted);
           text-transform: uppercase;
           letter-spacing: 0.04em;
-          margin-bottom: 8px;
+          margin-bottom: var(--space-2);
         }
 
         .cs-meta-value {
@@ -56,13 +54,7 @@ export function CaseMeta({ role, timeline, platform, tools }: CaseMetaProps) {
         @media (max-width: 900px) {
           .cs-meta {
             grid-template-columns: repeat(2, 1fr);
-            gap: 28px 20px;
-          }
-        }
-
-        @media (max-width: 860px) {
-          .cs-meta {
-            padding: 0 22px 40px;
+            gap: var(--space-8) var(--space-6);
           }
         }
       `}</style>

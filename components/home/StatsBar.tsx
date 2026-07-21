@@ -2,8 +2,8 @@
 
 export function StatsBar() {
   const stats = [
-    { num: '11+', label: 'Client Engagements' },
-    { num: '6', label: 'Years Experience' },
+    { num: '15', label: 'Client Engagements' },
+    { num: '8', label: 'Years Experience' },
     { num: '3', label: 'Personal Products' },
     { num: '15', label: 'Design Tools & Skills' },
   ];
@@ -14,12 +14,11 @@ export function StatsBar() {
         .stats {
           max-width: var(--container);
           margin: 0 auto;
-          padding: 0 var(--gutter) 100px;
+          padding: var(--space-12) var(--gutter) clamp(var(--space-14), 7vw, var(--space-18));
           display: grid;
           grid-template-columns: repeat(4, 1fr);
-          gap: 24px;
+          gap: var(--space-7);
           border-top: 1px solid var(--border);
-          padding-top: 48px;
         }
 
         .stat {
@@ -41,14 +40,13 @@ export function StatsBar() {
           color: var(--text-muted);
           text-transform: uppercase;
           letter-spacing: 0.04em;
-          margin-top: 8px;
+          margin-top: var(--space-2);
         }
 
         @media (max-width: 860px) {
           .stats {
             grid-template-columns: repeat(2, 1fr);
-            padding: 0 22px 64px;
-            gap: 28px 20px;
+            gap: var(--space-8) var(--space-6);
           }
         }
       `}</style>

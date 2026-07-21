@@ -15,7 +15,7 @@ export function NextProject({ nextSlug, nextTitle }: NextProjectProps) {
           border-top: 1px solid var(--border);
           max-width: var(--container);
           margin: 0 auto;
-          padding: 64px var(--gutter) 0;
+          padding: clamp(var(--space-12), 5vw, var(--space-14)) var(--gutter) clamp(var(--space-12), 5vw, var(--space-14));
         }
 
         .next-project-label {
@@ -24,7 +24,7 @@ export function NextProject({ nextSlug, nextTitle }: NextProjectProps) {
           color: var(--text-muted);
           text-transform: uppercase;
           letter-spacing: 0.04em;
-          margin-bottom: 16px;
+          margin-bottom: var(--space-5);
         }
 
         :global(.next-project-link) {
@@ -42,11 +42,6 @@ export function NextProject({ nextSlug, nextTitle }: NextProjectProps) {
           color: var(--accent);
         }
 
-        @media (max-width: 860px) {
-          .next-project {
-            padding: 48px 22px 0;
-          }
-        }
       `}</style>
 
       <div className="next-project-label">Next Project</div>

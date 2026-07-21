@@ -17,15 +17,15 @@ export function ProjectGrid({ title, description, projects, sectionId }: Project
         .work-section {
           max-width: var(--container);
           margin: 0 auto;
-          padding: 40px var(--gutter) 120px;
+          padding: clamp(var(--space-8), 3vw, var(--space-11)) var(--gutter) var(--section-pad-bottom);
         }
 
         .section-head {
           display: flex;
           justify-content: space-between;
           align-items: flex-end;
-          margin-bottom: 48px;
-          gap: 24px;
+          margin-bottom: var(--section-head-gap);
+          gap: var(--space-7);
         }
 
         .section-head h2 {
@@ -45,14 +45,11 @@ export function ProjectGrid({ title, description, projects, sectionId }: Project
         .project-grid {
           display: grid;
           grid-template-columns: repeat(3, 1fr);
-          gap: clamp(20px, 2vw, 28px);
+          gap: clamp(var(--space-6), 2vw, var(--space-8));
           align-items: stretch;
         }
 
         @media (max-width: 860px) {
-          .work-section {
-            padding: 24px 22px 90px;
-          }
           .section-head {
             flex-direction: column;
             align-items: flex-start;

@@ -17,7 +17,7 @@ export function OutcomesGrid({ outcomes }: OutcomesGridProps) {
         .outcomes {
           max-width: var(--container);
           margin: 0 auto;
-          padding: 100px var(--gutter) 120px;
+          padding: var(--section-pad-top) var(--gutter) var(--section-pad-bottom);
           border-top: 1px solid var(--border);
         }
 
@@ -27,17 +27,17 @@ export function OutcomesGrid({ outcomes }: OutcomesGridProps) {
           font-size: clamp(1.8rem, 3.2vw, 2.6rem);
           letter-spacing: -0.02em;
           max-width: 640px;
-          margin-bottom: 56px;
+          margin-bottom: var(--section-head-gap);
           color: var(--text);
         }
 
         .outcomes-grid {
           display: grid;
           grid-template-columns: repeat(4, 1fr);
-          gap: 24px;
+          gap: var(--space-7);
         }
 
-        .outcome-item {
+        :global(.outcome-item) {
           display: flex;
           flex-direction: column;
         }
@@ -56,19 +56,13 @@ export function OutcomesGrid({ outcomes }: OutcomesGridProps) {
           color: var(--text-muted);
           text-transform: uppercase;
           letter-spacing: 0.04em;
-          margin-top: 10px;
+          margin-top: var(--space-3);
         }
 
         @media (max-width: 900px) {
           .outcomes-grid {
             grid-template-columns: repeat(2, 1fr);
-            gap: 28px 20px;
-          }
-        }
-
-        @media (max-width: 860px) {
-          .outcomes {
-            padding: 72px 22px 90px;
+            gap: var(--space-8) var(--space-6);
           }
         }
       `}</style>

@@ -9,13 +9,13 @@ export function BackLink() {
         .back-link {
           max-width: var(--container);
           margin: 0 auto;
-          padding: 140px var(--gutter) 0;
+          padding: clamp(var(--space-17), 10vw, var(--space-21)) var(--gutter) 0;
         }
 
         :global(.back-link-inner) {
           display: inline-flex;
           align-items: center;
-          gap: 8px;
+          gap: var(--space-2);
           color: var(--text-muted);
           text-decoration: none;
           font-size: 13.5px;
@@ -25,18 +25,12 @@ export function BackLink() {
 
         :global(.back-link-inner:hover) {
           color: var(--text);
-          gap: 12px;
+          gap: var(--space-4);
         }
 
         .back-link svg {
           width: 14px;
           height: 14px;
-        }
-
-        @media (max-width: 860px) {
-          .back-link {
-            padding: 96px 22px 0;
-          }
         }
       `}</style>
 

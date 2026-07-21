@@ -5,7 +5,7 @@ export function Hero() {
     <section className="hero">
       <style jsx>{`
         .hero {
-          padding: 160px var(--gutter) 90px;
+          padding: var(--section-pad-hero-top) var(--gutter) var(--section-pad-hero-bottom);
           max-width: var(--container);
           margin: 0 auto;
         }
@@ -16,10 +16,10 @@ export function Hero() {
           color: var(--accent);
           text-transform: uppercase;
           letter-spacing: 0.06em;
-          margin-bottom: 28px;
+          margin-bottom: var(--space-8);
           display: flex;
           align-items: center;
-          gap: 10px;
+          gap: var(--space-3);
         }
 
         .eyebrow::before {
@@ -46,17 +46,11 @@ export function Hero() {
         }
 
         .hero-sub {
-          margin-top: 36px;
+          margin-top: var(--space-10);
           font-size: clamp(1.1rem, 1.8vw, 1.4rem);
           color: var(--text-muted);
           max-width: 680px;
           line-height: 1.55;
-        }
-
-        @media (max-width: 860px) {
-          .hero {
-            padding: 96px 22px 64px;
-          }
         }
       `}</style>
 

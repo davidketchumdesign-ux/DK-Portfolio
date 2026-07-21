@@ -5,6 +5,40 @@
   --ease: cubic-bezier(0.16, 1, 0.3, 1);
   --container: min(1400px, 94vw);
   --gutter: clamp(24px, 5vw, 64px);
+
+  /* Spacing scale — every margin/padding/gap in the site should reference
+     one of these instead of a new hardcoded px value. */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 10px;
+  --space-4: 12px;
+  --space-5: 16px;
+  --space-6: 20px;
+  --space-7: 24px;
+  --space-8: 28px;
+  --space-9: 32px;
+  --space-10: 36px;
+  --space-11: 40px;
+  --space-12: 48px;
+  --space-13: 56px;
+  --space-14: 64px;
+  --space-15: 72px;
+  --space-16: 90px;
+  --space-17: 96px;
+  --space-18: 100px;
+  --space-19: 112px;
+  --space-20: 120px;
+  --space-21: 140px;
+  --space-22: 160px;
+
+  /* Section rhythm — fluid clamps so mobile and desktop are always derived
+     from the same two numbers instead of drifting apart in a media query. */
+  --section-pad-hero-top: clamp(var(--space-17), 11vw, var(--space-22));
+  --section-pad-hero-bottom: clamp(var(--space-14), 7vw, var(--space-16));
+  --section-pad-top: clamp(var(--space-15), 8vw, var(--space-18));
+  --section-pad-bottom: clamp(var(--space-16), 9vw, var(--space-20));
+  --section-pad-footer: clamp(var(--space-12), 6vw, var(--space-14));
+  --section-head-gap: var(--space-12);
 }
 
 [data-theme='light'] {

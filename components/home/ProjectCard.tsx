@@ -121,13 +121,13 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
           background: color-mix(in srgb, var(--accent) 10%, var(--bg-elevated));
         }
 
-        .card-cover-inner {
+        :global(.card-cover-inner) {
           position: absolute;
           inset: 0;
           transition: transform 0.6s var(--ease);
         }
 
-        :global(.card:hover) .card-cover-inner {
+        :global(.card:hover .card-cover-inner) {
           transform: scale(1.06);
         }
 
@@ -136,7 +136,7 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
           display: flex;
           flex-direction: column;
           flex: 1;
-          gap: 10px;
+          gap: var(--space-3);
         }
 
         .card-tag {

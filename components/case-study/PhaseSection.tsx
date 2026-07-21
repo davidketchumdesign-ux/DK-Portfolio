@@ -16,26 +16,27 @@ interface PhaseSectionProps {
     image?: string;
     twoCol?: boolean;
   }>;
+  isLast?: boolean;
 }
 
-export function PhaseSection({ number, totalPhases = 5, title, description, chips, hmw, gallery }: PhaseSectionProps) {
+export function PhaseSection({ number, totalPhases = 5, title, description, chips, hmw, gallery, isLast = false }: PhaseSectionProps) {
   return (
-    <section className="phase">
+    <section className={`phase ${isLast ? 'phase-last' : ''}`}>
       <style jsx>{`
         .phase {
           max-width: var(--container);
           margin: 0 auto;
-          padding: 110px var(--gutter) 0;
+          padding: clamp(var(--space-15), 8vw, var(--space-19)) var(--gutter) 0;
           display: grid;
           grid-template-columns: 280px 1fr;
-          gap: 64px;
+          gap: var(--space-14);
         }
 
-        .phase:last-of-type {
-          padding-bottom: 110px;
+        .phase-last {
+          padding-bottom: clamp(var(--space-15), 8vw, var(--space-19));
         }
 
-        .phase-label {
+        :global(.phase-label) {
           position: sticky;
           top: 140px;
           align-self: start;
@@ -46,7 +47,7 @@ export function PhaseSection({ number, totalPhases = 5, title, description, chip
           font-size: 13px;
           color: var(--accent);
           letter-spacing: 0.04em;
-          margin-bottom: 10px;
+          margin-bottom: var(--space-3);
         }
 
         .phase-title {
@@ -57,22 +58,22 @@ export function PhaseSection({ number, totalPhases = 5, title, description, chip
           color: var(--text);
         }
 
-        .phase-content p {
+        :global(.phase-content) p {
           font-size: 16.5px;
           color: var(--text-muted);
           line-height: 1.7;
           max-width: 680px;
         }
 
-        .phase-content p + p {
-          margin-top: 18px;
+        :global(.phase-content) p + p {
+          margin-top: var(--space-5);
         }
 
         .chip-row {
           display: flex;
           flex-wrap: wrap;
-          gap: 10px;
-          margin-top: 28px;
+          gap: var(--space-3);
+          margin-top: var(--space-8);
         }
 
         .chip {
@@ -81,13 +82,13 @@ export function PhaseSection({ number, totalPhases = 5, title, description, chip
           color: var(--text);
           background: var(--bg-elevated);
           border: 1px solid var(--border);
-          padding: 8px 14px;
+          padding: var(--space-2) var(--space-5);
           border-radius: 999px;
         }
 
         .hmw-box {
-          margin-top: 36px;
-          padding: 32px 36px;
+          margin-top: var(--space-10);
+          padding: var(--space-9) var(--space-10);
           background: var(--bg-elevated);
           border: 1px solid var(--border);
           border-left: 3px solid var(--accent);
@@ -100,7 +101,7 @@ export function PhaseSection({ number, totalPhases = 5, title, description, chip
           color: var(--accent);
           text-transform: uppercase;
           letter-spacing: 0.04em;
-          margin-bottom: 12px;
+          margin-bottom: var(--space-4);
         }
 
         .hmw-box p {
@@ -114,8 +115,8 @@ export function PhaseSection({ number, totalPhases = 5, title, description, chip
         .phase-gallery {
           display: grid;
           grid-template-columns: repeat(3, 1fr);
-          gap: 16px;
-          margin-top: 36px;
+          gap: var(--space-5);
+          margin-top: var(--space-10);
         }
 
         .phase-gallery.two-col {
@@ -138,7 +139,7 @@ export function PhaseSection({ number, totalPhases = 5, title, description, chip
           font-family: 'JetBrains Mono', monospace;
           font-size: 11px;
           color: var(--text-muted);
-          padding: 12px 4px 0;
+          padding: var(--space-4) var(--space-1) 0;
           text-transform: uppercase;
           letter-spacing: 0.03em;
         }
@@ -146,11 +147,10 @@ export function PhaseSection({ number, totalPhases = 5, title, description, chip
         @media (max-width: 900px) {
           .phase {
             grid-template-columns: 1fr;
-            gap: 24px;
-            padding-top: 72px;
+            gap: var(--space-7);
           }
 
-          .phase-label {
+          :global(.phase-label) {
             position: static;
           }
 
@@ -160,13 +160,6 @@ export function PhaseSection({ number, totalPhases = 5, title, description, chip
 
           .phase-gallery.two-col {
             grid-template-columns: 1fr;
-          }
-        }
-
-        @media (max-width: 860px) {
-          .phase {
-            padding-left: 22px;
-            padding-right: 22px;
           }
         }
       `}</style>

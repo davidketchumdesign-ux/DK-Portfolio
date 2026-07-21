@@ -20,7 +20,7 @@ export function Nav() {
               Work
             </Link>
             <span className="nav-sep">|</span>
-            <Link href="/#about" className="nav-link">
+            <Link href="/about" className="nav-link">
               About
             </Link>
             <span className="nav-sep">|</span>
@@ -52,7 +52,7 @@ export function Nav() {
         <Link href="/#work" className="mobile-menu-link" onClick={() => setMobileMenuOpen(false)}>
           Work
         </Link>
-        <Link href="/#about" className="mobile-menu-link" onClick={() => setMobileMenuOpen(false)}>
+        <Link href="/about" className="mobile-menu-link" onClick={() => setMobileMenuOpen(false)}>
           About
         </Link>
         <Link href="/#contact" className="mobile-menu-link" onClick={() => setMobileMenuOpen(false)}>

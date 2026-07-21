@@ -18,9 +18,9 @@ export function PrototypeEmbed({ url, label = 'Live prototype — tap around' }:
       viewport={{ once: true }}
     >
       <style jsx>{`
-        .proto {
+        :global(.proto) {
           max-width: var(--container);
-          margin: 56px auto 0;
+          margin: var(--space-13) auto 0;
           padding: 0 var(--gutter);
         }
 
@@ -44,8 +44,8 @@ export function PrototypeEmbed({ url, label = 'Live prototype — tap around' }:
           display: flex;
           align-items: center;
           justify-content: space-between;
-          gap: 16px;
-          margin-top: 16px;
+          gap: var(--space-5);
+          margin-top: var(--space-5);
         }
 
         .proto-label {
@@ -69,10 +69,6 @@ export function PrototypeEmbed({ url, label = 'Live prototype — tap around' }:
         }
 
         @media (max-width: 860px) {
-          .proto {
-            padding: 0 22px;
-          }
-
           .proto-frame {
             height: 640px;
           }
