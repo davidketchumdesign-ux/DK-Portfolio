@@ -1,5 +1,9 @@
 import shopify from './shopify.json';
 import brixli from './brixli.json';
+import restaurantServiceDesign from './restaurant-service-design.json';
+import insuranceCrmEmail from './insurance-crm-email.json';
+import icebreakr from './icebreakr.json';
+import betSync from './bet-sync.json';
 
 export interface Project {
   slug: string;
@@ -40,6 +44,7 @@ export interface CaseStudyData extends Project {
     number: string;
     label: string;
   }>;
+  quote?: string;
   nextSlug: string;
   nextTitle: string;
 }
@@ -58,7 +63,7 @@ export const gridProjects: Project[] = [
   {
     slug: 'restaurant-service-design',
     title: 'Customer-Led Service Design',
-    industry: 'Restaurant',
+    industry: 'Customer Experience',
     category: 'consultant',
     tags: ['Service Design', 'User Research'],
     summary: 'User journey flows, heuristic audits, and hi-fi wireframes for a full Quick Service Restaurant experience.',
@@ -67,7 +72,7 @@ export const gridProjects: Project[] = [
   {
     slug: 'insurance-crm-email',
     title: 'Salesforce CRM & Email Design System',
-    industry: 'Insurance',
+    industry: 'Marketing & CRM',
     category: 'consultant',
     tags: ['CRM', 'Design System', 'Email'],
     summary: 'Led design for a call-deflection initiative spanning Salesforce CRM screens and a new email design system.',
@@ -109,6 +114,10 @@ export const personalProjects: Project[] = [
 export const caseStudies: Record<string, CaseStudyData> = {
   shopify: shopify as CaseStudyData,
   brixli: brixli as CaseStudyData,
+  'restaurant-service-design': restaurantServiceDesign as CaseStudyData,
+  'insurance-crm-email': insuranceCrmEmail as CaseStudyData,
+  icebreakr: icebreakr as CaseStudyData,
+  'bet-sync': betSync as CaseStudyData,
 };
 
 export function getProjectBySlug(slug: string): Project | undefined {

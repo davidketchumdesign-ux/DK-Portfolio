@@ -1,0 +1,60 @@
+{
+  "slug": "icebreakr",
+  "title": "Icebreakr",
+  "industry": "Personal",
+  "category": "personal",
+  "tags": ["Product Design", "App Design"],
+  "summary": "[Short description of what Icebreakr is and your role — swap in your real copy here.]",
+  "coverImage": "/images/projects/icebreakr-cover.jpg",
+  "hero": {
+    "subtitle": "[One-sentence hero headline describing what Icebreakr is and does.]",
+    "description": "[A few sentences expanding on the product, the problem it solves, and your role building it.]"
+  },
+  "meta": {
+    "role": "[Your role]",
+    "timeline": "[X weeks/months]",
+    "platform": "[iOS / Android / Web]",
+    "tools": "[Design & build tools used]"
+  },
+  "phases": [
+    {
+      "number": 1,
+      "title": "Empathize",
+      "description": "[What problem or personal motivation kicked this project off — the research, observation, or personal experience that shaped your understanding of it.]",
+      "chips": ["[Research Method 1]", "[Research Method 2]", "[Research Method 3]"]
+    },
+    {
+      "number": 2,
+      "title": "Define",
+      "description": "[The core insight or problem statement that came out of your research.]",
+      "hmw": "[How might we — the guiding question that framed this project.]"
+    },
+    {
+      "number": 3,
+      "title": "Ideate",
+      "description": "[How you explored solutions — sketches, flows, system thinking, etc.]",
+      "chips": ["[Deliverable 1]", "[Deliverable 2]", "[Deliverable 3]"]
+    },
+    {
+      "number": 4,
+      "title": "Prototype",
+      "description": "[What you actually built — wireframes, hi-fi screens, interactive prototype, etc.]",
+      "chips": ["[Deliverable 1]", "[Deliverable 2]", "[Deliverable 3]"]
+    },
+    {
+      "number": 5,
+      "title": "Test & Iterate",
+      "description": "[How you validated the design — user testing, feedback loops, and what changed as a result.]",
+      "chips": ["[Deliverable 1]", "[Deliverable 2]", "[Deliverable 3]"]
+    }
+  ],
+  "outcomes": [
+    { "number": "[X]", "label": "[Outcome 1 label]" },
+    { "number": "[X]", "label": "[Outcome 2 label]" },
+    { "number": "[X]", "label": "[Outcome 3 label]" },
+    { "number": "[X]", "label": "[Outcome 4 label]" }
+  ],
+  "quote": "[Optional — a quote from a user, collaborator, or stakeholder. Delete this field entirely if not applicable.]",
+  "nextSlug": "bet-sync",
+  "nextTitle": "Bet Sync"
+}

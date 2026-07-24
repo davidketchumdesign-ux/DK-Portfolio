@@ -1,0 +1,72 @@
+{
+  "slug": "insurance-crm-email",
+  "title": "Salesforce CRM & Email Design System",
+  "industry": "Marketing & CRM",
+  "category": "consultant",
+  "tags": ["CRM", "Design System", "Email"],
+  "summary": "Led design for a call-deflection initiative spanning Salesforce CRM screens and a new email design system.",
+  "coverImage": "/images/projects/insurance-cover.jpg",
+  "hero": {
+    "subtitle": "Building a modular email design system for a national auto insurance provider.",
+    "description": "A ground-up email design system built for Salesforce Marketing Cloud — replacing dense, text-heavy customer emails with a flexible library of reusable templates and modules the marketing team could mix and match for any campaign."
+  },
+  "meta": {
+    "role": "Lead UX Designer, Email Design System",
+    "timeline": "[X Months]",
+    "platform": "Salesforce Marketing Cloud",
+    "tools": "Figma"
+  },
+  "phases": [
+    {
+      "number": 1,
+      "title": "Empathize",
+      "description": "The engagement began with an audit of the client's existing customer email program. Emails were dense and text-heavy, with little to no visual hierarchy, inconsistent structure from campaign to campaign, and no shared system for the marketing team to build from — every email was essentially built from scratch.\n\nI researched how other insurance and financial services brands were structuring their customer email programs, looking specifically at layout, visual hierarchy, and content density, and paired that with working sessions alongside the client's internal marketing and creative team to understand their production constraints inside Marketing Cloud.",
+      "chips": ["Email Program Audit", "Competitive & Market Research", "Stakeholder Working Sessions"]
+    },
+    {
+      "number": 2,
+      "title": "Define",
+      "description": "Research made it clear the core issue wasn't one bad email — it was the absence of a system. Without shared templates or components, every email reinvented layout, type, and structure from scratch, driving up production time and producing an inconsistent customer experience.",
+      "hmw": "How might we give the marketing team a flexible library of templates and modules they can mix and match for any campaign — while establishing a visual system that finally brings structure, hierarchy, and consistency to every email that goes out?"
+    },
+    {
+      "number": 3,
+      "title": "Ideate",
+      "description": "I designed a modular template architecture rather than one-off email layouts — a set of reusable content blocks (heroes, product callouts, CTAs, policy/claims info modules) that could be arranged in different combinations depending on campaign needs, all built on a shared grid.\n\nAlongside the template architecture, I built out the full type and color system for the email program — establishing a clear visual hierarchy so even text-heavy content (policy details, claims updates, renewal notices) could be scanned and understood at a glance instead of read top to bottom.",
+      "chips": ["Modular Template Architecture", "Type & Color System", "Content Module Library"]
+    },
+    {
+      "number": 4,
+      "title": "Prototype",
+      "description": "I brought the system to life in Figma as a full component library — every module built to spec for Marketing Cloud's technical constraints, tested across both desktop and mobile email clients to confirm the modular approach held up responsively.\n\nHigh-fidelity mockups demonstrated the system in action across a range of real email types — from routine policy communications to more promotional, campaign-driven sends — showing the marketing team exactly how the same set of modules could flex across very different content needs.",
+      "chips": ["Figma Component Library", "Hi-Fi Email Mockups", "Desktop & Mobile Optimization"]
+    },
+    {
+      "number": 5,
+      "title": "Test & Iterate",
+      "description": "I partnered directly with the client's internal marketing and creative team through iterative feedback sessions, refining modules based on real production feedback as the team began building campaigns on the new system inside Marketing Cloud.\n\nThe new system meaningfully sped up how quickly the marketing team could design and deploy new emails, since campaigns could now be assembled from existing modules rather than built from scratch each time — while giving every send a consistent, on-brand visual structure for the first time.",
+      "chips": ["Marketing Team Enablement", "Iterative Feedback Sessions", "Marketing Cloud Deployment"]
+    }
+  ],
+  "outcomes": [
+    {
+      "number": "1",
+      "label": "Email Design System, Built From Scratch"
+    },
+    {
+      "number": "[X]",
+      "label": "Reusable Content Modules"
+    },
+    {
+      "number": "[X]%",
+      "label": "Faster Email Production Time"
+    },
+    {
+      "number": "100%",
+      "label": "Desktop & Mobile Optimized"
+    }
+  ],
+  "quote": "Internal creative and marketing stakeholders credited the new system with bringing structure and consistency to a program that had never had a shared design foundation before — noting the modular approach as a meaningful shift in how quickly and effectively the team could produce customer communications.",
+  "nextSlug": "brixli",
+  "nextTitle": "Brixli"
+}

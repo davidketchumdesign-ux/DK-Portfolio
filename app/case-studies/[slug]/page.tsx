@@ -10,6 +10,7 @@ import { CaseMeta } from '@/components/case-study/CaseMeta';
 import { PhaseSection } from '@/components/case-study/PhaseSection';
 import { PrototypeEmbed } from '@/components/case-study/PrototypeEmbed';
 import { OutcomesGrid } from '@/components/case-study/OutcomesGrid';
+import { CaseQuote } from '@/components/case-study/CaseQuote';
 import { NextProject } from '@/components/case-study/NextProject';
 
 interface CaseStudyPageProps {
@@ -95,6 +96,8 @@ export default function CaseStudyPage({ params }: CaseStudyPageProps) {
       ))}
 
       <OutcomesGrid outcomes={caseStudy.outcomes} />
+
+      {caseStudy.quote && <CaseQuote quote={caseStudy.quote} />}
 
       <NextProject nextSlug={caseStudy.nextSlug} nextTitle={caseStudy.nextTitle} />
     </>

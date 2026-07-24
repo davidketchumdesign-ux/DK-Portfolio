@@ -1,0 +1,72 @@
+{
+  "slug": "restaurant-service-design",
+  "title": "Customer-Led Service Design",
+  "industry": "Customer Experience",
+  "category": "consultant",
+  "tags": ["Service Design", "User Research"],
+  "summary": "User journey flows, heuristic audits, and hi-fi wireframes for a full Quick Service Restaurant experience.",
+  "coverImage": "/images/projects/restaurant-cover.jpg",
+  "hero": {
+    "subtitle": "Redesigning the end-to-end ordering journey for a national quick-service restaurant chain.",
+    "description": "A 9-week engagement to audit, benchmark, and reimagine a QSR's digital ordering experience — unifying mobile, kiosk, drive-thru, and in-store touchpoints into one consistent, forward-looking customer journey."
+  },
+  "meta": {
+    "role": "Lead UX Designer (Consulting Engagement)",
+    "timeline": "9 Weeks",
+    "platform": "Mobile App · Kiosk · Drive-Thru · Desktop",
+    "tools": "Figma"
+  },
+  "phases": [
+    {
+      "number": 1,
+      "title": "Empathize",
+      "description": "The engagement started with a full current-state audit of the client's existing mobile app and ordering experience. Rather than proposing changes based on assumption, the goal was to build an evidence-based picture of where the experience was breaking down for customers today.\n\nI led a 10-point heuristic audit against Nielsen's usability principles — evaluating visibility of system status, user control and freedom, error prevention, consistency, recognition over recall, and more — surfacing specific friction points across the app's core flows. In parallel, I ran a competitive and market-standards audit, benchmarking the client's ordering experience against other major QSR brands' mobile, kiosk, and drive-thru models, and conducted on-site, ethnographic store visits to observe real customer and crew behavior first-hand.",
+      "chips": ["Heuristic Audit", "Competitive Analysis", "Ethnographic Store Research"]
+    },
+    {
+      "number": 2,
+      "title": "Define",
+      "description": "Findings from the audits and store visits were synthesized into a \"Wall of Awesome\" — a curated collection of the sharpest insights and opportunity areas pulled from research, used to align the client team around what mattered most before any design work began.",
+      "hmw": "How might we redesign the ordering experience so mobile, kiosk, and drive-thru feel like one consistent journey — instead of three disconnected systems — while preparing the brand for where ordering technology is headed next?"
+    },
+    {
+      "number": 3,
+      "title": "Ideate",
+      "description": "With the core problem defined, I mapped the full current-state customer journey end to end — Enter Restaurant, Approach Order Station, Place Order, Get Food, and Post-Visit Experience — documenting exactly where customers today run into friction at each stage, across counter, kiosk, and mobile.\n\nAlongside the current-state maps, I designed the future-state journey for each stage, incorporating emerging ordering technologies and a more consistent visual and interaction language across every touchpoint — so a customer ordering on a kiosk, in the app, or at the drive-thru would recognize the same system, the same logic, and the same brand.",
+      "chips": ["Current vs. Future-State Journey Maps", "Service Design Storyboards", "Future-State Technology Concepts"]
+    },
+    {
+      "number": 4,
+      "title": "Prototype",
+      "description": "I brought the new experience to life across low- and high-fidelity wireframes for each core touchpoint — mobile ordering, in-store kiosk, and drive-thru — designing the \"Place Order\" flow consistently across all three so the interaction pattern stayed familiar no matter which channel a customer chose.\n\nTo communicate the vision beyond static screens, I built scenario-based service design storyboards for four distinct customer journeys, illustrating not just the interface but the full physical-plus-digital experience — from entering the restaurant through post-visit follow-up.",
+      "chips": ["Lo-Fi & Hi-Fi Wireframes", "Mobile / Kiosk / Drive-Thru Mockups", "4 Journey Storyboards"]
+    },
+    {
+      "number": 5,
+      "title": "Test & Iterate",
+      "description": "Concepts were reviewed and refined directly with client stakeholders through a series of working sessions and presentations. Over the course of the engagement, my role expanded beyond digital product design into spatial design — contributing hand-drawn schematics and architectural wires alongside the digital deliverables to support physical store layout recommendations for the client's \"restaurant of the future\" initiative.",
+      "chips": ["Stakeholder Presentations", "Physical Store Layout Recommendations", "Cross-Functional Design Handoff"]
+    }
+  ],
+  "outcomes": [
+    {
+      "number": "4",
+      "label": "Customer Journeys Mapped & Storyboarded"
+    },
+    {
+      "number": "10",
+      "label": "Point Heuristic Audit"
+    },
+    {
+      "number": "3",
+      "label": "Core Touchpoints Redesigned (Mobile / Kiosk / Drive-Thru)"
+    },
+    {
+      "number": "9",
+      "label": "Weeks, Research to Delivery"
+    }
+  ],
+  "quote": "Internal client stakeholders noted that the engagement evolved beyond its original scope — from a digital product design effort into a spatial design contribution — recognizing the storyboards, schematics, and journey work as a meaningful step toward a more guest-first future experience.",
+  "nextSlug": "insurance-crm-email",
+  "nextTitle": "Salesforce CRM & Email Design System"
+}
