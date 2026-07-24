@@ -2,7 +2,8 @@
 
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { revealVariants, cardHoverVariants, imageZoomVariants } from '@/lib/animation';
+import { cardHoverVariants, imageZoomVariants } from '@/lib/animation';
+import { Reveal } from '@/components/shared/Reveal';
 import type { Project } from '@/content/projects';
 
 interface ProjectCardProps {
@@ -27,14 +28,7 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
   const cardTag = [project.industry, project.tags?.[0]].filter(Boolean).join(' · ');
 
   return (
-    <motion.div
-      custom={index}
-      variants={revealVariants}
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true, margin: '-50px' }}
-      className="card-wrapper"
-    >
+    <Reveal custom={index} viewportMargin="-50px" className="card-wrapper">
       <motion.div
         variants={cardHoverVariants}
         initial="initial"
@@ -164,6 +158,6 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
           margin: 0;
         }
       `}</style>
-    </motion.div>
+    </Reveal>
   );
 }

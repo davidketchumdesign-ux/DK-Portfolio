@@ -1,5 +1,7 @@
 'use client';
 
+import { Eyebrow } from '@/components/shared/Eyebrow';
+
 export function Hero() {
   return (
     <section className="hero">
@@ -8,27 +10,6 @@ export function Hero() {
           padding: var(--section-pad-hero-top) var(--gutter) var(--section-pad-hero-bottom);
           max-width: var(--container);
           margin: 0 auto;
-        }
-
-        .eyebrow {
-          font-family: 'JetBrains Mono', monospace;
-          font-size: 13px;
-          color: var(--accent);
-          text-transform: uppercase;
-          letter-spacing: 0.06em;
-          margin-bottom: var(--space-8);
-          display: flex;
-          align-items: center;
-          gap: var(--space-3);
-        }
-
-        .eyebrow::before {
-          content: '';
-          width: 6px;
-          height: 6px;
-          border-radius: 50%;
-          background: var(--accent);
-          display: inline-block;
         }
 
         h1 {
@@ -54,12 +35,12 @@ export function Hero() {
         }
       `}</style>
 
-      <div className="eyebrow">Senior UX Designer / Strategist</div>
+      <Eyebrow>Senior UX Designer / Strategist</Eyebrow>
       <h1>
-        I serve empathy and design craft, <span>across a dozen industries and counting.</span>
+        People first. Problems second. <span>Pixels last.</span>
       </h1>
       <p className="hero-sub">
-        Currently at Slalom Consulting. Located in Central, PA.
+        Design isn&apos;t the finish, it&apos;s the foundation. I humanize technology by understanding how people actually behave before I start pushing pixels.
       </p>
     </section>
   );

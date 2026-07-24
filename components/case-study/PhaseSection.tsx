@@ -1,7 +1,6 @@
 'use client';
 
-import { motion } from 'framer-motion';
-import { revealVariants } from '@/lib/animation';
+import { Reveal } from '@/components/shared/Reveal';
 
 interface PhaseSectionProps {
   number: number;
@@ -164,14 +163,14 @@ export function PhaseSection({ number, totalPhases = 5, title, description, chip
         }
       `}</style>
 
-      <motion.div className="phase-label" variants={revealVariants} initial="hidden" whileInView="visible" viewport={{ once: true }}>
+      <Reveal className="phase-label">
         <div className="phase-num">
           {String(number).padStart(2, '0')} / {String(totalPhases).padStart(2, '0')}
         </div>
         <div className="phase-title">{title}</div>
-      </motion.div>
+      </Reveal>
 
-      <motion.div className="phase-content" variants={revealVariants} initial="hidden" whileInView="visible" viewport={{ once: true }}>
+      <Reveal className="phase-content">
         {description.split('\n\n').map((para, i) => (
           <p key={i}>{para}</p>
         ))}
@@ -210,7 +209,7 @@ export function PhaseSection({ number, totalPhases = 5, title, description, chip
             ))}
           </div>
         )}
-      </motion.div>
+      </Reveal>
     </section>
   );
 }

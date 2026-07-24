@@ -1,5 +1,7 @@
 'use client';
 
+import { Eyebrow } from '@/components/shared/Eyebrow';
+
 interface CaseStudyHeroProps {
   eyebrow: string;
   subtitle: string;
@@ -14,27 +16,6 @@ export function CaseStudyHero({ eyebrow, subtitle, description }: CaseStudyHeroP
           max-width: var(--container);
           margin: 0 auto;
           padding: clamp(var(--space-7), 3vw, var(--space-8)) var(--gutter) clamp(var(--space-11), 5vw, var(--space-13));
-        }
-
-        .eyebrow {
-          font-family: 'JetBrains Mono', monospace;
-          font-size: 13px;
-          color: var(--accent);
-          text-transform: uppercase;
-          letter-spacing: 0.06em;
-          margin-bottom: var(--space-8);
-          display: flex;
-          align-items: center;
-          gap: var(--space-3);
-        }
-
-        .eyebrow::before {
-          content: '';
-          width: 6px;
-          height: 6px;
-          border-radius: 50%;
-          background: var(--accent);
-          display: inline-block;
         }
 
         h1 {
@@ -56,7 +37,7 @@ export function CaseStudyHero({ eyebrow, subtitle, description }: CaseStudyHeroP
         }
       `}</style>
 
-      <div className="eyebrow">{eyebrow}</div>
+      <Eyebrow>{eyebrow}</Eyebrow>
       <h1>{subtitle}</h1>
       <p className="cs-hero-sub">{description}</p>
     </section>

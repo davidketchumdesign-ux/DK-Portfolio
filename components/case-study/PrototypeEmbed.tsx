@@ -1,7 +1,6 @@
 'use client';
 
-import { motion } from 'framer-motion';
-import { revealVariants } from '@/lib/animation';
+import { Reveal } from '@/components/shared/Reveal';
 
 interface PrototypeEmbedProps {
   url: string;
@@ -10,13 +9,7 @@ interface PrototypeEmbedProps {
 
 export function PrototypeEmbed({ url, label = 'Live prototype — tap around' }: PrototypeEmbedProps) {
   return (
-    <motion.div
-      className="proto"
-      variants={revealVariants}
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true }}
-    >
+    <Reveal className="proto">
       <style jsx>{`
         :global(.proto) {
           max-width: var(--container);
@@ -101,6 +94,6 @@ export function PrototypeEmbed({ url, label = 'Live prototype — tap around' }:
           Open fullscreen ↗
         </a>
       </div>
-    </motion.div>
+    </Reveal>
   );
 }

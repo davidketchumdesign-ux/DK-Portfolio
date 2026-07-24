@@ -1,7 +1,6 @@
 'use client';
 
-import { motion } from 'framer-motion';
-import { revealVariants } from '@/lib/animation';
+import { Reveal } from '@/components/shared/Reveal';
 import type { Passion } from '@/content/about';
 
 interface PassionsProps {
@@ -76,18 +75,15 @@ export function Passions({ passions }: PassionsProps) {
 
       <div className="passions-grid">
         {passions.map((passion, i) => (
-          <motion.div
+          <Reveal
             key={passion.title}
             className="passion-card"
             custom={i}
-            variants={revealVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: '-50px' }}
+            viewportMargin="-50px"
           >
             <div className="passion-title">{passion.title}</div>
             <p className="passion-desc">{passion.description}</p>
-          </motion.div>
+          </Reveal>
         ))}
       </div>
     </section>

@@ -1,7 +1,6 @@
 'use client';
 
-import { motion } from 'framer-motion';
-import { revealVariants } from '@/lib/animation';
+import { Reveal } from '@/components/shared/Reveal';
 
 interface OutcomesGridProps {
   outcomes: Array<{
@@ -70,18 +69,15 @@ export function OutcomesGrid({ outcomes }: OutcomesGridProps) {
       <h2>What shipped</h2>
       <div className="outcomes-grid">
         {outcomes.map((outcome) => (
-          <motion.div
+          <Reveal
             key={outcome.label}
             className="outcome-item"
             custom={outcomes.indexOf(outcome)}
-            variants={revealVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: '-50px' }}
+            viewportMargin="-50px"
           >
             <div className="outcome-num">{outcome.number}</div>
             <div className="outcome-label">{outcome.label}</div>
-          </motion.div>
+          </Reveal>
         ))}
       </div>
     </section>

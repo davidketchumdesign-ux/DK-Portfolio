@@ -1,9 +1,8 @@
 'use client';
 
 import { use } from 'react';
-import { motion } from 'framer-motion';
 import { getCaseStudyBySlug } from '@/content/projects';
-import { revealVariants } from '@/lib/animation';
+import { Reveal } from '@/components/shared/Reveal';
 import { BackLink } from '@/components/case-study/BackLink';
 import { CaseStudyHero } from '@/components/case-study/CaseStudyHero';
 import { CaseMeta } from '@/components/case-study/CaseMeta';
@@ -47,15 +46,9 @@ export default function CaseStudyPage({ params }: CaseStudyPageProps) {
       {caseStudy.prototypeUrl ? (
         <PrototypeEmbed url={caseStudy.prototypeUrl} />
       ) : (
-        <motion.div
-          className="cs-cover"
-          variants={revealVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-        >
+        <Reveal className="cs-cover">
           <style jsx>{`
-            .cs-cover {
+            :global(.cs-cover) {
               max-width: var(--container);
               margin: 56px auto 0;
               padding: 0 var(--gutter);
@@ -68,7 +61,7 @@ export default function CaseStudyPage({ params }: CaseStudyPageProps) {
             }
 
             @media (max-width: 860px) {
-              .cs-cover {
+              :global(.cs-cover) {
                 padding: 0 22px;
               }
 
@@ -78,7 +71,7 @@ export default function CaseStudyPage({ params }: CaseStudyPageProps) {
             }
           `}</style>
           <div className="cs-cover-inner" />
-        </motion.div>
+        </Reveal>
       )}
 
       {caseStudy.phases.map((phase, i) => (

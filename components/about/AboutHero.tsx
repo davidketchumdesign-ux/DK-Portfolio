@@ -1,7 +1,7 @@
 'use client';
 
-import { motion } from 'framer-motion';
-import { revealVariants } from '@/lib/animation';
+import { Eyebrow } from '@/components/shared/Eyebrow';
+import { Reveal } from '@/components/shared/Reveal';
 
 interface AboutHeroProps {
   eyebrow: string;
@@ -18,27 +18,6 @@ export function AboutHero({ eyebrow, heading, bio, mission }: AboutHeroProps) {
           padding: var(--section-pad-hero-top) var(--gutter) var(--section-pad-hero-bottom);
           max-width: var(--container);
           margin: 0 auto;
-        }
-
-        .eyebrow {
-          font-family: 'JetBrains Mono', monospace;
-          font-size: 13px;
-          color: var(--accent);
-          text-transform: uppercase;
-          letter-spacing: 0.06em;
-          margin-bottom: var(--space-8);
-          display: flex;
-          align-items: center;
-          gap: var(--space-3);
-        }
-
-        .eyebrow::before {
-          content: '';
-          width: 6px;
-          height: 6px;
-          border-radius: 50%;
-          background: var(--accent);
-          display: inline-block;
         }
 
         h1 {
@@ -90,23 +69,16 @@ export function AboutHero({ eyebrow, heading, bio, mission }: AboutHeroProps) {
 
       `}</style>
 
-      <motion.div variants={revealVariants} initial="hidden" whileInView="visible" viewport={{ once: true }}>
-        <div className="eyebrow">{eyebrow}</div>
+      <Reveal>
+        <Eyebrow>{eyebrow}</Eyebrow>
         <h1>{heading}</h1>
         <p className="bio">{bio}</p>
-      </motion.div>
+      </Reveal>
 
-      <motion.div
-        className="mission"
-        custom={1}
-        variants={revealVariants}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true }}
-      >
+      <Reveal className="mission" custom={1}>
         <span className="mission-label">Mission</span>
         <p>{mission}</p>
-      </motion.div>
+      </Reveal>
     </section>
   );
 }

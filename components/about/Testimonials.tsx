@@ -1,7 +1,6 @@
 'use client';
 
-import { motion } from 'framer-motion';
-import { revealVariants } from '@/lib/animation';
+import { Reveal } from '@/components/shared/Reveal';
 import type { Testimonial } from '@/content/about';
 
 interface TestimonialsProps {
@@ -103,14 +102,11 @@ export function Testimonials({ testimonials }: TestimonialsProps) {
 
       <div className="testimonials-grid">
         {testimonials.map((testimonial, i) => (
-          <motion.div
+          <Reveal
             key={testimonial.name + i}
             className="testimonial-card"
             custom={i}
-            variants={revealVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: '-50px' }}
+            viewportMargin="-50px"
           >
             <div className="quote-mark">&ldquo;</div>
             <p className="quote">{testimonial.quote}</p>
@@ -118,7 +114,7 @@ export function Testimonials({ testimonials }: TestimonialsProps) {
               <div className="attr-name">{testimonial.name}</div>
               <div className="attr-role">{testimonial.role}</div>
             </div>
-          </motion.div>
+          </Reveal>
         ))}
       </div>
     </section>

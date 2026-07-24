@@ -1,7 +1,6 @@
 'use client';
 
-import { motion } from 'framer-motion';
-import { revealVariants } from '@/lib/animation';
+import { Reveal } from '@/components/shared/Reveal';
 
 interface CaseQuoteProps {
   quote: string;
@@ -46,12 +45,12 @@ export function CaseQuote({ quote }: CaseQuoteProps) {
         }
       `}</style>
 
-      <motion.div variants={revealVariants} initial="hidden" whileInView="visible" viewport={{ once: true }}>
+      <Reveal>
         <div className="quote-box">
           <span className="quote-label">Client Feedback</span>
           <p className="quote-text">{quote}</p>
         </div>
-      </motion.div>
+      </Reveal>
     </section>
   );
 }
