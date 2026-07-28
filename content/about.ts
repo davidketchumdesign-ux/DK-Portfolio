@@ -12,23 +12,23 @@ export interface Testimonial {
 export const aboutHero = {
   eyebrow: 'About',
   heading: 'Hi, I’m David — I design products people actually enjoy using.',
-  bio: '[Write 2–4 sentences here about your background: how you got into design, the kinds of problems you like to solve, and what your day-to-day looks like right now.]',
+  bio: 'I got my start in graphic design in New York’s Finger Lakes region, and spent the years since learning that good design is really about making complicated things feel simple. Today I specialize in Salesforce platform design as a Senior UX Designer at Slalom, holding multiple Salesforce UX and Agentforce Trailblazer certifications. When I’m not at my desk, I’m usually training for the next race, out on a trail, or bringing an old piece of furniture back to life.',
   mission:
-    '[Write your mission statement as a designer — the belief or principle that guides how you approach every project, in a sentence or two.]',
+    'I believe the best interfaces disappear. They let people focus on their goal instead of the tool. Whether I’m designing a kiosk system or a Salesforce workflow, my job is the same: translate complexity into something clear enough that nobody has to think twice.',
 };
 
 export const passions: Passion[] = [
   {
-    title: '[Passion One]',
-    description: '[Short description of this outside-work interest and why it matters to you.]',
+    title: 'Endurance Racing',
+    description: 'I’m an endurance athlete: an Ironman 70.3 last September, three full marathons, and more half marathons and triathlons than I can count. Training teaches patience and pacing — lessons that show up in my design work too.',
   },
   {
-    title: '[Passion Two]',
-    description: '[Short description of this outside-work interest and why it matters to you.]',
+    title: 'Backcountry & Water',
+    description: 'Overnight backpacking trips and quiet hours fishing are how I recharge. No screens, just a tent, a rod, and a trail.',
   },
   {
-    title: '[Passion Three]',
-    description: '[Short description of this outside-work interest and why it matters to you.]',
+    title: 'Furniture Restoration',
+    description: 'I pick up worn furniture from places like ReStore and Goodwill and give it new life — sanding, repairing, repainting. Same instinct as design: see what something could be, then build toward it.',
   },
 ];
 
