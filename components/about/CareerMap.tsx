@@ -146,7 +146,7 @@ export function CareerMap() {
           display: grid;
           grid-template-columns: 360px 1fr;
           gap: var(--space-7);
-          align-items: start;
+          align-items: stretch;
         }
 
         .cm-timeline {
@@ -267,6 +267,7 @@ export function CareerMap() {
         .cm-map-stage {
           position: relative;
           width: 100%;
+          height: 100%;
           background: var(--bg-elevated);
           border: 1px solid var(--border);
           border-radius: var(--radius);
@@ -276,8 +277,10 @@ export function CareerMap() {
 
         .cm-map-svg {
           display: block;
+          position: absolute;
+          inset: 0;
           width: 100%;
-          height: auto;
+          height: 100%;
         }
 
         :global(.cm-us-nation) {
@@ -368,6 +371,7 @@ export function CareerMap() {
           }
           .cm-map-stage {
             order: 1;
+            aspect-ratio: 13 / 20;
           }
         }
       `}</style>
