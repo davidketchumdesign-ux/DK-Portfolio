@@ -311,10 +311,10 @@ export function CareerMap() {
         }
 
         :global(.cm-pin-dot) {
-          fill: var(--accent);
+          fill: var(--text-muted);
           stroke: var(--bg-elevated);
           stroke-width: 3;
-          transition: r 0.2s var(--ease);
+          transition: r 0.2s var(--ease), fill 0.2s var(--ease);
           cursor: pointer;
         }
 
@@ -333,7 +333,8 @@ export function CareerMap() {
 
         :global(.cm-pin-group.active .cm-pin-dot),
         :global(.cm-pin-group:hover .cm-pin-dot) {
-          r: 8;
+          r: 7;
+          fill: var(--accent);
         }
 
         .cm-tooltip {
@@ -431,7 +432,7 @@ export function CareerMap() {
                 <text className="cm-pin-num" x={stop.x} y={stop.y - 12} textAnchor="middle">
                   {stop.num}
                 </text>
-                <circle className="cm-pin-dot" cx={stop.x} cy={stop.y} r={6} />
+                <circle className="cm-pin-dot" cx={stop.x} cy={stop.y} r={4.5} />
               </g>
             ))}
           </svg>
