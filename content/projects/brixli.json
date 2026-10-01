@@ -5,7 +5,7 @@
   "category": "personal",
   "tags": ["Product Design", "AI-Native Workflow"],
   "summary": "An all-in-one triathlon training app, designed and prototyped end-to-end with Claude — no Figma required.",
-  "coverImage": "/images/projects/brixli/screen-home.png",
+  "coverImage": "/images/projects/brixli-cover.png",
   "hero": {
     "subtitle": "Designing and prototyping a triathlon training app entirely through conversation with Claude.",
     "description": "Brixli is an all-in-one training hub for triathletes — swim, bike, and run plans, Apple Watch sync, and a race-day community — built to replace the four different apps I was juggling while training for my own Ironman 70.3. I designed, systemized, and prototyped the entire product end-to-end by working directly with Claude: a token-based design system, a full Figma-ready component spec, and a tap-through interactive prototype, generated as real, running code instead of static frames."

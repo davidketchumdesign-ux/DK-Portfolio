@@ -88,7 +88,7 @@ export const personalProjects: Project[] = [
     category: 'personal',
     tags: ['Product Design', 'AI-Native Workflow'],
     summary: 'An all-in-one triathlon training app, designed and prototyped end-to-end with Claude — no Figma required.',
-    coverImage: '/images/projects/brixli/card-cover.webp',
+    coverImage: '/images/projects/brixli-cover.png',
   },
   {
     slug: 'icebreakr',
@@ -97,7 +97,7 @@ export const personalProjects: Project[] = [
     category: 'personal',
     tags: ['Product Design', 'App Design'],
     summary: '[Short description of what Icebreakr is and your role — swap in your real copy here.]',
-    coverImage: '/images/projects/icebreakr-cover.jpg',
+    coverImage: '/images/projects/icebreakr-cover.png',
   },
   {
     slug: 'bet-sync',

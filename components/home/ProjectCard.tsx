@@ -68,7 +68,6 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
           <div className="card-body">
             <span className="card-tag">{cardTag}</span>
             <h3 className="card-title">{project.title}</h3>
-            <p className="card-desc">{project.summary}</p>
           </div>
         </Link>
       </motion.div>
@@ -126,20 +125,21 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
         }
 
         .card-body {
-          padding: 22px 24px 26px;
+          padding: 20px 20px 22px;
           display: flex;
           flex-direction: column;
           flex: 1;
-          gap: var(--space-3);
+          gap: 10px;
         }
 
         .card-tag {
           font-family: 'JetBrains Mono', monospace;
-          font-size: 11px;
+          font-size: 10px;
           color: var(--accent);
           text-transform: uppercase;
           letter-spacing: 0.05em;
           display: inline-block;
+          line-height: 1.4;
         }
 
         .card-title {
@@ -149,13 +149,7 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
           letter-spacing: -0.01em;
           color: var(--text);
           margin: 0;
-        }
-
-        .card-desc {
-          color: var(--text-muted);
-          font-size: 14px;
-          line-height: 1.6;
-          margin: 0;
+          line-height: 1.2;
         }
       `}</style>
     </Reveal>
