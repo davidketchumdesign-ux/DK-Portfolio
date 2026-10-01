@@ -69,6 +69,7 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
           <div className="card-body">
             <span className="card-tag">{cardTag}</span>
             <h3 className="card-title">{project.title}</h3>
+            <p className="card-desc">{project.summary}</p>
           </div>
         </Link>
       </motion.div>
@@ -126,31 +127,43 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
         }
 
         .card-body {
-          padding: 20px 20px 22px;
+          padding: 16px 18px 18px;
           display: flex;
           flex-direction: column;
           flex: 1;
-          gap: 10px;
+          gap: 6px;
         }
 
         .card-tag {
           font-family: 'JetBrains Mono', monospace;
-          font-size: 10px;
+          font-size: 9px;
           color: var(--accent);
           text-transform: uppercase;
           letter-spacing: 0.05em;
           display: inline-block;
-          line-height: 1.4;
+          line-height: 1.35;
         }
 
         .card-title {
           font-family: 'Space Grotesk', sans-serif;
           font-weight: 600;
-          font-size: 19px;
+          font-size: 18px;
           letter-spacing: -0.01em;
           color: var(--text);
           margin: 0;
           line-height: 1.2;
+        }
+
+        .card-desc {
+          color: var(--text-muted);
+          font-size: 11.5px;
+          line-height: 1.4;
+          margin: 0;
+          max-width: 30ch;
+          display: -webkit-box;
+          -webkit-line-clamp: 2;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
         }
       `}</style>
     </Reveal>
