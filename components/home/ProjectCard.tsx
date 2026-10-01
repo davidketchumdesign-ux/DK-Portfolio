@@ -47,7 +47,7 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
                   ? {
                       backgroundImage: `url(${project.coverImage})`,
                       backgroundSize: 'cover',
-                      backgroundPosition: 'top center',
+                      backgroundPosition: 'center center',
                       position: 'absolute',
                       top: 0,
                       right: 0,
