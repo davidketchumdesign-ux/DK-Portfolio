@@ -46,8 +46,9 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
                 hasRealCover
                   ? {
                       backgroundImage: `url(${project.coverImage})`,
-                      backgroundSize: 'cover',
+                      backgroundSize: '80%',
                       backgroundPosition: 'center center',
+                      backgroundRepeat: 'no-repeat',
                       position: 'absolute',
                       top: 0,
                       right: 0,
