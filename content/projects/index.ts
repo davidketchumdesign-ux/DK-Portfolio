@@ -106,7 +106,7 @@ export const personalProjects: Project[] = [
     category: 'personal',
     tags: ['Product Design', 'Mobile App'],
     summary: '[Short description of the betting sync app and your role — swap in your real copy here.]',
-    coverImage: '/images/projects/bet-sync-cover.jpg',
+    coverImage: '/images/projects/bet-sync-cover.png',
   },
 ];
 
